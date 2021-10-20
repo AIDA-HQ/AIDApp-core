@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import linregress
 
 
 class Calculations:
@@ -40,6 +41,38 @@ class Calculations:
     def get_φTMφ(self):
         return φTMφ
 
+    def get_K1(self, a, b):
+        k1 = linregress(a, b)[0]  # kN
+        return k1  # Slope
+
+    def get_Vy_kN(self, K1, dy):
+        Vy_kN = K1 * dy  # kN
+        return Vy_kN
+
     def get_me(self):
+        global me
         me = m_tot / Γ
         return me
+
+    def get_Vy_F_ms2(self, Vy_kN):
+        Vy_F_ms2 = Vy_kN / me  # [m/s^2]
+        return Vy_F_ms2
+
+    def get_de(self, ADRS_spectrum, K1_eff_curve):
+        # X coords of K1eff intercepting ADRS spectrum
+        intersection_ADRS_K1 = ADRS_spectrum.intersection(K1_eff_curve)
+        de = float(intersection_ADRS_K1.x)  # [m]
+        return de
+
+    def get_ξ1eff(self, dp, ADRS_spectrum, K1_eff_curve):
+        de = self.get_de(ADRS_spectrum, K1_eff_curve)
+        ξ1eff = 10 * (de / dp) ** 2 - 10
+        return ξ1eff
+
+    def get_ξFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
+        dyF = dy  # [m]
+        Vy_F_ms2 = self.get_Vy_F_ms2(Vy_kN)
+        VpF_ms2 = Vp_ms2  # [m/s^2]
+
+        ξFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
+        return ξFrame

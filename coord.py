@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from shapely.geometry.linestring import LineString
 
 
 class Coords:
@@ -1143,7 +1144,8 @@ class Coords:
     def x_bilinear_line(self, start_graph, end_graph):
         return np.linspace(start_graph, end_graph, 1000)
 
-    def plot_intersections(self, intersection):
+    def plot_intersections(self, curve_1, curve_2):
+        intersection = curve_1.intersection(curve_2)
         intersection_coords = []
         if intersection.geom_type == "Point":
             plt.plot(*intersection.xy, "ro")
@@ -1155,14 +1157,54 @@ class Coords:
                 plt.plot(*element, "ro")
         return intersection_coords
 
-    def find_nearest_coordinate(self, curve_coordinates, coord):
-        difference_array_x = np.absolute(curve_coordinates - coord)
-        # find the index of minimum element from the array
-        index = difference_array_x.argmin()
-        return curve_coordinates[index]
-
     def find_nearest_coordinate_index(self, curve_coordinates, coord):
         difference_array_x = np.absolute(curve_coordinates - coord)
         # find the index of minimum element from the array
         index = difference_array_x.argmin()
         return index
+
+    def find_nearest_coordinate(self, curve_coordinates, coord):
+        """
+        Enter array of X or Y coordinates of a curve and X or Y coordinate of 
+        a point_a to find the nearest X or Y point_a to in the curve array
+        """
+        index = self.find_nearest_coordinate_index(curve_coordinates, coord)
+        return curve_coordinates[index]
+
+
+    def bilinear_m_q(self, x_1, x_2, y_1, y_2):
+        """
+        Enter coordinates of two points.
+        Returns a tuple with m and q to generate
+        one straight line which composes the bilinear line"""
+        m, q = np.polyfit(x=[x_1, x_2], y=[y_1, y_2], deg=1)
+        return m, q
+
+    def generate_line(self, x_p_sdof, x_1_array, x_2_array, y_1_array, y_2_array):
+        """
+        Generate part of the bilinear curve: 1st or 2nd line that compose it
+        Return a tuple with X and Y coordinates
+        """
+        m = self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[0]
+        q = self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[1]
+        x = self.x_bilinear_line(x_p_sdof[0], x_p_sdof[-1])
+        y = m * x + q
+        return x, y
+
+    def interpolate_curve(self, x_coords, y_coords):
+        curve = LineString(np.column_stack((x_coords, y_coords)))
+        return curve
+
+    def find_range_pushover(self, pushover_coord, line_1_coord, line_2_coord):
+        index_0 = self.find_nearest_coordinate_index(
+            pushover_coord, line_1_coord
+        )
+        index_1 = self.find_nearest_coordinate_index(
+            pushover_coord, line_2_coord
+        )
+        list_fitting = [pushover_coord[index_0 : index_1 + 1]]
+        #print("Nearest element to the given values is : ", pushover_coord[index_0])
+        #print("Index of nearest value is : ", index_0)
+        #print("Nearest element to the given values is : ", pushover_coord[index_1])
+        #print("Index of nearest value is : ", index_1)
+        return list_fitting
