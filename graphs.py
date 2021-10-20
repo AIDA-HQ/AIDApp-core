@@ -24,6 +24,7 @@ class Graphs:
         plt.plot(coord.x_K1_eff, coord.y_K1_eff, label="K1 eff curve")
         plt.plot(x_bilinear, y_bilinear_ms2, label="Bilinear curve in m/s^2")
         plt.plot(x_p_sdof, y_p_sdof, label="SDOF Pushover Curve")
+
         plt.plot(
             x_bilinear_line_1,
             y_bilinear_line_1,

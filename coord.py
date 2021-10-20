@@ -1165,12 +1165,11 @@ class Coords:
 
     def find_nearest_coordinate(self, curve_coordinates, coord):
         """
-        Enter array of X or Y coordinates of a curve and X or Y coordinate of 
+        Enter array of X or Y coordinates of a curve and X or Y coordinate of
         a point_a to find the nearest X or Y point_a to in the curve array
         """
         index = self.find_nearest_coordinate_index(curve_coordinates, coord)
         return curve_coordinates[index]
-
 
     def bilinear_m_q(self, x_1, x_2, y_1, y_2):
         """
@@ -1196,15 +1195,11 @@ class Coords:
         return curve
 
     def find_range_pushover(self, pushover_coord, line_1_coord, line_2_coord):
-        index_0 = self.find_nearest_coordinate_index(
-            pushover_coord, line_1_coord
-        )
-        index_1 = self.find_nearest_coordinate_index(
-            pushover_coord, line_2_coord
-        )
+        index_0 = self.find_nearest_coordinate_index(pushover_coord, line_1_coord)
+        index_1 = self.find_nearest_coordinate_index(pushover_coord, line_2_coord)
         list_fitting = [pushover_coord[index_0 : index_1 + 1]]
-        #print("Nearest element to the given values is : ", pushover_coord[index_0])
-        #print("Index of nearest value is : ", index_0)
-        #print("Nearest element to the given values is : ", pushover_coord[index_1])
-        #print("Index of nearest value is : ", index_1)
+        # print("Nearest element to the given values is : ", pushover_coord[index_0])
+        # print("Index of nearest value is : ", index_0)
+        # print("Nearest element to the given values is : ", pushover_coord[index_1])
+        # print("Index of nearest value is : ", index_1)
         return list_fitting
