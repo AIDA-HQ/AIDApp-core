@@ -1195,8 +1195,4 @@ class Coords:
         index_0 = self.find_nearest_coordinate_index(pushover_coord, line_1_coord)
         index_1 = self.find_nearest_coordinate_index(pushover_coord, line_2_coord)
         list_fitting = [pushover_coord[index_0 : index_1 + 1]]
-        # print("Nearest element to the given values is : ", pushover_coord[index_0])
-        # print("Index of nearest value is : ", index_0)
-        # print("Nearest element to the given values is : ", pushover_coord[index_1])
-        # print("Index of nearest value is : ", index_1)
         return list_fitting

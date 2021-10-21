@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from coord import Coords
+from coordinates import Coords
 
 coord = Coords()
 
@@ -39,9 +39,45 @@ class Graphs:
         )
         plt.legend()
 
+    def plot_pushover_bilinear(
+        self,
+        x_p_sdof,
+        y_p_sdof,
+        intersection_bilinear1_psdof_coords,
+        intersection_bilinear2_psdof_coords,
+        intersection_dy_coords,
+    ):
+        plt.plot(x_p_sdof, y_p_sdof, label="SDOF Pushover Curve")
+        self.plot_limited_bilinear(
+            intersection_bilinear1_psdof_coords,
+            intersection_bilinear2_psdof_coords,
+            intersection_dy_coords,
+        )
+
+        plt.xlabel("Displacement* [m]", fontsize="large")
+        plt.ylabel("Base Shear* [kN]", fontsize="large")
+
+        plt.legend()
+
     def plot_intersections(self, intersection_list):
         if len(intersection_list) == 1:
-            plt.plot(*zip(*intersection_list), "ro")
+            plt.plot(*zip(*intersection_list), "go", label="Intersection Point")
         if len(intersection_list) > 1:
             for element in intersection_list:
-                plt.plot(*zip(*intersection_list), "ro")
+                plt.plot(*zip(*intersection_list), "go", label="Intersection Point")
+
+    def plot_limited_bilinear(
+        self,
+        intersection_bilinear1_psdof_coords,
+        intersection_bilinear2_psdof_coords,
+        intersection_dy_coords,
+    ):
+        points = []
+        for element in intersection_bilinear1_psdof_coords:
+            points.append(element)
+        for element in intersection_bilinear2_psdof_coords:
+            points.append(element)
+        points.append(*intersection_dy_coords)
+        tp = sorted(points, key=lambda x: x[0])
+        plt.plot(*zip(*tp), "-o", label="Bilinear")
+        plt.legend()

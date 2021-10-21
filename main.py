@@ -2,13 +2,14 @@ import numpy as np
 from numpy import trapz
 import matplotlib.pyplot as plt
 
-from coord import Coords
-from calcs import Calculations
+from coordinates import Coords
+from calcs import Calculations, Print
 from graphs import Graphs
 
 coord = Coords()
 values = Calculations()
 graphs = Graphs()
+display = Print()
 
 
 def find_dy(dy):
@@ -44,7 +45,6 @@ def find_dy(dy):
     a = np.array([x_p_sdof[2:10]])
     b = np.array([y_p_sdof[2:10]])
     K1 = values.get_K1(a, b)  # kN
-    # print(np.polyfit(a, b, 1))
     Vy_kN = values.get_Vy_kN(K1, dy)
 
     # X coordinates of the bilinear curve
@@ -77,7 +77,6 @@ def find_dy(dy):
     intersection_bilinear1_psdof_coords = coord.find_intersections(
         p_sdof, bilinear_line_1
     )
-    intersection_bilinear1_psdof_coords
 
     # Straight line passing through 2nd and 3rd point of the bilinear curve
     # Generate the 2nd part of the bilinear
@@ -92,11 +91,9 @@ def find_dy(dy):
     intersection_bilinear2_psdof_coords = coord.find_intersections(
         p_sdof, bilinear_line_2
     )
-    intersection_bilinear2_psdof_coords
 
     # Intersection of the two straight lines (dy)
     intersection_dy_coords = coord.find_intersections(bilinear_line_1, bilinear_line_2)
-    intersection_dy_coords
 
     # Calculate A1 and A2
 
@@ -159,43 +156,30 @@ def find_dy(dy):
     area_diff = np.absolute(a1 - a2)
 
     if area_diff < 0.0004:
-        print("Storey masses Matrix:\n", values.get_m_matrix(), "\n")
-        print("Eigenvalues Matrix:\n", values.get_φ(), "\n")
-        print("Modal pattern:\n", values.get_Mφ())
-        print("\nφTMτ:", values.get_φTMτ())
-        print("φTMφ:", values.get_φTMφ())
-        print("Γ: ", Γ)
-        print("Vp_kn:", Vp_kN)
 
         print(
-            "\nIntersection(s) between First line of bilinear and SDOF Pushover Curve:",
-            intersection_bilinear1_psdof_coords,
+            display.print_all(
+                Vp_kN,
+                dp,
+                dy,
+                Vy_kN,
+                Vp_ms2,
+                intersection_bilinear1_psdof_coords,
+                intersection_bilinear2_psdof_coords,
+                intersection_dy_coords,
+                area_tot,
+                a1,
+                a2,
+                area_diff,
+            )
         )
-        print(
-            "Intersection(s) between Second line of bilinear and SDOF Pushover Curve:",
-            intersection_bilinear2_psdof_coords,
-        )
-        print("Intersection of the two lines of the bilinear:", intersection_dy_coords)
-        print("Total Area under pushover curve:", area_tot)
 
-        print("dy:", dy)
-        print("A1 =", a1)
-        print("A2 =", a2)
-        print("A1-A2:", area_diff)
-        print("%:", area_diff / a1)
-
-        graphs.plot_intersections(intersection_dy_coords)
-        graphs.plot_intersections(intersection_bilinear1_psdof_coords)
-        graphs.plot_intersections(intersection_bilinear2_psdof_coords)
-        graphs.plot_all(
-            x_bilinear,
-            y_bilinear_ms2,
+        graphs.plot_pushover_bilinear(
             x_p_sdof,
             y_p_sdof,
-            x_bilinear_line_1,
-            y_bilinear_line_1,
-            x_bilinear_line_2,
-            y_bilinear_line_2,
+            intersection_bilinear1_psdof_coords,
+            intersection_bilinear2_psdof_coords,
+            intersection_dy_coords,
         )
         plt.show()
 
