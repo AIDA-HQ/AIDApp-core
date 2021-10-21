@@ -257,7 +257,7 @@ class Coords:
         ]
     )
 
-    x_K1_eff = np.array(
+    x_k1_eff = np.array(
         [
             0,
             0.000130495,
@@ -384,7 +384,7 @@ class Coords:
         ]
     )
 
-    y_K1_eff = np.array(
+    y_k1_eff = np.array(
         [
             0,
             0.004141765,

@@ -59,75 +59,82 @@ def find_dy(dy):
     )
 
     # Graphs
-    ADRS_spectrum = coord.interpolate_curve(coord.x_ADRS_meters, coord.y_ADRS_meters)
-    K1_eff_curve = coord.interpolate_curve(coord.x_K1_eff, coord.y_K1_eff)
+    adrs_spectrum = coord.interpolate_curve(coord.x_ADRS_meters, coord.y_ADRS_meters)
+    k1_eff_curve = coord.interpolate_curve(coord.x_k1_eff, coord.y_k1_eff)
     p_sdof = coord.interpolate_curve(x_p_sdof, y_p_sdof)
 
     # TODO switch from kN bilinear to the ms2 one
     # Straight line passing through 1st and 2nd point of bilinear curve
     # Generate the 1st part of the bilinear
-    x_bilinear_line_1 = coord.generate_line(
+    x_bilinear_line_kN_1 = coord.generate_line(
         x_p_sdof, x_bilinear[0], x_bilinear[1], y_bilinear_kN[0], y_bilinear_kN[1]
     )[0]
-    y_bilinear_line_1 = coord.generate_line(
+    y_bilinear_line_kN_1 = coord.generate_line(
         x_p_sdof, x_bilinear[0], x_bilinear[1], y_bilinear_kN[0], y_bilinear_kN[1]
     )[1]
-    bilinear_line_1 = coord.interpolate_curve(x_bilinear_line_1, y_bilinear_line_1)
+    bilinear_line_kN_1 = coord.interpolate_curve(
+        x_bilinear_line_kN_1, y_bilinear_line_kN_1
+    )
     # Intersections of bilinear #1
     intersection_bilinear1_psdof_coords = coord.find_intersections(
-        p_sdof, bilinear_line_1
+        p_sdof, bilinear_line_kN_1
     )
 
     # Straight line passing through 2nd and 3rd point of the bilinear curve
     # Generate the 2nd part of the bilinear
-    x_bilinear_line_2 = coord.generate_line(
+    x_bilinear_line_kN_2 = coord.generate_line(
         x_p_sdof, x_bilinear[1], x_bilinear[2], y_bilinear_kN[1], y_bilinear_kN[2]
     )[0]
-    y_bilinear_line_2 = coord.generate_line(
+    y_bilinear_line_kN_2 = coord.generate_line(
         x_p_sdof, x_bilinear[1], x_bilinear[2], y_bilinear_kN[1], y_bilinear_kN[2]
     )[1]
-    bilinear_line_2 = coord.interpolate_curve(x_bilinear_line_2, y_bilinear_line_2)
+    bilinear_line_kN_2 = coord.interpolate_curve(
+        x_bilinear_line_kN_2, y_bilinear_line_kN_2
+    )
     # Intersections of bilinear #2
     intersection_bilinear2_psdof_coords = coord.find_intersections(
-        p_sdof, bilinear_line_2
+        p_sdof, bilinear_line_kN_2
     )
 
     # Intersection of the two straight lines (dy)
-    intersection_dy_coords = coord.find_intersections(bilinear_line_1, bilinear_line_2)
+    intersection_dy_coords = coord.find_intersections(
+        bilinear_line_kN_1, bilinear_line_kN_2
+    )
 
     # Calculate A1 and A2
 
-    list_fitting_x = coord.find_range_pushover(
+    list_fitting_1_x_pushover = coord.find_range_pushover(
         x_p_sdof,
         intersection_bilinear1_psdof_coords[-1][0],
         intersection_bilinear2_psdof_coords[0][0],
-    )
+    )  # List of all the X coordinates between the two intersections with the bilinear curve. A1
 
-    list_fitting_y = coord.find_range_pushover(
+    list_fitting_1_y_pushover = coord.find_range_pushover(
         y_p_sdof,
         intersection_bilinear1_psdof_coords[-1][1],
         intersection_bilinear2_psdof_coords[0][1],
-    )
-    list_fitting_x_b = coord.find_range_pushover(
+    )  # List of all the Y coordinates between the two intersections with the bilinear curve. A1
+
+    list_fitting_2_x_pushover = coord.find_range_pushover(
         x_p_sdof,
         intersection_bilinear2_psdof_coords[0][0],
         intersection_bilinear2_psdof_coords[-1][0],
-    )
-    list_fitting_y_b = coord.find_range_pushover(
+    )  # List of all the X coordinates between the two intersections with the bilinear curve. A2
+    list_fitting_2_y_pushover = coord.find_range_pushover(
         y_p_sdof,
         intersection_bilinear2_psdof_coords[0][1],
         intersection_bilinear2_psdof_coords[-1][1],
-    )
+    )  # List of all the Y coordinates between the two intersections with the bilinear curve. A2
 
     # Compute the area using the composite trapezoidal rule.
-    area_1_y_coords = np.array(
+    area_1_under_bilinear_y_coords = np.array(
         [
             intersection_bilinear1_psdof_coords[-1][1],
             Vy_kN,
             intersection_bilinear2_psdof_coords[0][1],
         ]
     )
-    area_1_x_coords = np.array(
+    area_1_under_bilinear_x_coords = np.array(
         [
             intersection_bilinear1_psdof_coords[-1][0],
             dy,
@@ -135,24 +142,34 @@ def find_dy(dy):
         ]
     )
 
-    area_2_y_coords = np.array(
+    area_2_under_bilinear_y_coords = np.array(
         [
             intersection_bilinear2_psdof_coords[0][1],
             intersection_bilinear2_psdof_coords[1][1],
         ]
     )
-    area_2_x_coords = np.array(
+    area_2_under_bilinear_x_coords = np.array(
         [
             intersection_bilinear2_psdof_coords[0][0],
             intersection_bilinear2_psdof_coords[1][0],
         ]
     )
     area_tot = trapz(y_p_sdof, x_p_sdof)
-    area_1 = trapz(np.array(list_fitting_y), np.array(list_fitting_x))
-    area_2 = trapz(np.array(list_fitting_y_b), np.array(list_fitting_x_b))
+    area_1_under_pushover = trapz(
+        np.array(list_fitting_1_y_pushover), np.array(list_fitting_1_x_pushover)
+    )
+    area_2_under_pushover = trapz(
+        np.array(list_fitting_2_y_pushover), np.array(list_fitting_2_x_pushover)
+    )
+    area_1_under_bilinear = trapz(
+        area_1_under_bilinear_y_coords, area_1_under_bilinear_x_coords
+    )
+    area_2_under_bilinear = trapz(
+        area_2_under_bilinear_y_coords, area_2_under_bilinear_x_coords
+    )
 
-    a1 = np.absolute(area_1 - trapz(area_1_y_coords, area_1_x_coords))
-    a2 = np.absolute(area_2 - trapz(area_2_y_coords, area_2_x_coords))
+    a1 = np.absolute(area_1_under_pushover - area_1_under_bilinear)
+    a2 = np.absolute(area_2_under_pushover - area_2_under_bilinear)
     area_diff = np.absolute(a1 - a2)
 
     if area_diff < 0.0004:
