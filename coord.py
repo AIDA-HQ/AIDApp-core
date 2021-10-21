@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from shapely.geometry.linestring import LineString
 
 
@@ -1144,17 +1143,15 @@ class Coords:
     def x_bilinear_line(self, start_graph, end_graph):
         return np.linspace(start_graph, end_graph, 1000)
 
-    def plot_intersections(self, curve_1, curve_2):
+    def find_intersections(self, curve_1, curve_2):
         intersection = curve_1.intersection(curve_2)
         intersection_coords = []
         if intersection.geom_type == "Point":
-            plt.plot(*intersection.xy, "ro")
             intersection_coords.append((intersection.x, intersection.y))
         if intersection.geom_type == "MultiPoint":
             individual_points = [(pt.x, pt.y) for pt in intersection]
             for element in individual_points:
                 intersection_coords.append(element)
-                plt.plot(*element, "ro")
         return intersection_coords
 
     def find_nearest_coordinate_index(self, curve_coordinates, coord):

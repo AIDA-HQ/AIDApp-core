@@ -38,4 +38,10 @@ class Graphs:
             label="2nd line of the bilinear curve",
         )
         plt.legend()
-        plt.show()
+
+    def plot_intersections(self, intersection_list):
+        if len(intersection_list) == 1:
+            plt.plot(*zip(*intersection_list), "ro")
+        if len(intersection_list) > 1:
+            for element in intersection_list:
+                plt.plot(*zip(*intersection_list), "ro")

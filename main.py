@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import trapz
+import matplotlib.pyplot as plt
 
 from coord import Coords
 from calcs import Calculations
@@ -25,7 +26,7 @@ def find_dy(dy):
     n = 0
     while n < number_storeys:
         n = n + 1
-        eigenvalues.append(float(input("Enter the eigenvalues #",n,": ")))
+        eigenvalues.append(float(input("Enter the eigenvalues #", n, ": ")))
     print("\n")
 
     # 3rd x coordinate of bilinear curve
@@ -43,8 +44,8 @@ def find_dy(dy):
     a = np.array([x_p_sdof[2:10]])
     b = np.array([y_p_sdof[2:10]])
     K1 = values.get_K1(a, b)  # kN
-    #print(np.polyfit(a, b, 1))
-    Vy_kN = (values.get_Vy_kN(K1, dy))
+    # print(np.polyfit(a, b, 1))
+    Vy_kN = values.get_Vy_kN(K1, dy)
 
     # X coordinates of the bilinear curve
     x_bilinear = np.array([0, dy, dp])
@@ -73,7 +74,9 @@ def find_dy(dy):
     )[1]
     bilinear_line_1 = coord.interpolate_curve(x_bilinear_line_1, y_bilinear_line_1)
     # Intersections of bilinear #1
-    intersection_bilinear1_psdof_coords = coord.plot_intersections(p_sdof, bilinear_line_1)
+    intersection_bilinear1_psdof_coords = coord.find_intersections(
+        p_sdof, bilinear_line_1
+    )
     intersection_bilinear1_psdof_coords
 
     # Straight line passing through 2nd and 3rd point of the bilinear curve
@@ -86,11 +89,13 @@ def find_dy(dy):
     )[1]
     bilinear_line_2 = coord.interpolate_curve(x_bilinear_line_2, y_bilinear_line_2)
     # Intersections of bilinear #2
-    intersection_bilinear2_psdof_coords = coord.plot_intersections(p_sdof, bilinear_line_2)
+    intersection_bilinear2_psdof_coords = coord.find_intersections(
+        p_sdof, bilinear_line_2
+    )
     intersection_bilinear2_psdof_coords
 
     # Intersection of the two straight lines (dy)
-    intersection_dy_coords = coord.plot_intersections(bilinear_line_1, bilinear_line_2)
+    intersection_dy_coords = coord.find_intersections(bilinear_line_1, bilinear_line_2)
     intersection_dy_coords
 
     # Calculate A1 and A2
@@ -179,6 +184,9 @@ def find_dy(dy):
         print("A1-A2:", area_diff)
         print("%:", area_diff / a1)
 
+        graphs.plot_intersections(intersection_dy_coords)
+        graphs.plot_intersections(intersection_bilinear1_psdof_coords)
+        graphs.plot_intersections(intersection_bilinear2_psdof_coords)
         graphs.plot_all(
             x_bilinear,
             y_bilinear_ms2,
@@ -189,6 +197,8 @@ def find_dy(dy):
             x_bilinear_line_2,
             y_bilinear_line_2,
         )
+        plt.show()
+
         return dy
     else:
         dy = dy + 0.00001
