@@ -79,5 +79,14 @@ class Graphs:
             points.append(element)
         points.append(*intersection_dy_coords)
         tp = sorted(points, key=lambda x: x[0])
-        plt.plot(*zip(*tp), "-o", label="Bilinear")
+        plt.plot(*zip(*tp), "-o", color="red", label="Bilinear")
+        plt.legend()
+
+    def plot_adrs(
+        self, x_adrs, y_adrs, x_bilinear, y_bilinear_ms2, sd_meters, y_k_eff, de
+    ):
+        plt.plot(x_adrs, y_adrs, color="#002260", label="ADRS Spectrum")
+        plt.plot(x_bilinear, y_bilinear_ms2, "-o", color="red", label="Bare Frame")
+        plt.plot(sd_meters, y_k_eff, color="green", label="K eff")
+        plt.ylabel("Sa [m/s^2]", fontsize="large")
         plt.legend()
