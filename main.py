@@ -32,18 +32,23 @@ def find_dy(dy):
     print("\n")
 
     # 3rd x coordinate of bilinear curve
-    dp = float(input("\nEnter the value of d*p [m]: "))
+    dp = float(input("\nEnter the value of d*p [m]:"))
+
+    # μ(DB)
+    μ_DB = float(input("\nEnter the value of μ(DB):"))
+    k_DB = float(input("\nEnter the value of k(DB):"))
 
     Γ = values.get_Γ(storey_masses, eigenvalues)
     me = values.get_me()  # [ton]
     y_p_sdof = coord.y_p_sdof(Γ)
     x_p_sdof = coord.x_p_sdof(Γ)
-
     Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
-    Vp_ms2 = Vp_kN / me  # ms2
+    Vp_ms2 = Vp_kN / me  # m/s^2
+
+    ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
 
     # Slope of first n values of SDOF Pushover Curve
-    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # kN
+    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # kN/m
     Vy_kN = values.get_Vy_kN(K1, dy)
 
     # X coordinates of the bilinear curve

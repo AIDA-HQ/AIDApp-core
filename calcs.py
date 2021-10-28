@@ -66,6 +66,7 @@ class Calculations:
         return me
 
     def get_Vy_F_ms2(self, Vy_kN):
+        global Vy_F_ms2
         Vy_F_ms2 = Vy_kN / me  # [m/s^2]
         return Vy_F_ms2
 
@@ -75,10 +76,10 @@ class Calculations:
         de = float(intersection_adrs_kn.x)  # [m]
         return de
 
-    def get_ξ1eff(self, dp, ADRS_spectrum, K1_eff_curve):
+    def get_ξn_eff(self, dp, ADRS_spectrum, K1_eff_curve):
         de = self.get_de(ADRS_spectrum, K1_eff_curve)
-        ξ1eff = 10 * (de / dp) ** 2 - 10
-        return ξ1eff
+        ξn_eff = 10 * (de / dp) ** 2 - 10
+        return ξn_eff
 
     def get_ξFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
         dyF = dy  # [m]
@@ -86,6 +87,38 @@ class Calculations:
         VpF_ms2 = Vp_ms2  # [m/s^2]
         ξFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
         return ξFrame
+
+    def get_ξ_DB(self, μ_DB, k_DB):
+        ξ_DB: 63.7 * k_DB * ((μ_DB - 1) / μ_DB)
+        return ξ_DB  # [%]
+
+    def get_dy_DB(self, μ_DB, dp_DB):
+        dy_DB = dp_DB / μ_DB
+        return dy_DB  # [m]
+
+    def get_Vp_DB(self, ξn_eff, ξFrame, Vp_kN, ξ_DB):
+        Vp_DB = (ξn_eff - ξFrame) * (Vp_kN / ξ_DB)
+        return Vp_DB  # [kN]
+
+    def get_Kb(self, dy_DB, Vp_DB):
+        Kb = Vp_DB / dy_DB
+        return Kb  # [kN/m]
+
+    def get_Vy(self, Vp_DB):
+        Vy = Vy_F_ms2 / me + Vp_DB / me
+        return Vy  # [m/s^2]
+
+    def get_Vp(self, Vp_kN, Vp_DB):
+        Vp = Vp_kN / me + Vp_DB / me
+        return Vp
+
+    def get_ξ_eff(self, ξFrame, Vp_kN, ξ_DB, Vp_DB):
+        ξ_eff = (ξFrame * Vp_kN + ξ_DB * Vp_DB) / (Vp_kN + Vp_DB)
+        return ξ_eff
+    
+    def get_check(self, ξ_eff, ξn_eff):
+        check = np.absolute(ξn_eff - ξ_eff) / ξ_eff
+        return check
 
 
 class Print:
@@ -109,16 +142,16 @@ class Print:
         print("Modal pattern:\n", values.get_Mφ())
         print("\nφTMτ:", values.get_φTMτ())
         print("φTMφ:", values.get_φTMφ())
-        print("Γ: ", Γ)
+        print("Γ:", Γ)
         print("Vp_kn:", Vp_kN)
-        Kf = float(input("Enter the value of K(F): "))
+        Kf = float(input("Enter the value of K(F):"))
         print("k(F): ", Kf)
         """
-        print("Vy(F): ", Vy_F_ms2, "m/s^2")
-        print("dp(F): ", dp, "m")
-        print("Vp(F): ", VpF_ms2, "m/s^2")
-        print("de: ", de, "m")
-        print("\nξ1eff: ", self..get_ξ1eff(), "%")
+        print("Vy(F):", Vy_F_ms2, "m/s^2")
+        print("dp(F):", dp, "m")
+        print("Vp(F):", VpF_ms2, "m/s^2")
+        print("de:", de, "m")
+        print("\nξn_eff:", self.get_ξn_eff(), "%")
         """
 
         print("ξFrame: ", values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2), "%")
