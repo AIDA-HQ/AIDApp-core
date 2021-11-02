@@ -916,7 +916,7 @@ class Coords:
         if intersection.geom_type == "Point":
             intersection_coords.append((intersection.x, intersection.y))
         if intersection.geom_type == "MultiPoint":
-            individual_points = [(pt.x, pt.y) for pt in intersection]
+            individual_points = [(pt.x, pt.y) for pt in intersection.geoms]
             for element in individual_points:
                 intersection_coords.append(element)
         return intersection_coords
