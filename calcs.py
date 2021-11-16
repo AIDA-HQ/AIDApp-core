@@ -53,22 +53,25 @@ class Calculations:
         a = np.array([x_p_sdof[2:10]])
         b = np.array([y_p_sdof[2:10]])
 
-        k1 = linregress(a, b)[0]  # kN
-        return k1  # Slope
+        # TODO - Find an alternative to linregress
+        slope, intercept, r, p, se = linregress(a, b)  # kN
+        return slope  # Slope
 
     def get_Vy_kN(self, K1, dy):
-        Vy_kN = K1 * dy  # kN
-        return Vy_kN
+        """
+        Return the value of Vy(F) in kN
+        """
+        global Vy_F_kN
+        Vy_F_kN = K1 * dy  # kN
+        return Vy_F_kN
 
     def get_me(self):
+        """
+        Get the mass of the storeys
+        """
         global me
         me = m_tot / Γ
         return me
-
-    def get_Vy_F_ms2(self, Vy_kN):
-        global Vy_F_ms2
-        Vy_F_ms2 = Vy_kN / me  # [m/s^2]
-        return Vy_F_ms2
 
     def get_de(self, adrs_spectrum, kn_eff_curve):
         # X coords of K1eff intercepting ADRS spectrum
@@ -76,10 +79,31 @@ class Calculations:
         de = float(intersection_adrs_kn.x)  # [m]
         return de
 
-    def get_ξn_eff(self, dp, ADRS_spectrum, K1_eff_curve):
-        de = self.get_de(ADRS_spectrum, K1_eff_curve)
-        ξn_eff = 10 * (de / dp) ** 2 - 10
-        return ξn_eff
+    # ADRS methods
+
+    def get_Vy_F_ms2(self, Vy_F_kN):
+        """
+        Return the value of Vy(F) in m/s^2
+        """
+        global Vy_F_ms2
+        Vy_F_ms2 = Vy_F_kN / me  # [m/s^2]
+        return Vy_F_ms2
+
+    def get_Vy_F_DB(self, Vp_DB):
+        """
+        Return the value of Vy(F + DB)
+        """
+        Vy = Vy_F_kN / me + Vp_DB / me
+        return Vy  # [m/s^2]
+
+    def get_Vp_F_DB(self, Vp_kN, Vp_DB):
+        """
+        Return the value of Vp(F + DB)
+        Vp_kN is a constant, defined initally
+        Vp_DB changes every iteration
+        """
+        Vp = Vp_kN / me + Vp_DB / me
+        return Vp
 
     def get_ξFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
         dyF = dy  # [m]
@@ -87,6 +111,23 @@ class Calculations:
         VpF_ms2 = Vp_ms2  # [m/s^2]
         ξFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
         return ξFrame
+
+    def get_ξ_eff_F_DB(self, ξFrame, Vp_kN, ξ_DB, Vp_DB):
+        """
+        Return the value of ξ_eff(F + DB), which,
+        for the first iteration, was called "ξFrame"
+        ξFrame and Vp_kN are constants, defined initally
+        ξ_DB and Vp_DB change every iteration
+        """
+        ξ_eff = (ξFrame * Vp_kN + ξ_DB * Vp_DB) / (Vp_kN + Vp_DB)
+        return ξ_eff
+
+    def get_ξn_eff(self, dp, ADRS_spectrum, K1_eff_curve):
+        de = self.get_de(ADRS_spectrum, K1_eff_curve)
+        ξn_eff = 10 * (de / dp) ** 2 - 10
+        return ξn_eff
+
+    # Dissipative Brace (DB) methods
 
     def get_ξ_DB(self, μ_DB, k_DB):
         ξ_DB: 63.7 * k_DB * ((μ_DB - 1) / μ_DB)
@@ -96,27 +137,32 @@ class Calculations:
         dy_DB = dp_DB / μ_DB
         return dy_DB  # [m]
 
-    def get_Vp_DB(self, ξn_eff, ξFrame, Vp_kN, ξ_DB):
-        Vp_DB = (ξn_eff - ξFrame) * (Vp_kN / ξ_DB)
+    def get_Vp_DB_1(self, ξn_eff, ξFrame, Vp_kN, ξ_DB):
+        """
+        Vy(DB) = VP(DB)
+        Return the very first value of Vp_DB, which will be used
+        by the following iterations.
+        """
+        global Vp_DB_1
+        Vp_DB_1 = (ξn_eff - ξFrame) * (Vp_kN / ξ_DB)
+        return Vp_DB_1  # [kN]
+
+    def get_Vp_DB(ξn_eff, Vp_kN, ξFrame, ξ_DB):
+        """
+        Vy(DB) = VP(DB)
+        Return the value of Vp_DB [kN] which will be iterated various times
+        """
+        Vp_DB = (ξn_eff * (Vp_kN + Vp_DB_1) - ξFrame * Vp_kN) / ξ_DB
         return Vp_DB  # [kN]
 
     def get_Kb(self, dy_DB, Vp_DB):
         Kb = Vp_DB / dy_DB
         return Kb  # [kN/m]
 
-    def get_Vy(self, Vp_DB):
-        Vy = Vy_F_ms2 / me + Vp_DB / me
-        return Vy  # [m/s^2]
-
-    def get_Vp(self, Vp_kN, Vp_DB):
-        Vp = Vp_kN / me + Vp_DB / me
-        return Vp
-
-    def get_ξ_eff(self, ξFrame, Vp_kN, ξ_DB, Vp_DB):
-        ξ_eff = (ξFrame * Vp_kN + ξ_DB * Vp_DB) / (Vp_kN + Vp_DB)
-        return ξ_eff
-    
     def get_check(self, ξ_eff, ξn_eff):
+        """
+        Get the perecentage difference between ξ_eff and ξn_eff
+        """
         check = np.absolute(ξn_eff - ξ_eff) / ξ_eff
         return check
 
