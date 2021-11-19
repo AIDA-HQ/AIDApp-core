@@ -8,7 +8,30 @@ coord = Coords()
 
 
 class Calculations:
+    def convert_to_meters(self, coord_mm):
+        """
+        Convert the input value to m
+        """
+        coord_m_list = []
+        for element in coord_mm:
+            new_coord = element / 1000
+            coord_m_list.append(new_coord)
+        return np.array(coord_m_list) #[m]
+
+    def convert_to_ms2(self, coord_g):
+        """
+        Convert the input value to m/s^2
+        """
+        ms2_list = []
+        for element in coord_g:
+            new_coord = element * 9.81
+            ms2_list.append(new_coord)
+        return np.array(ms2_list) #[m/s^2]
+
     def get_Γ(self, storey_masses, eigenvalues):
+        """
+        return Γ
+        """
         global m_tot
         global φ
         global Mφ
@@ -29,26 +52,44 @@ class Calculations:
         return Γ
 
     def get_m_matrix(self):
+        """
+        return m_matrix
+        """
         return m_matrix
 
     def get_m_tot(self):
+        """
+        return m_tot
+        """
         return m_tot
 
     def get_φ(self):
+        """
+        return φ
+        """
         return φ
 
     def get_Mφ(self):
+        """
+        return Mφ
+        """
         return Mφ
 
     def get_φTMτ(self):
+        """
+        Return φTMτ
+        """
         return φTMτ
 
     def get_φTMφ(self):
+        """
+        return φTMφ
+        """
         return φTMφ
 
     def get_K1(self, x_p_sdof, y_p_sdof):
         """
-        Slope of first 7 values of SDOF Pushover Curve
+        Calculate the slope of first 7 values of SDOF Pushover Curve
         """
         a = np.array([x_p_sdof[2:10]])
         b = np.array([y_p_sdof[2:10]])
@@ -74,12 +115,16 @@ class Calculations:
         return me
 
     def get_de(self, adrs_spectrum, kn_eff_curve):
-        # X coords of K1eff intercepting ADRS spectrum
+        """
+        X coord of Kn_eff intercepting ADRS spectrum
+        """
         intersection_adrs_kn = adrs_spectrum.intersection(kn_eff_curve)
         de = float(intersection_adrs_kn.x)  # [m]
         return de
 
+    #
     # ADRS methods
+    #
 
     def get_Vy_F_ms2(self, Vy_F_kN):
         """
@@ -106,31 +151,73 @@ class Calculations:
         return Vp
 
     def get_ξFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
+        """
+        Calculate the first value of ξFrame
+        """
         dyF = dy  # [m]
         Vy_F_ms2 = self.get_Vy_F_ms2(Vy_kN)
         VpF_ms2 = Vp_ms2  # [m/s^2]
+        global ξFrame
         ξFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
-        return ξFrame
+        return ξFrame #[%]
 
-    def get_ξ_eff_F_DB(self, ξFrame, Vp_kN, ξ_DB, Vp_DB):
+    def get_ξ_eff_F_DB(self, Vp_kN, ξ_DB, Vp_DB):
         """
         Return the value of ξ_eff(F + DB), which,
         for the first iteration, was called "ξFrame"
         ξFrame and Vp_kN are constants, defined initally
         ξ_DB and Vp_DB change every iteration
         """
-        ξ_eff = (ξFrame * Vp_kN + ξ_DB * Vp_DB) / (Vp_kN + Vp_DB)
-        return ξ_eff
+        ξ_eff_F_DB = (ξFrame * Vp_kN + ξ_DB * Vp_DB) / (Vp_kN + Vp_DB)
+        return ξ_eff_F_DB #[%]
 
     def get_ξn_eff(self, dp, ADRS_spectrum, K1_eff_curve):
+        """
+        Calculate iterated values of ξn_eff
+        """
         de = self.get_de(ADRS_spectrum, K1_eff_curve)
         ξn_eff = 10 * (de / dp) ** 2 - 10
-        return ξn_eff
+        return ξn_eff #[%]
 
+    def get_Sa(self, y_adrs_input, ξ_eff_F_DB):
+        """
+        Calculate the value of Sa coordinates after 
+        the first iteration
+        """
+        Sa_list = []
+        for element in y_adrs_input:
+            Sa_element = element *(10/(10+ξ_eff_F_DB)) ** 0.5
+            Sa_list.append(Sa_element)
+        return np.array(Sa_list) #[g]
+    
+    # TODO Convert the Sa values to m/s^2
+
+    def get_T(self, sa_ms2, sd_meters):
+        """
+        Calculate the value of T period
+        """
+        T_list = []
+        for sd, sa in zip(sd_meters, sa_ms2):
+            T_element = 2 * np.pi * (sd/sa) ** 0.5 
+            T_list.append(T_element)
+        return np.array(T_list) #[s]
+
+    def get_Sd(self, Sa_ms2, T):
+        """
+        Calculate the value of Sd after the first iteration
+        """
+        Sd_list = []
+        for sa, T in zip(Sa_ms2, T):
+            Sd_element = sa * (T/2/np.pi) ** 2
+            Sd_list.append(Sd_element)
+        return np.array(Sd_list) #[m]
+
+    #
     # Dissipative Brace (DB) methods
+    #
 
     def get_ξ_DB(self, μ_DB, k_DB):
-        ξ_DB: 63.7 * k_DB * ((μ_DB - 1) / μ_DB)
+        ξ_DB = 63.7 * k_DB * ((μ_DB - 1) / μ_DB)
         return ξ_DB  # [%]
 
     def get_dy_DB(self, μ_DB, dp_DB):
@@ -164,7 +251,7 @@ class Calculations:
         Get the perecentage difference between ξ_eff and ξn_eff
         """
         check = np.absolute(ξn_eff - ξ_eff) / ξ_eff
-        return check
+        return check #[%]
 
 
 class Print:
@@ -181,6 +268,8 @@ class Print:
         a1,
         a2,
         area_diff,
+        adrs_spectrum,
+        k1_eff_curve
     ):
         values = Calculations()
         print("Storey masses Matrix:\n", values.get_m_matrix(), "\n")
@@ -191,7 +280,9 @@ class Print:
         print("Γ:", Γ)
         print("Vp_kn:", Vp_kN)
         Kf = float(input("Enter the value of K(F):"))
-        print("k(F): ", Kf)
+        print("k(F):", Kf)
+        print("de:", values.get_de(adrs_spectrum, k1_eff_curve))
+
         """
         print("Vy(F):", Vy_F_ms2, "m/s^2")
         print("dp(F):", dp, "m")

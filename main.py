@@ -48,7 +48,7 @@ def find_dy(dy):
     ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
 
     # Slope of first n values of SDOF Pushover Curve
-    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # kN/m
+    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
     Vy_kN = values.get_Vy_kN(K1, dy)
 
     # X coordinates of the bilinear curve
@@ -120,10 +120,10 @@ def find_dy(dy):
     area_diff = areas_kN[2]
 
     if area_diff < 0.0004:
-        sd_meters = coord.sd_meters(coord.x_adrs_input)
-        sd_ms2 = coord.sa_ms2(coord.y_adrs_input)
+        sd_meters = values.convert_to_meters(coord.x_adrs_input)
+        sa_ms2 = values.convert_to_ms2(coord.y_adrs_input)
 
-        adrs_spectrum = coord.interpolate_curve(sd_meters, sd_ms2)
+        adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
         k_eff = Vp_ms2 / dp
 
         k1_eff_curve = coord.interpolate_curve(
@@ -144,6 +144,8 @@ def find_dy(dy):
                 a1,
                 a2,
                 area_diff,
+                adrs_spectrum,
+                k1_eff_curve
             )
         )
 
@@ -157,7 +159,7 @@ def find_dy(dy):
 
         graphs.plot_adrs(
             sd_meters,
-            sd_ms2,
+            sa_ms2,
             x_bilinear,
             y_bilinear_ms2,
             sd_meters,

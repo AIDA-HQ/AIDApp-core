@@ -869,20 +869,6 @@ class Coords:
         ]
     )
 
-    def sd_meters(self, sd_mm):
-        x_adrs_meters_list = []
-        for element in sd_mm:
-            new_coord = element / 1000
-            x_adrs_meters_list.append(new_coord)
-        return np.array(x_adrs_meters_list)
-
-    def sa_ms2(self, sa_g):
-        y_adrs_meters_list = []
-        for element in sa_g:
-            new_coord = element * 9.81
-            y_adrs_meters_list.append(new_coord)
-        return np.array(y_adrs_meters_list)
-
     def y_k_eff(self, sd_m, k_eff):
         y_k_eff_list = []
         for element in sd_m:
