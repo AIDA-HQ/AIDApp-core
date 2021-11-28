@@ -7,10 +7,10 @@ from coordinates import Coords
 coord = Coords()
 
 
-class Calculations:
+class Values:
     def convert_to_meters(self, coord_mm):
         """
-        Convert the input value to m
+        Convert the input array values to m
         """
         coord_m_list = []
         for element in coord_mm:
@@ -20,7 +20,7 @@ class Calculations:
 
     def convert_to_ms2(self, coord_g):
         """
-        Convert the input value to m/s^2
+        Convert the input array values to m/s^2
         """
         ms2_list = []
         for element in coord_g:
@@ -138,8 +138,8 @@ class Calculations:
         """
         Return the value of Vy(F + DB)
         """
-        Vy = Vy_F_kN / me + Vp_DB / me
-        return Vy  # [m/s^2]
+        Vy_F_DB = Vy_F_kN / me + Vp_DB / me
+        return Vy_F_DB  # [m/s^2]
 
     def get_Vp_F_DB(self, Vp_kN, Vp_DB):
         """
@@ -148,7 +148,7 @@ class Calculations:
         Vp_DB changes every iteration
         """
         Vp_F_DB = Vp_kN / me + Vp_DB / me
-        return Vp_F_DB # [m/s2]
+        return Vp_F_DB  # [m/s2]
 
     def get_kn_eff(self, Vp_F_DB, dp):
         kn_eff = Vp_F_DB / dp
@@ -182,7 +182,7 @@ class Calculations:
 
         ξn_eff_0 = 10 * (de / dp) ** 2 - 10
         return ξn_eff_0  # [%]
-    
+
     def get_ξn_eff(self, dp, adrs_spectrum, k1_eff_curve, ξ_eff_F_DB):
         """
         Calculate iterated values of ξn_eff
@@ -267,61 +267,6 @@ class Calculations:
         """
         check = (np.absolute(ξn_eff - ξ_eff) / ξ_eff) * 100
         return check  # [%]
-
-
-class Print:
-    # TODO move this class elsewhere
-    def print_all(
-        self,
-        Vp_kN,
-        dp,
-        dy,
-        Vy_kN,
-        Vp_ms2,
-        intersection_bilinear1_psdof_coords,
-        intersection_bilinear2_psdof_coords,
-        intersection_dy_coords,
-        a1,
-        a2,
-        area_diff,
-        adrs_spectrum,
-        k1_eff_curve,
-    ):
-        values = Calculations()
-        print("Storey masses Matrix:\n", values.get_m_matrix(), "\n")
-        print("Eigenvalues Matrix:\n", values.get_φ(), "\n")
-        print("Modal pattern:\n", values.get_Mφ())
-        print("\nφTMτ:", values.get_φTMτ())
-        print("φTMφ:", values.get_φTMφ())
-        print("Γ:", Γ)
-        print("Vp_kn:", Vp_kN)
-        print("de:", values.get_de(adrs_spectrum, k1_eff_curve))
-
-        """
-        print("Vy(F):", Vy_F_ms2, "m/s^2")
-        print("dp(F):", dp, "m")
-        print("Vp(F):", VpF_ms2, "m/s^2")
-        print("de:", de, "m")
-        print("\nξn_eff:", self.get_ξn_eff(), "%")
-        """
-
-        # print("ξFrame: ", values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2), "%")
-        # print("Check:", check * 100, "%")
-        print(
-            "\nIntersection(s) between First line of bilinear and SDOF Pushover Curve:",
-            intersection_bilinear1_psdof_coords,
-        )
-        print(
-            "Intersection(s) between Second line of bilinear and SDOF Pushover Curve:",
-            intersection_bilinear2_psdof_coords,
-        )
-        print("Intersection of the two lines of the bilinear:", intersection_dy_coords)
-
-        print("dy:", dy)
-        print("A1 =", a1)
-        print("A2 =", a2)
-        print("A1-A2:", area_diff)
-        print("%:", area_diff / a1)
 
 
 class Area:

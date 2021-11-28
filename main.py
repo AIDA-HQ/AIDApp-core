@@ -1,16 +1,14 @@
 import numpy as np
-from numpy import trapz
 import matplotlib.pyplot as plt
 
 from coordinates import Coords
-from calcs import Calculations, Print, Area
+from calcs import Values, Area
 from graphs import Graphs
 
 coord = Coords()
-values = Calculations()
+values = Values()
 area = Area()
 graphs = Graphs()
-display = Print()
 
 
 def find_dy(dy):
@@ -89,8 +87,6 @@ def find_dy(dy):
         fitting_list_2_x_pushover,
     )
 
-    a1 = areas_kN[0]
-    a2 = areas_kN[1]
     area_diff = areas_kN[2]
 
     if area_diff < 0.0004:
@@ -105,23 +101,6 @@ def find_dy(dy):
             coord.y_k_eff(sd_meters_0, k_eff),
         )
 
-        display.print_all(
-            Vp_kN,
-            dp,
-            dy,
-            Vy_kN,
-            Vp_ms2,
-            intersection_bilinear1_psdof_coords,
-            intersection_bilinear2_psdof_coords,
-            intersection_dy_coords,
-            a1,
-            a2,
-            area_diff,
-            adrs_spectrum,
-            k1_eff_curve,
-        )
-        Kf = float(input("Enter the value of K(F):"))
-
         # Recursive function to calculate what's needed
         def get_calcs_recursive(
             Vp_DB,
@@ -133,17 +112,12 @@ def find_dy(dy):
                 sa_ms2 = values.convert_to_ms2(
                     values.get_Sa(coord.y_adrs_input, ξ_eff_F_DB)
                 )
-
-                #print(sa_ms2)
-
                 sd_meters = values.get_Sd(sa_ms2_0, sd_meters_0, sa_ms2)
-                #print(sd_meters)
 
                 adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
 
                 Vp_DB_prev_iteraction = Vp_DB
 
-                # TODO Calculate kn_eff
                 Vp_F_DB = values.get_Vp_F_DB(Vp_kN, Vp_DB)
                 kn_eff = values.get_kn_eff(Vp_F_DB, dp)
                 kn_eff_curve = coord.interpolate_curve(
@@ -155,16 +129,15 @@ def find_dy(dy):
                 Vp_DB = values.get_Vp_DB(
                     ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
                 )
-                print("\n")
-                print("ξ_eff_F_DB", ξ_eff_F_DB)
-                print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
-                print("ξn_eff", ξn_eff)
-                print("dp", dp)
-                print("Vp_DB:", Vp_DB)
-
                 check = values.get_check(ξ_eff_F_DB, ξn_eff)
-                print(check, "%", "\n")
-                
+                print("\n")
+                print("ξ_eff_F_DB:", ξ_eff_F_DB)
+                print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
+                print("ξn_eff:", ξn_eff)
+                print("dp:", dp)
+                print("Vp_DB:", Vp_DB)
+                print("check" + str(check) + "%")
+                print("\n")
 
                 return get_calcs_recursive(Vp_DB, check)
 
@@ -224,13 +197,13 @@ eigenvalues = []
 i = 0
 while i < number_storeys:
     i = i + 1
-    storey_masses.append(float(input("Enter the mass of storey #" + str(i) + " [ton]: ")))
-print("\n")
+    storey_masses.append(
+        float(input("Enter the mass of storey #" + str(i) + " [ton]: "))
+    )
 n = 0
 while n < number_storeys:
     n = n + 1
     eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
-print("\n")
 
 # 3rd x coordinate of bilinear curve
 global dp
@@ -240,5 +213,8 @@ global μ_DB
 μ_DB = float(input("\nEnter the value of μ(DB):"))
 global k_DB
 k_DB = float(input("\nEnter the value of k(DB):"))
+
+global Kf
+Kf = float(input("Enter the value of K(F):"))
 
 find_dy(0.0100)
