@@ -12,51 +12,55 @@ values = Values()
 area = Area()
 graphs = Graphs()
 
-global storey_masses
-global eigenvalues
-global dp
-global μ_DB
-global k_DB
-global Kf
-global Γ
-global me
-global y_p_sdof
-global x_p_sdof
-global Vp_kN
-global Vp_ms2
 
-# Store data from user input
-number_storeys = int(input("Enter the number of storeys: "))
+def main():
+    global storey_masses
+    global eigenvalues
+    global dp
+    global μ_DB
+    global k_DB
+    global Kf
+    global Γ
+    global me
+    global y_p_sdof
+    global x_p_sdof
+    global Vp_kN
+    global Vp_ms2
+    global K1
 
-storey_masses = []
-eigenvalues = []
-i = 0
-while i < number_storeys:
-    i = i + 1
-    storey_masses.append(
-        float(input("Enter the mass of storey #" + str(i) + " [ton]: "))
-    )
-n = 0
-while n < number_storeys:
-    n = n + 1
-    eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
+    # Store data from user input
+    number_storeys = int(input("Enter the number of storeys: "))
 
-# 3rd x coordinate of bilinear curve
-dp = float(input("\nEnter the value of d*p [m]:"))
+    storey_masses = []
+    eigenvalues = []
+    i = 0
+    while i < number_storeys:
+        i = i + 1
+        storey_masses.append(
+            float(input("Enter the mass of storey #" + str(i) + " [ton]: "))
+        )
+    n = 0
+    while n < number_storeys:
+        n = n + 1
+        eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
 
-μ_DB = float(input("\nEnter the value of μ(DB):"))
-k_DB = float(input("\nEnter the value of k(DB):"))
-Kf = float(input("Enter the value of K(F):"))
+    # 3rd x coordinate of bilinear curve
+    dp = float(input("\nEnter the value of d*p [m]:"))
 
-Γ = values.get_Γ(storey_masses, eigenvalues)
-me = values.get_me()  # [ton]
-y_p_sdof = coord.y_p_sdof(Γ)
-x_p_sdof = coord.x_p_sdof(Γ)
-Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
-Vp_ms2 = Vp_kN / me  # m/s^2
+    μ_DB = float(input("\nEnter the value of μ(DB):"))
+    k_DB = float(input("\nEnter the value of k(DB):"))
+    Kf = float(input("Enter the value of K(F):"))
 
-# Slope of first n values of SDOF Pushover Curve
-K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
+    Γ = values.get_Γ(storey_masses, eigenvalues)
+    me = values.get_me()  # [ton]
+    y_p_sdof = coord.y_p_sdof(Γ)
+    x_p_sdof = coord.x_p_sdof(Γ)
+    Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
+    Vp_ms2 = Vp_kN / me  # m/s^2
+
+    # Slope of first n values of SDOF Pushover Curve
+    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
+    find_dy(0.0100)
 
 
 def find_dy(dy):
@@ -225,4 +229,4 @@ def find_dy(dy):
         return find_dy(dy)
 
 
-find_dy(0.0100)
+main()
