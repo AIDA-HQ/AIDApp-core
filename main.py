@@ -10,17 +10,54 @@ values = Values()
 area = Area()
 graphs = Graphs()
 
+global storey_masses
+global eigenvalues
+global dp
+global μ_DB
+global k_DB
+global Kf
+global Γ
+global me
+global y_p_sdof
+global x_p_sdof
+global Vp_kN
+global Vp_ms2
+
+# Store data from user input
+number_storeys = int(input("Enter the number of storeys: "))
+
+storey_masses = []
+eigenvalues = []
+i = 0
+while i < number_storeys:
+    i = i + 1
+    storey_masses.append(
+        float(input("Enter the mass of storey #" + str(i) + " [ton]: "))
+    )
+n = 0
+while n < number_storeys:
+    n = n + 1
+    eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
+
+# 3rd x coordinate of bilinear curve
+dp = float(input("\nEnter the value of d*p [m]:"))
+
+μ_DB = float(input("\nEnter the value of μ(DB):"))
+k_DB = float(input("\nEnter the value of k(DB):"))
+Kf = float(input("Enter the value of K(F):"))
+
+Γ = values.get_Γ(storey_masses, eigenvalues)
+me = values.get_me()  # [ton]
+y_p_sdof = coord.y_p_sdof(Γ)
+x_p_sdof = coord.x_p_sdof(Γ)
+Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
+Vp_ms2 = Vp_kN / me  # m/s^2
+
+# Slope of first n values of SDOF Pushover Curve
+K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
+
 
 def find_dy(dy):
-    Γ = values.get_Γ(storey_masses, eigenvalues)
-    me = values.get_me()  # [ton]
-    y_p_sdof = coord.y_p_sdof(Γ)
-    x_p_sdof = coord.x_p_sdof(Γ)
-    Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
-    Vp_ms2 = Vp_kN / me  # m/s^2
-
-    # Slope of first n values of SDOF Pushover Curve
-    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
     Vy_kN = values.get_Vy_kN(K1, dy)
 
     # X coordinates of the bilinear curve
@@ -101,13 +138,27 @@ def find_dy(dy):
             coord.y_k_eff(sd_meters_0, k_eff),
         )
 
-        # Recursive function to calculate what's needed
-        def get_calcs_recursive(
-            Vp_DB,
-            check,
-        ):
+        # Sui generis first iteraction
+        ξFrame = values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
 
-            if check > 5:
+        ξn_eff = values.get_ξn_eff_0(dp, adrs_spectrum, k1_eff_curve)
+        ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
+        Vp_DB_prev_iteraction = values.get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame)
+
+        check = values.get_check(ξFrame, ξn_eff)
+        Vp_DB = Vp_DB_prev_iteraction
+        print("\n")
+        print("ξn_eff:", ξn_eff)
+        print("ξFrame:", ξFrame)
+        print("Vp_DB:", Vp_DB)
+        print("check: " + str(check) + "%")
+        print("i:", 1)
+        print("\n")
+
+        # Recursive function to calculate what's needed
+        def get_calcs_recursive(Vp_DB, check, i):
+            if check > 0.6:
+                i = i + 1
                 ξ_eff_F_DB = values.get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame)
                 sa_ms2 = values.convert_to_ms2(
                     values.get_Sa(coord.y_adrs_input, ξ_eff_F_DB)
@@ -130,36 +181,22 @@ def find_dy(dy):
                     ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
                 )
                 check = values.get_check(ξ_eff_F_DB, ξn_eff)
-                print("\n")
+                print("i:", i)
                 print("ξ_eff_F_DB:", ξ_eff_F_DB)
                 print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
-                print("ξn_eff:", ξn_eff)
-                print("dp:", dp)
+                print("ξ" + str(i) + "_eff: " + str(ξn_eff))
                 print("Vp_DB:", Vp_DB)
-                print("check" + str(check) + "%")
+                print("check: " + str(check) + "%")
                 print("\n")
 
-                return get_calcs_recursive(Vp_DB, check)
+                return get_calcs_recursive(Vp_DB, check, i)
 
-            else:
+            if check <= 0.6:
                 print("DONE!")
 
-        # Sui generis first iteraction
-        ξFrame = values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
+        get_calcs_recursive(Vp_DB, check, 1)
 
-        ξn_eff = values.get_ξn_eff_0(dp, adrs_spectrum, k1_eff_curve)
-        ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
-        Vp_DB_prev_iteraction = values.get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame)
-
-        check = values.get_check(ξFrame, ξn_eff)
-        Vp_DB = Vp_DB_prev_iteraction
-        print("ξn_eff:", ξn_eff)
-        print("ξFrame:", ξFrame)
-        print("check:", check, "%")
-        print("Vp_DB:", Vp_DB)
-        print("\n")
-        get_calcs_recursive(Vp_DB, check)
-
+        # TODO: Handle the graphs better
         graphs.plot_pushover_bilinear(
             x_p_sdof,
             y_p_sdof,
@@ -177,7 +214,7 @@ def find_dy(dy):
             coord.y_k_eff(sd_meters_0, k_eff),
             values.get_de(adrs_spectrum, k1_eff_curve),
         )
-        plt.show()
+        # plt.show()
 
         return dy
     else:
@@ -185,36 +222,5 @@ def find_dy(dy):
 
         return find_dy(dy)
 
-
-# Store data from user input
-number_storeys = int(input("Enter the number of storeys: "))
-
-global storey_masses
-storey_masses = []
-global eigenvalues
-eigenvalues = []
-
-i = 0
-while i < number_storeys:
-    i = i + 1
-    storey_masses.append(
-        float(input("Enter the mass of storey #" + str(i) + " [ton]: "))
-    )
-n = 0
-while n < number_storeys:
-    n = n + 1
-    eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
-
-# 3rd x coordinate of bilinear curve
-global dp
-dp = float(input("\nEnter the value of d*p [m]:"))
-
-global μ_DB
-μ_DB = float(input("\nEnter the value of μ(DB):"))
-global k_DB
-k_DB = float(input("\nEnter the value of k(DB):"))
-
-global Kf
-Kf = float(input("Enter the value of K(F):"))
 
 find_dy(0.0100)
