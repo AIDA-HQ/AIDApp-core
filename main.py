@@ -45,8 +45,6 @@ def find_dy(dy):
     Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
     Vp_ms2 = Vp_kN / me  # m/s^2
 
-    ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
-
     # Slope of first n values of SDOF Pushover Curve
     K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
     Vy_kN = values.get_Vy_kN(K1, dy)
@@ -120,34 +118,97 @@ def find_dy(dy):
     area_diff = areas_kN[2]
 
     if area_diff < 0.0004:
-        sd_meters = values.convert_to_meters(coord.x_adrs_input)
-        sa_ms2 = values.convert_to_ms2(coord.y_adrs_input)
+        sd_meters_0 = values.convert_to_meters(coord.x_adrs_input)
+        sa_ms2_0 = values.convert_to_ms2(coord.y_adrs_input)
 
-        adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
+        adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
         k_eff = Vp_ms2 / dp
 
         k1_eff_curve = coord.interpolate_curve(
-            sd_meters,
-            coord.y_k_eff(sd_meters, k_eff),
+            sd_meters_0,
+            coord.y_k_eff(sd_meters_0, k_eff),
         )
 
-        print(
-            display.print_all(
-                Vp_kN,
-                dp,
-                dy,
-                Vy_kN,
-                Vp_ms2,
-                intersection_bilinear1_psdof_coords,
-                intersection_bilinear2_psdof_coords,
-                intersection_dy_coords,
-                a1,
-                a2,
-                area_diff,
-                adrs_spectrum,
-                k1_eff_curve
-            )
+        display.print_all(
+            Vp_kN,
+            dp,
+            dy,
+            Vy_kN,
+            Vp_ms2,
+            intersection_bilinear1_psdof_coords,
+            intersection_bilinear2_psdof_coords,
+            intersection_dy_coords,
+            a1,
+            a2,
+            area_diff,
+            adrs_spectrum,
+            k1_eff_curve,
         )
+        Kf = float(input("Enter the value of K(F):"))
+
+        # Recursive function to calculate what's needed
+        def get_calcs_recursive(
+            Vp_DB,
+            check,
+        ):
+
+            if check > 5:
+                ξ_eff_F_DB = values.get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame)
+                sa_ms2 = values.convert_to_ms2(
+                    values.get_Sa(coord.y_adrs_input, ξ_eff_F_DB)
+                )
+
+                #print(sa_ms2)
+
+                sd_meters = values.get_Sd(sa_ms2_0, sd_meters_0, sa_ms2)
+                #print(sd_meters)
+
+                adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
+
+                Vp_DB_prev_iteraction = Vp_DB
+
+                # TODO Calculate kn_eff
+                Vp_F_DB = values.get_Vp_F_DB(Vp_kN, Vp_DB)
+                kn_eff = values.get_kn_eff(Vp_F_DB, dp)
+                kn_eff_curve = coord.interpolate_curve(
+                    sd_meters,
+                    coord.y_k_eff(sd_meters, kn_eff),
+                )
+                ξn_eff = values.get_ξn_eff(dp, adrs_spectrum, kn_eff_curve, ξ_eff_F_DB)
+
+                Vp_DB = values.get_Vp_DB(
+                    ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
+                )
+                print("ξ_eff_F_DB", ξ_eff_F_DB)
+                print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
+                print("ξn_eff", ξn_eff)
+                print("dp", dp)
+                print("Vp_DB:", Vp_DB)
+
+                check = values.get_check(ξ_eff_F_DB, ξn_eff)
+                print(check, "%", "\n")
+                
+
+                return get_calcs_recursive(Vp_DB, check)
+
+            else:
+                print("DONE!")
+
+        # Sui generis first iteraction
+        ξFrame = values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
+
+        ξn_eff = values.get_ξn_eff_0(dp, adrs_spectrum, k1_eff_curve)
+        ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
+        Vp_DB_prev_iteraction = values.get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame)
+
+        check = values.get_check(ξFrame, ξn_eff)
+        Vp_DB = Vp_DB_prev_iteraction
+        print("ξn_eff:", ξn_eff)
+        print("ξFrame:", ξFrame)
+        print("check:", check, "%")
+        print("Vp_DB:", Vp_DB)
+        print("\n")
+        get_calcs_recursive(Vp_DB, check)
 
         graphs.plot_pushover_bilinear(
             x_p_sdof,
@@ -158,12 +219,12 @@ def find_dy(dy):
         )
 
         graphs.plot_adrs(
-            sd_meters,
-            sa_ms2,
+            sd_meters_0,
+            sa_ms2_0,
             x_bilinear,
             y_bilinear_ms2,
-            sd_meters,
-            coord.y_k_eff(sd_meters, k_eff),
+            sd_meters_0,
+            coord.y_k_eff(sd_meters_0, k_eff),
             values.get_de(adrs_spectrum, k1_eff_curve),
         )
         plt.show()
