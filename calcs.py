@@ -188,7 +188,6 @@ class Calculations:
         Calculate iterated values of ξn_eff
         """
         de = self.get_de(adrs_spectrum, k1_eff_curve)
-        print("de", de)
         ξn_eff = (10 + ξ_eff_F_DB) * (de / dp) ** 2 - 10
         return ξn_eff  # [%]
 

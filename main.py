@@ -14,30 +14,6 @@ display = Print()
 
 
 def find_dy(dy):
-    # Store data from user input
-    number_storeys = int(input("Enter the number of storeys: "))
-
-    storey_masses = []
-    eigenvalues = []
-
-    i = 0
-    while i < number_storeys:
-        i = i + 1
-        storey_masses.append(float(input("Enter the mass of storey #", i, ": ")))
-    print("\n")
-    n = 0
-    while n < number_storeys:
-        n = n + 1
-        eigenvalues.append(float(input("Enter the eigenvalues #", n, ": ")))
-    print("\n")
-
-    # 3rd x coordinate of bilinear curve
-    dp = float(input("\nEnter the value of d*p [m]:"))
-
-    # μ(DB)
-    μ_DB = float(input("\nEnter the value of μ(DB):"))
-    k_DB = float(input("\nEnter the value of k(DB):"))
-
     Γ = values.get_Γ(storey_masses, eigenvalues)
     me = values.get_me()  # [ton]
     y_p_sdof = coord.y_p_sdof(Γ)
@@ -179,6 +155,7 @@ def find_dy(dy):
                 Vp_DB = values.get_Vp_DB(
                     ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
                 )
+                print("\n")
                 print("ξ_eff_F_DB", ξ_eff_F_DB)
                 print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
                 print("ξn_eff", ξn_eff)
@@ -235,5 +212,33 @@ def find_dy(dy):
 
         return find_dy(dy)
 
+
+# Store data from user input
+number_storeys = int(input("Enter the number of storeys: "))
+
+global storey_masses
+storey_masses = []
+global eigenvalues
+eigenvalues = []
+
+i = 0
+while i < number_storeys:
+    i = i + 1
+    storey_masses.append(float(input("Enter the mass of storey #" + str(i) + " [ton]: ")))
+print("\n")
+n = 0
+while n < number_storeys:
+    n = n + 1
+    eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
+print("\n")
+
+# 3rd x coordinate of bilinear curve
+global dp
+dp = float(input("\nEnter the value of d*p [m]:"))
+
+global μ_DB
+μ_DB = float(input("\nEnter the value of μ(DB):"))
+global k_DB
+k_DB = float(input("\nEnter the value of k(DB):"))
 
 find_dy(0.0100)
