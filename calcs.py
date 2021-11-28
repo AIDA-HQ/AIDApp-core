@@ -267,6 +267,13 @@ class Values:
         """
         check = (np.absolute(ξn_eff - ξ_eff) / ξ_eff) * 100
         return check  # [%]
+    
+    def get_check_Vp_DB(self, Vp_DB, Vp_DB_prev_iteraction):
+        """
+        Get the perecentage difference between Vp_DB and Vp_DB_prev_iteraction
+        """
+        check_Vp_DB = (np.absolute(Vp_DB - Vp_DB_prev_iteraction) / Vp_DB) * 100
+        return check_Vp_DB
 
 
 class Area:

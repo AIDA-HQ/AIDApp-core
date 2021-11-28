@@ -154,7 +154,7 @@ def find_dy(dy):
         check = values.get_check(ξFrame, ξn_eff)
         Vp_DB = Vp_DB_prev_iteraction
         print("\n")
-        print("Iteraction #:", 1)
+        print("Iteraction #", 1)
         print("ξn_eff:", ξn_eff)
         print("ξFrame:", ξFrame)
         print("Vp_DB:", Vp_DB)
@@ -187,12 +187,15 @@ def find_dy(dy):
                     ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
                 )
                 check = values.get_check(ξ_eff_F_DB, ξn_eff)
-                print("Iteraction #:", i)
+                check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteraction)
+
+                print("Iteraction #", i)
                 print("ξ_eff_F_DB:", ξ_eff_F_DB)
                 print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
                 print("ξ" + str(i) + "_eff: " + str(ξn_eff))
                 print("Vp_DB:", Vp_DB)
                 print("check: " + str(check) + "%")
+                print("check_Vp_DB: " + str(check_Vp_DB) + "%")
                 print("\n")
 
                 return get_calcs_recursive(Vp_DB, check, i)
