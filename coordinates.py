@@ -45,15 +45,17 @@ class Coords:
         return intersection_coords
 
     def find_nearest_coordinate_index(self, curve_coordinates, coord):
+        """
+        Find the index of the minimum/lowest element from the array.
+        """
         difference_array_x = np.absolute(curve_coordinates - coord)
-        # find the index of minimum element from the array
         index = difference_array_x.argmin()
         return index
 
     def find_nearest_coordinate(self, curve_coordinates, coord):
         """
         Enter array of X or Y coordinates of a curve and X or Y coordinate of
-        a point_a to find the nearest X or Y point_a to in the curve array
+        a point_a to find the nearest X or Y point_a to in the curve array.
         """
         index = self.find_nearest_coordinate_index(curve_coordinates, coord)
         return curve_coordinates[index]
@@ -61,16 +63,16 @@ class Coords:
     def bilinear_m_q(self, x_1, x_2, y_1, y_2):
         """
         Enter coordinates of two points.
-        Returns a tuple with m and q to generate
-        one straight line which composes the bilinear line
+        Returns a tuple with m and q to generate one
+        straight line which composes the bilinear line.
         """
         m, q = np.polyfit(x=[x_1, x_2], y=[y_1, y_2], deg=1)
         return m, q
 
     def generate_line(self, x_p_sdof, x_1_array, x_2_array, y_1_array, y_2_array):
         """
-        Generate part of the bilinear curve: 1st or 2nd line that compose it
-        Return a tuple with X and Y coordinates
+        Generate part of the bilinear curve: 1st or 2nd line that compose it.
+        Returns a tuple with X and Y coordinates.
         """
         m = self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[0]
         q = self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[1]

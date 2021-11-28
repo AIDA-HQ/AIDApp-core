@@ -113,10 +113,13 @@ def find_dy(dy):
         intersection_bilinear1_psdof_coords,
         intersection_bilinear2_psdof_coords,
     )
-    fitting_list_1_x_pushover = fitting_lists[0]
-    fitting_list_1_y_pushover = fitting_lists[1]
-    fitting_list_2_x_pushover = fitting_lists[2]
-    fitting_list_2_y_pushover = fitting_lists[3]
+
+    (
+        fitting_list_1_x_pushover,
+        fitting_list_1_y_pushover,
+        fitting_list_2_x_pushover,
+        fitting_list_2_y_pushover,
+    ) = fitting_lists
 
     # Compute the area using the composite trapezoidal rule.
     areas_kN = area.calculate_areas(
@@ -130,7 +133,7 @@ def find_dy(dy):
         fitting_list_2_x_pushover,
     )
 
-    area_diff = areas_kN[2]
+    a1, a2, area_diff = areas_kN
 
     if area_diff < 0.0004:
         sd_meters_0 = values.convert_to_meters(input_coord.x_adrs_input)
