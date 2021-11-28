@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 from coordinates import Coords
 from calcs import Values, Area
 from graphs import Graphs
+from input_coordinates import Input
 
+input_coord = Input()
 coord = Coords()
 values = Values()
 area = Area()
@@ -127,8 +129,8 @@ def find_dy(dy):
     area_diff = areas_kN[2]
 
     if area_diff < 0.0004:
-        sd_meters_0 = values.convert_to_meters(coord.x_adrs_input)
-        sa_ms2_0 = values.convert_to_ms2(coord.y_adrs_input)
+        sd_meters_0 = values.convert_to_meters(input_coord.x_adrs_input)
+        sa_ms2_0 = values.convert_to_ms2(input_coord.y_adrs_input)
 
         adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
         k_eff = Vp_ms2 / dp
@@ -148,20 +150,20 @@ def find_dy(dy):
         check = values.get_check(ξFrame, ξn_eff)
         Vp_DB = Vp_DB_prev_iteraction
         print("\n")
+        print("Iteraction #:", 1)
         print("ξn_eff:", ξn_eff)
         print("ξFrame:", ξFrame)
         print("Vp_DB:", Vp_DB)
         print("check: " + str(check) + "%")
-        print("i:", 1)
         print("\n")
 
         # Recursive function to calculate what's needed
         def get_calcs_recursive(Vp_DB, check, i):
-            if check > 0.6:
+            if check > 0.5:
                 i = i + 1
                 ξ_eff_F_DB = values.get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame)
                 sa_ms2 = values.convert_to_ms2(
-                    values.get_Sa(coord.y_adrs_input, ξ_eff_F_DB)
+                    values.get_Sa(input_coord.y_adrs_input, ξ_eff_F_DB)
                 )
                 sd_meters = values.get_Sd(sa_ms2_0, sd_meters_0, sa_ms2)
 
@@ -181,7 +183,7 @@ def find_dy(dy):
                     ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
                 )
                 check = values.get_check(ξ_eff_F_DB, ξn_eff)
-                print("i:", i)
+                print("Iteraction #:", i)
                 print("ξ_eff_F_DB:", ξ_eff_F_DB)
                 print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
                 print("ξ" + str(i) + "_eff: " + str(ξn_eff))
@@ -191,7 +193,7 @@ def find_dy(dy):
 
                 return get_calcs_recursive(Vp_DB, check, i)
 
-            if check <= 0.6:
+            if check <= 0.5:
                 print("DONE!")
 
         get_calcs_recursive(Vp_DB, check, 1)
