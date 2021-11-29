@@ -189,7 +189,7 @@ def find_dy(dy):
                     ξn_eff,
                     Vp_DB,
                     check,
-                    check_Vp_DB
+                    check_Vp_DB,
                 )
 
                 return get_calcs_recursive(
@@ -199,20 +199,9 @@ def find_dy(dy):
             if check <= 0.5:
                 kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                 y_bilinear_ms2 = np.array([0, Vy_F_DB, Vp_F_DB])
-
-                plt.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
-                plt.plot(
-                    x_bilinear, y_bilinear_ms2, color="#FF0000", label="Bare Frame"
+                graphs.plot_final(
+                    x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i
                 )
-                plt.plot(
-                    sd_meters,
-                    kn_eff_list,
-                    color="#00B050",
-                    label=("K" + str(i) + "eff"),
-                )
-                plt.xlabel("Sd [m]", fontsize="large")
-                plt.ylabel("Sa [m/s^2]", fontsize="large")
-                plt.legend()
                 plt.show()
 
                 print("DONE!")

@@ -81,11 +81,19 @@ class Graphs:
         plt.plot(*zip(*tp), "-o", color="red", label="Bilinear")
         plt.legend()
 
-    def plot_adrs(
-        self, x_adrs, y_adrs, x_bilinear, y_bilinear_ms2, sd_meters, y_kn_eff, de
-    ):
-        plt.plot(x_adrs, y_adrs, color="#002260", label="ADRS Spectrum")
-        plt.plot(x_bilinear, y_bilinear_ms2, "-o", color="red", label="Bare Frame")
-        plt.plot(sd_meters, y_kn_eff, color="green", label="K eff")
+    def plot_final(self, x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i):
+        """
+        Function to plot the final graph, meant to be displayed when 
+        all the curves are calculated in the final iteration.
+        """
+        plt.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
+        plt.plot(x_bilinear, y_bilinear_ms2, color="#FF0000", label="Bare Frame")
+        plt.plot(
+            sd_meters,
+            kn_eff_list,
+            color="#00B050",
+            label=("K" + str(i) + "eff"),
+        )
+        plt.xlabel("Sd [m]", fontsize="large")
         plt.ylabel("Sa [m/s^2]", fontsize="large")
         plt.legend()
