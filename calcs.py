@@ -193,7 +193,7 @@ class Values:
 
     def get_Sa(self, y_adrs_input, ξ_eff_F_DB):
         """
-        Calculate the value of Sa (ξeff) 
+        Calculate the value of Sa (ξeff)
         coordinates after the first iteration.
         """
         Sa_list = []

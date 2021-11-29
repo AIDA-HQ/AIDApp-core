@@ -8,7 +8,7 @@ input_coord = Input()
 class Coords:
     def y_kn_eff(self, sd_m, kn_eff):
         """
-        Calculate the y coordinates of kn_eff curve (line), 
+        Calculate the y coordinates of kn_eff curve (line),
         by taking the sd_m value list and kn_eff as input values.
         """
         y_kn_eff_list = []

@@ -166,7 +166,9 @@ def find_dy(dy):
         print("\n")
 
         # Recursive function to calculate what's needed
-        def get_calcs_recursive(Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff):
+        def get_calcs_recursive(
+            Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff
+        ):
             if check > 0.5:
                 i = i + 1
                 ξ_eff_F_DB = values.get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame)
@@ -212,8 +214,15 @@ def find_dy(dy):
                 y_bilinear_ms2 = np.array([0, Vy_F_DB, Vp_F_DB])
 
                 plt.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
-                plt.plot(x_bilinear, y_bilinear_ms2, color="red", label="Bare Frame")
-                plt.plot(sd_meters, kn_eff_list, color="green", label=("K"+str(i)+"eff"))
+                plt.plot(
+                    x_bilinear, y_bilinear_ms2, color="#FF0000", label="Bare Frame"
+                )
+                plt.plot(
+                    sd_meters,
+                    kn_eff_list,
+                    color="#00B050",
+                    label=("K" + str(i) + "eff"),
+                )
                 plt.xlabel("Sd [m]", fontsize="large")
                 plt.ylabel("Sa [m/s^2]", fontsize="large")
                 plt.legend()
