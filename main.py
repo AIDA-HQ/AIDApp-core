@@ -74,11 +74,6 @@ def find_dy(dy):
     # Y coords of the bilinear curve in [kN]
     y_bilinear_kN = np.array([0, Vy_kN, Vp_kN])
 
-    # Y coords of the bilinear curve in [m/s^2]
-    y_bilinear_ms2 = np.array(
-        [y_bilinear_kN[0] / me, y_bilinear_kN[1] / me, y_bilinear_kN[2] / me]
-    )
-
     # Graphs
     p_sdof = coord.interpolate_curve(x_p_sdof, y_p_sdof)
 
