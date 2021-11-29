@@ -138,13 +138,14 @@ def find_dy(dy):
     if area_diff < 0.0004:
         sd_meters_0 = values.convert_to_meters(input_coord.x_adrs_input)
         sa_ms2_0 = values.convert_to_ms2(input_coord.y_adrs_input)
+        plt.plot(sd_meters_0, sa_ms2_0, color="#FFC000", label="Sa(5%)")
 
         adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
         k_eff = Vp_ms2 / dp
 
         k1_eff_curve = coord.interpolate_curve(
             sd_meters_0,
-            coord.y_k_eff(sd_meters_0, k_eff),
+            coord.y_kn_eff(sd_meters_0, k_eff),
         )
 
         # Sui generis first iteraction
@@ -165,7 +166,7 @@ def find_dy(dy):
         print("\n")
 
         # Recursive function to calculate what's needed
-        def get_calcs_recursive(Vp_DB, check, i):
+        def get_calcs_recursive(Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff):
             if check > 0.5:
                 i = i + 1
                 ξ_eff_F_DB = values.get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame)
@@ -178,17 +179,18 @@ def find_dy(dy):
 
                 Vp_DB_prev_iteraction = Vp_DB
 
+                Vy_F_DB = values.get_Vy_F_DB(Vp_DB)
                 Vp_F_DB = values.get_Vp_F_DB(Vp_kN, Vp_DB)
                 kn_eff = values.get_kn_eff(Vp_F_DB, dp)
                 kn_eff_curve = coord.interpolate_curve(
                     sd_meters,
-                    coord.y_k_eff(sd_meters, kn_eff),
+                    coord.y_kn_eff(sd_meters, kn_eff),
                 )
                 ξn_eff = values.get_ξn_eff(dp, adrs_spectrum, kn_eff_curve, ξ_eff_F_DB)
-
                 Vp_DB = values.get_Vp_DB(
                     ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
                 )
+
                 check = values.get_check(ξ_eff_F_DB, ξn_eff)
                 check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteraction)
 
@@ -201,32 +203,25 @@ def find_dy(dy):
                 print("check_Vp_DB: " + str(check_Vp_DB) + "%")
                 print("\n")
 
-                return get_calcs_recursive(Vp_DB, check, i)
+                return get_calcs_recursive(
+                    Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff
+                )
 
             if check <= 0.5:
+                kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
+                y_bilinear_ms2 = np.array([0, Vy_F_DB, Vp_F_DB])
+
+                plt.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
+                plt.plot(x_bilinear, y_bilinear_ms2, color="red", label="Bare Frame")
+                plt.plot(sd_meters, kn_eff_list, color="green", label=("K"+str(i)+"eff"))
+                plt.xlabel("Sd [m]", fontsize="large")
+                plt.ylabel("Sa [m/s^2]", fontsize="large")
+                plt.legend()
+                plt.show()
+
                 print("DONE!")
 
-        get_calcs_recursive(Vp_DB, check, 1)
-
-        # TODO: Handle the graphs better
-        graphs.plot_pushover_bilinear(
-            x_p_sdof,
-            y_p_sdof,
-            intersection_bilinear1_psdof_coords,
-            intersection_bilinear2_psdof_coords,
-            intersection_dy_coords,
-        )
-
-        graphs.plot_adrs(
-            sd_meters_0,
-            sa_ms2_0,
-            x_bilinear,
-            y_bilinear_ms2,
-            sd_meters_0,
-            coord.y_k_eff(sd_meters_0, k_eff),
-            values.get_de(adrs_spectrum, k1_eff_curve),
-        )
-        # plt.show()
+        get_calcs_recursive(Vp_DB, check, 1, None, None, None, None, None)
 
         return dy
     else:

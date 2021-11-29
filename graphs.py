@@ -82,10 +82,10 @@ class Graphs:
         plt.legend()
 
     def plot_adrs(
-        self, x_adrs, y_adrs, x_bilinear, y_bilinear_ms2, sd_meters, y_k_eff, de
+        self, x_adrs, y_adrs, x_bilinear, y_bilinear_ms2, sd_meters, y_kn_eff, de
     ):
         plt.plot(x_adrs, y_adrs, color="#002260", label="ADRS Spectrum")
         plt.plot(x_bilinear, y_bilinear_ms2, "-o", color="red", label="Bare Frame")
-        plt.plot(sd_meters, y_k_eff, color="green", label="K eff")
+        plt.plot(sd_meters, y_kn_eff, color="green", label="K eff")
         plt.ylabel("Sa [m/s^2]", fontsize="large")
         plt.legend()

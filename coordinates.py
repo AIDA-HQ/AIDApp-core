@@ -2,28 +2,32 @@ import numpy as np
 from shapely.geometry.linestring import LineString
 from input_coordinates import Input
 
-input = Input()
+input_coord = Input()
 
 
 class Coords:
-    def y_k_eff(self, sd_m, k_eff):
-        y_k_eff_list = []
+    def y_kn_eff(self, sd_m, kn_eff):
+        """
+        Calculate the y coordinates of kn_eff curve (line), 
+        by taking the sd_m value list and kn_eff as input values.
+        """
+        y_kn_eff_list = []
         for element in sd_m:
-            new_coord = element * k_eff
-            y_k_eff_list.append(new_coord)
-        return np.array(y_k_eff_list)
+            new_coord = element * kn_eff
+            y_kn_eff_list.append(new_coord)
+        return np.array(y_kn_eff_list)
 
     # Generate SDOF pushover curve
     def x_p_sdof(self, Γ):
         x_p_sdof_list = []
-        for element in input.x_p_mdof:
+        for element in input_coord.x_p_mdof:
             new_coord = element / Γ
             x_p_sdof_list.append(new_coord)
         return np.array(x_p_sdof_list)
 
     def y_p_sdof(self, Γ):
         y_p_sdof_list = []
-        for element in input.y_p_mdof:
+        for element in input_coord.y_p_mdof:
             new_coord = element / Γ
             y_p_sdof_list.append(new_coord)
         return np.array(y_p_sdof_list)
