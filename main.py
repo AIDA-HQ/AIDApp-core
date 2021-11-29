@@ -1,16 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from coordinates import Coords
 from calcs import Values, Area
+from coordinates import Coords
+from display import Print
 from graphs import Graphs
 from input_coordinates import Input
 
-input_coord = Input()
-coord = Coords()
-values = Values()
 area = Area()
+coord = Coords()
 graphs = Graphs()
+input_coord = Input()
+display = Print()
+values = Values()
 
 
 def main():
@@ -85,7 +87,6 @@ def find_dy(dy):
     bilinear_line_kN_1 = coord.bilinear_line(
         x_p_sdof, x_bilinear[0], x_bilinear[1], y_bilinear_kN[0], y_bilinear_kN[1]
     )
-
     # Intersections of bilinear #1
     intersection_bilinear1_psdof_coords = coord.find_intersections(
         p_sdof, bilinear_line_kN_1
@@ -99,11 +100,6 @@ def find_dy(dy):
     # Intersections of bilinear #2
     intersection_bilinear2_psdof_coords = coord.find_intersections(
         p_sdof, bilinear_line_kN_2
-    )
-
-    # Intersection of the two straight lines (dy)
-    intersection_dy_coords = coord.find_intersections(
-        bilinear_line_kN_1, bilinear_line_kN_2
     )
 
     # Calculate A1 and A2
@@ -157,13 +153,7 @@ def find_dy(dy):
 
         check = values.get_check(ξFrame, ξn_eff)
         Vp_DB = Vp_DB_prev_iteraction
-        print("\n")
-        print("Iteraction #", 1)
-        print("ξn_eff:", ξn_eff)
-        print("ξFrame:", ξFrame)
-        print("Vp_DB:", Vp_DB)
-        print("check: " + str(check) + "%")
-        print("\n")
+        display.print_first_iteration(ξFrame, ξn_eff, Vp_DB, check)
 
         # Recursive function to calculate what's needed
         def get_calcs_recursive(
@@ -195,15 +185,17 @@ def find_dy(dy):
 
                 check = values.get_check(ξ_eff_F_DB, ξn_eff)
                 check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteraction)
-
-                print("Iteraction #", i)
-                print("ξ_eff_F_DB:", ξ_eff_F_DB)
-                print("Vp_DB_prev_iteraction:", Vp_DB_prev_iteraction)
-                print("ξ" + str(i) + "_eff: " + str(ξn_eff))
-                print("Vp_DB:", Vp_DB)
-                print("check: " + str(check) + "%")
-                print("check_Vp_DB: " + str(check_Vp_DB) + "%")
-                print("\n")
+                display.print_brief(
+                    i,
+                    Vy_F_DB,
+                    Vp_F_DB,
+                    ξ_eff_F_DB,
+                    Vp_DB_prev_iteraction,
+                    ξn_eff,
+                    Vp_DB,
+                    check,
+                    check_Vp_DB
+                )
 
                 return get_calcs_recursive(
                     Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff

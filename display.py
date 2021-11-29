@@ -4,49 +4,40 @@ values = Values()
 
 
 class Print:
-    def print_all(
+    def print_brief(
         self,
-        Vp_kN,
-        dp,
-        dy,
-        Vy_kN,
-        Vp_ms2,
-        intersection_bilinear1_psdof_coords,
-        intersection_bilinear2_psdof_coords,
-        intersection_dy_coords,
-        a1,
-        a2,
-        area_diff,
-        adrs_spectrum,
-        k1_eff_curve,
+        i,
+        Vy_F_DB,
+        Vp_F_DB,
+        ξ_eff_F_DB,
+        Vp_DB_prev_iteraction,
+        ξn_eff,
+        Vp_DB,
+        check,
+        check_Vp_DB,
     ):
-        print("Storey masses Matrix:\n", values.get_m_matrix(), "\n")
-        print("Eigenvalues Matrix:\n", values.get_φ(), "\n")
-        print("Modal pattern:\n", values.get_Mφ())
-        print("\nφTMτ:", values.get_φTMτ())
-        print("φTMφ:", values.get_φTMφ())
-        # TODO print("Γ:", Γ)
-        print("Vp_kn:", Vp_kN)
-        print("de:", values.get_de(adrs_spectrum, k1_eff_curve))
+        """
+        Print some brief information about the current iteration.
+        """
+        print("Iteraction #", i)
+        print("Vy_F_DB: " + str(Vy_F_DB) + "m/s^2")
+        print("Vp_F_DB: " + str(Vp_F_DB) + "m/s^2")
+        print("ξ_eff_F_DB: " + str(ξ_eff_F_DB) + "%")
+        print("Vp_DB_prev_iteraction: ", Vp_DB_prev_iteraction)
+        print("ξ" + str(i) + "_eff: " + str(ξn_eff))
+        print("Vp_DB:", Vp_DB)
+        print("check: " + str(check) + "%")
+        print("check_Vp_DB: " + str(check_Vp_DB) + "%")
+        print("\n")
 
-        print("Vy(F):", Vy_F_ms2, "m/s^2")
-        print("dp(F):", dp, "m")
-        print("Vp(F):", VpF_ms2, "m/s^2")
-        print("de:", de, "m")
-        print("\nξn_eff:", self.get_ξn_eff(), "%")
-
-        print(
-            "\nIntersection(s) between First line of bilinear and SDOF Pushover Curve:",
-            intersection_bilinear1_psdof_coords,
-        )
-        print(
-            "Intersection(s) between Second line of bilinear and SDOF Pushover Curve:",
-            intersection_bilinear2_psdof_coords,
-        )
-        print("Intersection of the two lines of the bilinear:", intersection_dy_coords)
-
-        print("dy:", dy)
-        print("A1 =", a1)
-        print("A2 =", a2)
-        print("A1-A2:", area_diff)
-        print("%:", area_diff / a1)
+    def print_first_iteration(self, ξFrame, ξn_eff, Vp_DB, check):
+        """
+        Print information about the first iteration.
+        """
+        print("\n")
+        print("Iteraction #", 1)
+        print("ξn_eff:", ξn_eff)
+        print("ξFrame:", ξFrame)
+        print("Vp_DB:", Vp_DB)
+        print("check: " + str(check) + "%")
+        print("\n")
