@@ -5,6 +5,7 @@ from calcs import Values, Area
 from coordinates import Coords
 from display import Print
 from graphs import Graphs
+from user_input import UserInput
 from input_coordinates import Input
 
 area = Area()
@@ -12,6 +13,7 @@ coord = Coords()
 graphs = Graphs()
 input_coord = Input()
 display = Print()
+user_input = UserInput()
 values = Values()
 
 
@@ -31,27 +33,7 @@ def main():
     global K1
 
     # Store data from user input
-    number_storeys = int(input("Enter the number of storeys: "))
-
-    storey_masses = []
-    eigenvalues = []
-    i = 0
-    while i < number_storeys:
-        i = i + 1
-        storey_masses.append(
-            float(input("Enter the mass of storey #" + str(i) + " [ton]: "))
-        )
-    n = 0
-    while n < number_storeys:
-        n = n + 1
-        eigenvalues.append(float(input("Enter the eigenvalues #" + str(n) + ": ")))
-
-    # 3rd x coordinate of bilinear curve
-    dp = float(input("\nEnter the value of d*p [m]:"))
-
-    μ_DB = float(input("\nEnter the value of μ(DB):"))
-    k_DB = float(input("\nEnter the value of k(DB):"))
-    Kf = float(input("Enter the value of K(F):"))
+    storey_masses, eigenvalues, dp, μ_DB, k_DB, Kf = user_input.input_values()
 
     Γ = values.get_Γ(storey_masses, eigenvalues)
     me = values.get_me()  # [ton]
