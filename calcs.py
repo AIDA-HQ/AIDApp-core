@@ -167,7 +167,7 @@ class Values:
     def get_ξ_eff_F_DB(self, Vp_kN, ξ_DB, Vp_DB, ξFrame):
         """
         Return the value of ξ_eff(F + DB), which,
-        for the first iteration, was called "ξFrame"
+        for the iteration 0, was called "ξFrame"
         ξFrame and Vp_kN are constants, defined initally.
         ξ_DB and Vp_DB change every iteration.
         """
@@ -194,7 +194,7 @@ class Values:
     def get_Sa(self, y_adrs_input, ξ_eff_F_DB):
         """
         Calculate the value of Sa (ξeff)
-        coordinates after the first iteration.
+        coordinates after the iteration 0.
         """
         Sa_list = []
         for element in y_adrs_input:
@@ -216,7 +216,7 @@ class Values:
 
     def get_Sd(self, sa_ms2_0, sd_meters_0, sa_ms2):
         """
-        Calculate the value of Sd after the first iteration
+        Calculate the value of Sd after the iteration 0.
         """
         # sa_ms2_0 is the initial array of Sa, the one input by the user
         # sa_ms2 is the array calculated by the program

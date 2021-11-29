@@ -30,9 +30,9 @@ class Print:
         print("check_Vp_DB: " + str(check_Vp_DB) + "%")
         print("\n")
 
-    def print_first_iteration(self, ξFrame, ξn_eff, Vp_DB, check):
+    def print_iteration_zero(self, ξFrame, ξn_eff, Vp_DB, check):
         """
-        Print information about the first iteration.
+        Print information about the iteration 0.
         """
         print("\n")
         print("Iteraction #", 1)

@@ -148,7 +148,7 @@ def find_dy(dy):
 
         check = values.get_check(ξFrame, ξn_eff)
         Vp_DB = Vp_DB_prev_iteraction
-        display.print_first_iteration(ξFrame, ξn_eff, Vp_DB, check)
+        display.print_iteration_zero(ξFrame, ξn_eff, Vp_DB, check)
 
         # Recursive function to calculate what's needed
         def get_calcs_recursive(
