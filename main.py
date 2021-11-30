@@ -79,20 +79,17 @@ def find_dy(dy):
         p_sdof, bilinear_line_kN_2
     )
 
-    # Calculate A1 and A2
-    fitting_lists = area.calculate_fitting_list(
-        x_p_sdof,
-        y_p_sdof,
-        intersection_bilinear1_psdof_coords,
-        intersection_bilinear2_psdof_coords,
-    )
-
     (
         fitting_list_1_x_pushover,
         fitting_list_1_y_pushover,
         fitting_list_2_x_pushover,
         fitting_list_2_y_pushover,
-    ) = fitting_lists
+    ) = area.calculate_fitting_list(
+        x_p_sdof,
+        y_p_sdof,
+        intersection_bilinear1_psdof_coords,
+        intersection_bilinear2_psdof_coords,
+    )
 
     # Compute the area using the composite trapezoidal rule.
     areas_kN = area.calculate_areas(

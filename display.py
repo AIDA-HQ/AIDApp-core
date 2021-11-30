@@ -20,14 +20,14 @@ class Print:
         Print some brief information about the current iteration.
         """
         print("Iteraction #", i)
-        print("Vy_F_DB: " + str(Vy_F_DB) + "m/s^2")
-        print("Vp_F_DB: " + str(Vp_F_DB) + "m/s^2")
-        print("ξ_eff_F_DB: " + str(ξ_eff_F_DB) + "%")
+        print("Vy_F_DB: " + str(Vy_F_DB) + " m/s^2")
+        print("Vp_F_DB: " + str(Vp_F_DB) + " m/s^2")
+        print("ξ_eff_F_DB: " + str(ξ_eff_F_DB) + " %")
         print("Vp_DB_prev_iteraction: ", Vp_DB_prev_iteraction)
         print("ξ" + str(i) + "_eff: " + str(ξn_eff))
         print("Vp_DB:", Vp_DB)
-        print("check: " + str(check) + "%")
-        print("check_Vp_DB: " + str(check_Vp_DB) + "%")
+        print("check: " + str(check) + " %")
+        print("check_Vp_DB: " + str(check_Vp_DB) + " %")
         print("\n")
 
     def print_iteration_zero(self, ξFrame, ξn_eff, Vp_DB, check):
@@ -39,5 +39,5 @@ class Print:
         print("ξn_eff:", ξn_eff)
         print("ξFrame:", ξFrame)
         print("Vp_DB:", Vp_DB)
-        print("check: " + str(check) + "%")
+        print("check: " + str(check) + " %")
         print("\n")
