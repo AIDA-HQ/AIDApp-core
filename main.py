@@ -5,7 +5,6 @@ from calcs import Values, Area
 from coordinates import Coords
 from display import Print
 from graphs import Graphs
-from user_input import UserInput
 from input_coordinates import Input
 
 area = Area()
@@ -13,12 +12,13 @@ coord = Coords()
 graphs = Graphs()
 input_coord = Input()
 display = Print()
-user_input = UserInput()
 values = Values()
 
 
 class AIDApp:
-    def main(self):
+    def main(
+        self, arg_dp, arg_μ_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues
+    ):
         global storey_masses
         global eigenvalues
         global dp
@@ -33,8 +33,12 @@ class AIDApp:
         global Vp_ms2
         global K1
 
-        # Store data from user input
-        storey_masses, eigenvalues, dp, μ_DB, k_DB, Kf = user_input.input_values()
+        dp = arg_dp
+        μ_DB = arg_μ_DB
+        k_DB = arg_k_DB
+        Kf = arg_Kf
+        storey_masses = arg_storey_masses
+        eigenvalues = arg_eigenvalues
 
         Γ = values.get_Γ(storey_masses, eigenvalues)
         me = values.get_me()  # [ton]
@@ -45,7 +49,7 @@ class AIDApp:
 
         # Slope of first n values of SDOF Pushover Curve
         K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
-        self.find_dy(0.0100)
+        return self.find_dy(0.0100)
 
     def find_dy(self, dy):
         Vy_kN = values.get_Vy_kN(K1, dy)
@@ -131,7 +135,17 @@ class AIDApp:
 
             # Recursive function to calculate what's needed
             def get_calcs_recursive(
-                Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff
+                Vp_DB,
+                check,
+                i,
+                sd_meters,
+                sa_ms2,
+                Vy_F_DB,
+                Vp_F_DB,
+                kn_eff,
+                ξ_eff_F_DB,
+                ξn_eff,
+                check_Vp_DB,
             ):
                 if check > 0.5:
                     i = i + 1
@@ -174,7 +188,17 @@ class AIDApp:
                     )
 
                     return get_calcs_recursive(
-                        Vp_DB, check, i, sd_meters, sa_ms2, Vy_F_DB, Vp_F_DB, kn_eff
+                        Vp_DB,
+                        check,
+                        i,
+                        sd_meters,
+                        sa_ms2,
+                        Vy_F_DB,
+                        Vp_F_DB,
+                        kn_eff,
+                        ξ_eff_F_DB,
+                        ξn_eff,
+                        check_Vp_DB,
                     )
 
                 if check <= 0.5:
@@ -184,12 +208,21 @@ class AIDApp:
                         x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i
                     )
                     plt.show()
+                    return [
+                        Vp_DB,
+                        check,
+                        i,
+                        Vy_F_DB,
+                        Vp_F_DB,
+                        kn_eff,
+                        ξ_eff_F_DB,
+                        ξn_eff,
+                        check_Vp_DB,
+                    ]
 
-                    print("DONE!")
-
-            get_calcs_recursive(Vp_DB, check, 1, None, None, None, None, None)
-
-            return dy
+            return get_calcs_recursive(
+                Vp_DB, check, 1, None, None, None, None, None, None, None, None
+            )
         else:
             dy = dy + 0.00001
 
