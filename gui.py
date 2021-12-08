@@ -1,87 +1,137 @@
 from qtpy.QtWidgets import (
     QDialog,
     QApplication,
+    QPushButton,
     QGroupBox,
-    QVBoxLayout,
     QLabel,
     QDoubleSpinBox,
     QSpinBox,
     QDialogButtonBox,
     QFormLayout,
 )
-import sys
+from qtpy import QtCore
 from main import AIDApp
 
 aidapp = AIDApp()
 
 
-class Window(QDialog):
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("AIDApp")
+        Dialog.resize(281, 303)
+        self.formLayout = QFormLayout(Dialog)
+        self.formLayout.setObjectName("formLayout")
 
-    # constructor
-    def __init__(self):
-        super(Window, self).__init__()
+        # Input Box
+        self.input_Box = QGroupBox(Dialog)
+        self.input_Box.setEnabled(True)
+        self.input_Box.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
+        self.input_Box.setAutoFillBackground(False)
+        self.input_Box.setFlat(False)
+        self.input_Box.setCheckable(False)
+        self.input_Box.setObjectName("input_Box")
+        self.inputLayout = QFormLayout(self.input_Box)
+        self.inputLayout.setObjectName("inputLayout")
 
-        # setting window title
-        self.setWindowTitle("AIDApp")
+        # dp
+        self.dp_label = QLabel(self.input_Box)
+        self.dp_label.setObjectName("dp_label")
+        self.inputLayout.setWidget(0, QFormLayout.LabelRole, self.dp_label)
+        self.dp_SpinBar = QDoubleSpinBox(self.input_Box)
+        self.dp_SpinBar.setMaximum(99.99)
+        self.dp_SpinBar.setDecimals(10)
+        self.dp_SpinBar.setObjectName("dp_SpinBar")
 
-        # setting geometry to the window
-        self.setGeometry(100, 100, 300, 400)
+        self.inputLayout.setWidget(0, QFormLayout.FieldRole, self.dp_SpinBar)
 
-        # creating a group box
-        self.Input_Box = QGroupBox("Data")
+        # u_DB
+        self.u_DB_label = QLabel(self.input_Box)
+        self.u_DB_label.setObjectName("u_DB_label")
+        self.inputLayout.setWidget(2, QFormLayout.LabelRole, self.u_DB_label)
+        self.u_DB_SpinBar = QDoubleSpinBox(self.input_Box)
+        self.u_DB_SpinBar.setObjectName("u_DB_SpinBar")
 
-        # creating spin boxes to select input values
-        self.dpSpinBar = QDoubleSpinBox()
-        self.μ_DB_SpinBar = QDoubleSpinBox()
-        self.k_DB_SpinBar = QDoubleSpinBox()
-        self.Kf_SpinBar = QDoubleSpinBox()
+        self.inputLayout.setWidget(2, QFormLayout.FieldRole, self.u_DB_SpinBar)
 
-        self.storey_number_SpinBar = QSpinBox()
+        # k_DB
+        self.k_DB_label = QLabel(self.input_Box)
+        self.k_DB_label.setObjectName("k_DB_label")
+        self.inputLayout.setWidget(4, QFormLayout.LabelRole, self.k_DB_label)
+        self.k_DB_SpinBar = QDoubleSpinBox(self.input_Box)
+        self.k_DB_SpinBar.setObjectName("k_DB_SpinBar")
 
-        self.dpSpinBar.setDecimals(10)
+        self.inputLayout.setWidget(4, QFormLayout.FieldRole, self.k_DB_SpinBar)
 
-        # calling the method that create the form
-        self.createForm()
-        # create a button to display Boxes to fill with storey masses
-        self.storeyBox = QDialogButtonBox(QDialogButtonBox.Yes)
-        # adding action when form is accepted
-        self.storeyBox.accepted.connect(self.count_storey_boxes)
+        # Kf
+        self.Kf_label = QLabel(self.input_Box)
+        self.Kf_label.setObjectName("Kf_label")
+        self.inputLayout.setWidget(5, QFormLayout.LabelRole, self.Kf_label)
+        self.Kf_SpinBar = QDoubleSpinBox(self.input_Box)
+        self.Kf_SpinBar.setObjectName("Kf_SpinBar")
 
-        # creating a dialog button for ok and cancel
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        self.inputLayout.setWidget(5, QFormLayout.FieldRole, self.Kf_SpinBar)
 
-        # adding action when form is accepted
+        # Storey Number
+        self.storey_number_label = QLabel(self.input_Box)
+        self.storey_number_label.setObjectName("storey_number_label")
+        self.inputLayout.setWidget(6, QFormLayout.LabelRole, self.storey_number_label)
+
+        # Send button
+        self.sendButton = QPushButton(self.input_Box)
+        self.sendButton.setDefault(False)
+        self.sendButton.setFlat(False)
+        self.sendButton.setObjectName("sendButton")
+        self.sendButton.clicked.connect(self.count_storey_boxes)
+
+        self.inputLayout.setWidget(7, QFormLayout.FieldRole, self.sendButton)
+        self.storey_number_SpinBar = QSpinBox(self.input_Box)
+        self.storey_number_SpinBar.setObjectName("storey_number_SpinBar")
+        self.inputLayout.setWidget(7, QFormLayout.LabelRole, self.storey_number_SpinBar)
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.input_Box)
+        self.groupBox = QGroupBox(Dialog)
+        self.groupBox.setObjectName("groupBox")
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.groupBox)
+
+        # Main button
+        self.buttonBox = QDialogButtonBox(Dialog)
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
         self.buttonBox.accepted.connect(self.getInfo)
-        # addding action when form is rejected
-        self.buttonBox.rejected.connect(self.reject)
+        self.buttonBox.rejected.connect(Dialog.reject)
 
-        # creating a vertical layout
-        mainLayout = QVBoxLayout()
+        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.buttonBox)
+        self.output_box = QGroupBox(Dialog)
+        self.output_box.setObjectName("output_box")
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.output_box)
 
-        # adding form group box to the layout
-        mainLayout.addWidget(self.Input_Box)
-        mainLayout.addWidget(self.storeyBox)
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-        # adding button box to the layout
-        mainLayout.addWidget(self.buttonBox)
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
+        self.input_Box.setTitle(_translate("AIDApp", "Input Values"))
+        self.dp_label.setText(_translate("AIDApp", "dp"))
+        self.u_DB_label.setText(_translate("AIDApp", "μ_DB"))
+        self.k_DB_label.setText(_translate("AIDApp", "k_DB"))
+        self.Kf_label.setText(_translate("AIDApp", "Kf"))
+        self.storey_number_label.setText(_translate("AIDApp", "# of storeys:"))
+        self.sendButton.setText(_translate("AIDApp", "Send"))
+        self.groupBox.setTitle(_translate("AIDApp", "Graph"))
+        self.output_box.setTitle(_translate("AIDApp", "Output Values"))
 
-        # setting lay out
-        self.setLayout(mainLayout)
-
-    # get info method called when form is accepted
     def getInfo(self):
-
         storey_masses = []
         for element in mass_dict.values():
             storey_masses.append(element.value())
-
         eigenvalues = []
         for element in eigenvalue_dict.values():
             eigenvalues.append(element.value())
         # Feed the values to the main program
         output = aidapp.main(
-            self.dpSpinBar.value(),
-            self.μ_DB_SpinBar.value(),
+            self.dp_SpinBar.value(),
+            self.u_DB_SpinBar.value(),
             self.k_DB_SpinBar.value(),
             self.Kf_SpinBar.value(),
             storey_masses,
@@ -91,6 +141,7 @@ class Window(QDialog):
         self.output_field(output)
 
     def count_storey_boxes(self):
+        self.sendButton.setEnabled(False)
         self.show_storey_boxes(self.storey_number_SpinBar.value())
 
     def show_storey_boxes(self, i):
@@ -105,40 +156,22 @@ class Window(QDialog):
             # dynamically create key
             mass_key = k
             eigenvalue_key = k
-
-            # calculate value
             mass_value = QSpinBox()
             mass_value.setMaximum(1000)
             mass_dict[mass_key] = mass_value
-
             eigenvalue_value = QDoubleSpinBox()
             eigenvalue_value.setDecimals(10)
             eigenvalue_dict[eigenvalue_key] = eigenvalue_value
 
-            self.layout.addRow(
+            self.inputLayout.addRow(
                 QLabel("Storey #" + str(k) + " mass"), mass_dict[mass_key]
             )
-            self.layout.addRow(
+            self.inputLayout.addRow(
                 QLabel("Storey #" + str(k) + " eigenvalue"),
                 eigenvalue_dict[eigenvalue_key],
             )
             k += 1
-
-    # creat form method
-    def createForm(self):
-
-        # creating a form layout
-        self.layout = QFormLayout()
-
-        # adding rows
-        self.layout.addRow(QLabel("dp"), self.dpSpinBar)
-        self.layout.addRow(QLabel("μ_DB"), self.μ_DB_SpinBar)
-        self.layout.addRow(QLabel("k_DB"), self.k_DB_SpinBar)
-        self.layout.addRow(QLabel("Kf"), self.Kf_SpinBar)
-        self.layout.addRow(QLabel("# Storeys"), self.storey_number_SpinBar)
-
-        # setting layout
-        self.Input_Box.setLayout(self.layout)
+        self.input_Box.setLayout(self.inputLayout)
 
     def output_field(self, output_values):
         (
@@ -152,7 +185,7 @@ class Window(QDialog):
             ξn_eff,
             check_Vp_DB,
         ) = output_values
-
+        self.outputLayout = QFormLayout()
         i_string = "Iteraction #" + str(i)
         Vy_F_DB_string = "Vy_F_DB: " + str(Vy_F_DB) + " m/s^2"
         Vp_F_DB_string = "Vp_F_DB: " + str(Vp_F_DB) + " m/s^2"
@@ -164,47 +197,45 @@ class Window(QDialog):
 
         self.i_label = QLabel()
         self.i_label.setText(i_string)
-        self.layout.addRow(self.i_label)
+        self.outputLayout.addRow(self.i_label)
 
         self.Vp_DB_label = QLabel()
         self.Vp_DB_label.setText(Vp_DB_string)
-        self.layout.addRow(self.Vp_DB_label)
+        self.outputLayout.addRow(self.Vp_DB_label)
 
         self.Vy_F_DB_label = QLabel()
         self.Vy_F_DB_label.setText(Vy_F_DB_string)
-        self.layout.addRow(self.Vy_F_DB_label)
+        self.outputLayout.addRow(self.Vy_F_DB_label)
 
         self.Vp_F_DB_label = QLabel()
-        self.Vy_F_DB_label.setText(Vp_F_DB_string)
-        self.layout.addRow(self.Vy_F_DB_label)
+        self.Vp_F_DB_label.setText(Vp_F_DB_string)
+        self.outputLayout.addRow(self.Vp_F_DB_label)
 
         self.ξ_eff_F_DB_label = QLabel()
         self.ξ_eff_F_DB_label.setText(ξ_eff_F_DB_string)
-        self.layout.addRow(self.ξ_eff_F_DB_label)
+        self.outputLayout.addRow(self.ξ_eff_F_DB_label)
 
         self.ξn_eff_label = QLabel()
         self.ξn_eff_label.setText(ξn_eff_string)
-        self.layout.addRow(self.ξn_eff_label)
+        self.outputLayout.addRow(self.ξn_eff_label)
 
         self.check_label = QLabel()
         self.ξn_eff_label.setText(check_string)
-        self.layout.addRow(self.check_label)
+        self.outputLayout.addRow(self.check_label)
 
         self.check_Vp_DB_label = QLabel()
         self.ξn_eff_label.setText(check_Vp_DB_string)
-        self.layout.addRow(self.check_Vp_DB_label)
+        self.outputLayout.addRow(self.check_Vp_DB_label)
+
+        self.output_box.setLayout(self.outputLayout)
 
 
-# main method
 if __name__ == "__main__":
+    import sys
 
-    # create pyqt5 app
     app = QApplication(sys.argv)
-
-    # create the instance of our Window
-    window = Window()
-    # showing the window
-    window.show()
-
-    # start the app
-    sys.exit(app.exec())
+    Dialog = QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())

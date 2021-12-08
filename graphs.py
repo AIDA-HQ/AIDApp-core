@@ -83,7 +83,7 @@ class Graphs:
 
     def plot_final(self, x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i):
         """
-        Function to plot the final graph, meant to be displayed when 
+        Function to plot the final graph, meant to be displayed when
         all the curves are calculated in the final iteration.
         """
         plt.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
