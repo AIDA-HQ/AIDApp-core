@@ -3,12 +3,10 @@ import numpy as np
 from calcs import Values, Area
 from coordinates import Coords
 from display import Print
-from graphs import Graphs
 from input_coordinates import Input
 
 area = Area()
 coord = Coords()
-graphs = Graphs()
 input_coord = Input()
 display = Print()
 values = Values()
