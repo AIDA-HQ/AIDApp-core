@@ -18,7 +18,7 @@ from matplotlib.figure import Figure
 aidapp = AIDApp()
 
 
-class Ui_Dialog(object):
+class Ui_Dialog:
     def setupUi(self, Dialog):
         Dialog.setObjectName("AIDApp")
         Dialog.resize(900, 500)
