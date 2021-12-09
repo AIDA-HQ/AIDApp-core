@@ -237,11 +237,11 @@ class Ui_Dialog(object):
         self.outputLayout.addRow(self.ξn_eff_label)
 
         self.check_label = QLabel()
-        self.ξn_eff_label.setText(check_string)
+        self.check_label.setText(check_string)
         self.outputLayout.addRow(self.check_label)
 
         self.check_Vp_DB_label = QLabel()
-        self.ξn_eff_label.setText(check_Vp_DB_string)
+        self.check_Vp_DB_label.setText(check_Vp_DB_string)
         self.outputLayout.addRow(self.check_Vp_DB_label)
         self.graphLayout = QFormLayout()
 
