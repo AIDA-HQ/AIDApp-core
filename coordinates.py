@@ -6,7 +6,8 @@ input_coord = Input()
 
 
 class Coords:
-    def y_kn_eff(self, sd_m, kn_eff):
+    @staticmethod
+    def y_kn_eff(sd_m, kn_eff):
         """
         Calculate the y coordinates of kn_eff curve (line),
         by taking the sd_m value list and kn_eff as input values.
@@ -18,14 +19,16 @@ class Coords:
         return np.array(y_kn_eff_list)
 
     # Generate SDOF pushover curve
-    def x_p_sdof(self, Γ):
+    @staticmethod
+    def x_p_sdof(Γ):
         x_p_sdof_list = []
         for element in input_coord.x_p_mdof:
             new_coord = element / Γ
             x_p_sdof_list.append(new_coord)
         return np.array(x_p_sdof_list)
 
-    def y_p_sdof(self, Γ):
+    @staticmethod
+    def y_p_sdof(Γ):
         y_p_sdof_list = []
         for element in input_coord.y_p_mdof:
             new_coord = element / Γ
@@ -34,10 +37,12 @@ class Coords:
 
     ##
 
-    def x_bilinear_line(self, start_graph, end_graph):
+    @staticmethod
+    def x_bilinear_line(start_graph, end_graph):
         return np.linspace(start_graph, end_graph, 1000)
 
-    def find_intersections(self, curve_1, curve_2):
+    @staticmethod
+    def find_intersections(curve_1, curve_2):
         intersection = curve_1.intersection(curve_2)
         intersection_coords = []
         if intersection.geom_type == "Point":
@@ -48,7 +53,8 @@ class Coords:
                 intersection_coords.append(element)
         return intersection_coords
 
-    def find_nearest_coordinate_index(self, curve_coordinates, coord):
+    @staticmethod
+    def find_nearest_coordinate_index(curve_coordinates, coord):
         """
         Find the index of the minimum/lowest element from the array.
         """
@@ -64,7 +70,8 @@ class Coords:
         index = self.find_nearest_coordinate_index(curve_coordinates, coord)
         return curve_coordinates[index]
 
-    def bilinear_m_q(self, x_1, x_2, y_1, y_2):
+    @staticmethod
+    def bilinear_m_q(x_1, x_2, y_1, y_2):
         """
         Enter coordinates of two points.
         Returns a tuple with m and q to generate one
@@ -84,7 +91,8 @@ class Coords:
         y = m * x + q
         return x, y
 
-    def interpolate_curve(self, x_coords, y_coords):
+    @staticmethod
+    def interpolate_curve(x_coords, y_coords):
         curve = LineString(np.column_stack((x_coords, y_coords)))
         return curve
 
