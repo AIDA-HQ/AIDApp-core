@@ -226,8 +226,3 @@ class AIDApp:
         dy = dy + 0.00001
 
         return self.find_dy(dy)
-
-
-if __name__ == "__main__":
-    aidapp = AIDApp()
-    aidapp.main()
