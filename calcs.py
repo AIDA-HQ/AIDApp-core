@@ -8,7 +8,8 @@ coord = Coords()
 
 
 class Values:
-    def convert_to_meters(self, coord_mm):
+    @staticmethod
+    def convert_to_meters(coord_mm):
         """
         Convert the input array values to m
         """
@@ -18,7 +19,8 @@ class Values:
             coord_m_list.append(new_coord)
         return np.array(coord_m_list)  # [m]
 
-    def convert_to_ms2(self, coord_g):
+    @staticmethod
+    def convert_to_ms2(coord_g):
         """
         Convert the input array values to m/s^2
         """
@@ -28,7 +30,8 @@ class Values:
             ms2_list.append(new_coord)
         return np.array(ms2_list)  # [m/s^2]
 
-    def get_Γ(self, storey_masses, eigenvalues):
+    @staticmethod
+    def get_Γ(storey_masses, eigenvalues):
         """
         return Γ
         """
@@ -51,43 +54,50 @@ class Values:
         Γ = φTMτ / φTMφ
         return Γ
 
-    def get_m_matrix(self):
+    @staticmethod
+    def get_m_matrix():
         """
         return m_matrix
         """
         return m_matrix
 
-    def get_m_tot(self):
+    @staticmethod
+    def get_m_tot():
         """
         return m_tot
         """
         return m_tot
 
-    def get_φ(self):
+    @staticmethod
+    def get_φ():
         """
         return φ
         """
         return φ
 
-    def get_Mφ(self):
+    @staticmethod
+    def get_Mφ():
         """
         return Mφ
         """
         return Mφ
 
-    def get_φTMτ(self):
+    @staticmethod
+    def get_φTMτ():
         """
         Return φTMτ
         """
         return φTMτ
 
-    def get_φTMφ(self):
+    @staticmethod
+    def get_φTMφ():
         """
         Returns φTMφ
         """
         return φTMφ
 
-    def get_K1(self, x_p_sdof, y_p_sdof):
+    @staticmethod
+    def get_K1(x_p_sdof, y_p_sdof):
         """
         Calculate the slope of first 7 values of SDOF Pushover Curve
         """
@@ -98,7 +108,8 @@ class Values:
         slope, intercept, r, p, se = linregress(a, b)  # kN
         return slope  # Slope
 
-    def get_Vy_kN(self, K1, dy):
+    @staticmethod
+    def get_Vy_kN(K1, dy):
         """
         Returns the value of Vy(F) in kN.
         """
@@ -106,7 +117,8 @@ class Values:
         Vy_F_kN = K1 * dy  # kN
         return Vy_F_kN
 
-    def get_me(self):
+    @staticmethod
+    def get_me():
         """
         Get the mass of the storeys
         """
@@ -114,7 +126,8 @@ class Values:
         me = m_tot / Γ
         return me
 
-    def get_de(self, adrs_spectrum, kn_eff_curve):
+    @staticmethod
+    def get_de(adrs_spectrum, kn_eff_curve):
         """
         X coord of Kn_eff intercepting ADRS spectrum
         """
@@ -126,7 +139,8 @@ class Values:
     # ADRS methods
     #
 
-    def get_Vy_F_ms2(self, Vy_F_kN):
+    @staticmethod
+    def get_Vy_F_ms2(Vy_F_kN):
         """
         Return the value of Vy(F) in m/s^2
         """
@@ -134,14 +148,16 @@ class Values:
         Vy_F_ms2 = Vy_F_kN / me  # [m/s^2]
         return Vy_F_ms2
 
-    def get_Vy_F_DB(self, Vp_DB):
+    @staticmethod
+    def get_Vy_F_DB(Vp_DB):
         """
         Return the value of Vy(F + DB)
         """
         Vy_F_DB = Vy_F_kN / me + Vp_DB / me
         return Vy_F_DB  # [m/s^2]
 
-    def get_Vp_F_DB(self, Vp_kN, Vp_DB):
+    @staticmethod
+    def get_Vp_F_DB(Vp_kN, Vp_DB):
         """
         Return the value of Vp(F + DB)
         Vp_kN is a constant, defined initally.
@@ -150,7 +166,8 @@ class Values:
         Vp_F_DB = Vp_kN / me + Vp_DB / me
         return Vp_F_DB  # [m/s2]
 
-    def get_kn_eff(self, Vp_F_DB, dp):
+    @staticmethod
+    def get_kn_eff(Vp_F_DB, dp):
         kn_eff = Vp_F_DB / dp
         return kn_eff
 
@@ -164,7 +181,8 @@ class Values:
         ξFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
         return ξFrame  # [%]
 
-    def get_ξ_eff_F_DB(self, Vp_kN, ξ_DB, Vp_DB, ξFrame):
+    @staticmethod
+    def get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame):
         """
         Return the value of ξ_eff(F + DB), which,
         for the iteration 0, was called "ξFrame"
@@ -191,7 +209,8 @@ class Values:
         ξn_eff = (10 + ξ_eff_F_DB) * (de / dp) ** 2 - 10
         return ξn_eff  # [%]
 
-    def get_Sa(self, y_adrs_input, ξ_eff_F_DB):
+    @staticmethod
+    def get_Sa(y_adrs_input, ξ_eff_F_DB):
         """
         Calculate the value of Sa (ξeff)
         coordinates after the iteration 0.
@@ -204,7 +223,8 @@ class Values:
 
     # TODO Convert the Sa values to m/s^2
 
-    def get_T(self, sa_ms2_0, sd_meters_0):
+    @staticmethod
+    def get_T(sa_ms2_0, sd_meters_0):
         """
         Calculate the value of T period
         """
@@ -231,15 +251,18 @@ class Values:
     # Dissipative Brace (DB) methods
     #
 
-    def get_ξ_DB(self, μ_DB, k_DB):
+    @staticmethod
+    def get_ξ_DB(μ_DB, k_DB):
         ξ_DB = 63.7 * k_DB * ((μ_DB - 1) / μ_DB)
         return ξ_DB  # [%]
 
-    def get_dy_DB(self, μ_DB, dp_DB):
+    @staticmethod
+    def get_dy_DB(μ_DB, dp_DB):
         dy_DB = dp_DB / μ_DB
         return dy_DB  # [m]
 
-    def get_Vp_DB_0(self, ξn_eff, Vp_kN, ξ_DB, ξFrame):
+    @staticmethod
+    def get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame):
         """
         Vy(DB) = VP(DB)
         Return the very first value of Vp_DB, which
@@ -248,7 +271,8 @@ class Values:
         Vp_DB_1 = (ξn_eff - ξFrame) * (Vp_kN / ξ_DB)
         return Vp_DB_1  # [kN]
 
-    def get_Vp_DB(self, ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction):
+    @staticmethod
+    def get_Vp_DB(ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction):
         """
         Vy(DB) = VP(DB)
         Return the value of Vp_DB [kN] which will be iterated various times
@@ -257,18 +281,21 @@ class Values:
         Vp_DB = (ξn_eff * (Vp_kN + Vp_DB_prev_iteraction) - ξFrame * Vp_kN) / ξ_DB
         return Vp_DB  # [kN]
 
-    def get_Kb(self, dy_DB, Vp_DB):
+    @staticmethod
+    def get_Kb(dy_DB, Vp_DB):
         Kb = Vp_DB / dy_DB
         return Kb  # [kN/m]
 
-    def get_check(self, ξ_eff, ξn_eff):
+    @staticmethod
+    def get_check(ξ_eff, ξn_eff):
         """
         Get the perecentage difference between ξ_eff(F+DB)/ξFrame and ξn_eff
         """
         check = (np.absolute(ξn_eff - ξ_eff) / ξ_eff) * 100
         return check  # [%]
 
-    def get_check_Vp_DB(self, Vp_DB, Vp_DB_prev_iteraction):
+    @staticmethod
+    def get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteraction):
         """
         Get the perecentage difference between Vp_DB and Vp_DB_prev_iteraction
         """
@@ -277,8 +304,8 @@ class Values:
 
 
 class Area:
+    @staticmethod
     def calculate_fitting_list(
-        self,
         x_p_sdof,
         y_p_sdof,
         intersection_bilinear1_psdof_coords,
@@ -314,8 +341,8 @@ class Area:
             fitting_list_2_y_pushover,
         )
 
+    @staticmethod
     def calculate_areas(
-        self,
         intersection_bilinear1_psdof_coords,
         intersection_bilinear2_psdof_coords,
         dy,

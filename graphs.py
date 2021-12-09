@@ -7,8 +7,8 @@ coord = Coords()
 
 
 class Graphs:
+    @staticmethod
     def plot_all(
-        self,
         x_bilinear,
         y_bilinear_ms2,
         x_p_sdof,
@@ -58,15 +58,16 @@ class Graphs:
 
         plt.legend()
 
-    def plot_intersections(self, intersection_list):
+    @staticmethod
+    def plot_intersections(intersection_list):
         if len(intersection_list) == 1:
             plt.plot(*zip(*intersection_list), "go", label="Intersection Point")
         if len(intersection_list) > 1:
             for element in intersection_list:
                 plt.plot(*zip(*intersection_list), "go", label="Intersection Point")
 
+    @staticmethod
     def plot_limited_bilinear(
-        self,
         intersection_bilinear1_psdof_coords,
         intersection_bilinear2_psdof_coords,
         intersection_dy_coords,
@@ -81,7 +82,8 @@ class Graphs:
         plt.plot(*zip(*tp), "-o", color="red", label="Bilinear")
         plt.legend()
 
-    def plot_final(self, x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i):
+    @staticmethod
+    def plot_final(x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i):
         """
         Function to plot the final graph, meant to be displayed when
         all the curves are calculated in the final iteration.

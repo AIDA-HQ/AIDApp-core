@@ -4,8 +4,8 @@ values = Values()
 
 
 class Print:
+    @staticmethod
     def print_brief(
-        self,
         i,
         Vy_F_DB,
         Vp_F_DB,
@@ -30,7 +30,8 @@ class Print:
         print("check_Vp_DB: " + str(check_Vp_DB) + " %")
         print("\n")
 
-    def print_iteration_zero(self, ξFrame, ξn_eff, Vp_DB, check):
+    @staticmethod
+    def print_iteration_zero(ξFrame, ξn_eff, Vp_DB, check):
         """
         Print information about the iteration 0.
         """
