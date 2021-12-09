@@ -105,7 +105,7 @@ class Values:
         b = np.array([y_p_sdof[2:10]])
 
         # TODO - Find an alternative to linregress
-        slope, intercept, r, p, se = linregress(a, b)  # kN
+        slope, _intercept, _r, _p, _se = linregress(a, b)  # kN
         return slope  # Slope
 
     @staticmethod

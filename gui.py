@@ -189,7 +189,7 @@ class Ui_Dialog(object):
             i,
             Vy_F_DB,
             Vp_F_DB,
-            kn_eff,
+            _kn_eff,
             ξ_eff_F_DB,
             ξn_eff,
             check_Vp_DB,

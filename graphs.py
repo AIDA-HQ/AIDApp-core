@@ -63,7 +63,7 @@ class Graphs:
         if len(intersection_list) == 1:
             plt.plot(*zip(*intersection_list), "go", label="Intersection Point")
         if len(intersection_list) > 1:
-            for element in intersection_list:
+            for _element in intersection_list:
                 plt.plot(*zip(*intersection_list), "go", label="Intersection Point")
 
     @staticmethod

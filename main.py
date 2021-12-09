@@ -106,7 +106,7 @@ class AIDApp:
             fitting_list_2_x_pushover,
         )
 
-        a1, a2, area_diff = areas_kN
+        _a1, _a2, area_diff = areas_kN
 
         if area_diff < 0.0004:
             sd_meters_0 = values.convert_to_meters(input_coord.x_adrs_input)
