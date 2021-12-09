@@ -223,10 +223,9 @@ class AIDApp:
             return get_calcs_recursive(
                 Vp_DB, check, 1, None, None, None, None, None, None, None, None
             )
-        else:
-            dy = dy + 0.00001
+        dy = dy + 0.00001
 
-            return self.find_dy(dy)
+        return self.find_dy(dy)
 
 
 if __name__ == "__main__":
