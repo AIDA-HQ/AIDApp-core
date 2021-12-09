@@ -14,15 +14,15 @@ values = Values()
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_μ_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues
+        self, arg_dp, arg_mi_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues
     ):
         global storey_masses
         global eigenvalues
         global dp
-        global μ_DB
+        global mi_DB
         global k_DB
         global Kf
-        global Γ
+        global gamma
         global me
         global y_p_sdof
         global x_p_sdof
@@ -31,16 +31,16 @@ class AIDApp:
         global K1
 
         dp = arg_dp
-        μ_DB = arg_μ_DB
+        mi_DB = arg_mi_DB
         k_DB = arg_k_DB
         Kf = arg_Kf
         storey_masses = arg_storey_masses
         eigenvalues = arg_eigenvalues
 
-        Γ = values.get_Γ(storey_masses, eigenvalues)
+        gamma = values.get_gamma(storey_masses, eigenvalues)
         me = values.get_me()  # [ton]
-        y_p_sdof = coord.y_p_sdof(Γ)
-        x_p_sdof = coord.x_p_sdof(Γ)
+        y_p_sdof = coord.y_p_sdof(gamma)
+        x_p_sdof = coord.x_p_sdof(gamma)
         Vp_kN = y_p_sdof[coord.find_nearest_coordinate_index(x_p_sdof, dp)]
         Vp_ms2 = Vp_kN / me  # m/s^2
 
@@ -118,15 +118,15 @@ class AIDApp:
             )
 
             # Sui generis first iteration
-            ξFrame = values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
+            xiFrame = values.get_xiFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
 
-            ξn_eff = values.get_ξn_eff_0(dp, adrs_spectrum, k1_eff_curve)
-            ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
-            Vp_DB_prev_iteration = values.get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame)
+            xi_n_eff = values.get_xi_n_eff_0(dp, adrs_spectrum, k1_eff_curve)
+            xi_DB = values.get_xi_DB(mi_DB, k_DB)
+            Vp_DB_prev_iteration = values.get_Vp_DB_0(xi_n_eff, Vp_kN, xi_DB, xiFrame)
 
-            check = values.get_check(ξFrame, ξn_eff)
+            check = values.get_check(xiFrame, xi_n_eff)
             Vp_DB = Vp_DB_prev_iteration
-            display.print_iteration_zero(ξFrame, ξn_eff, Vp_DB, check)
+            display.print_iteration_zero(xiFrame, xi_n_eff, Vp_DB, check)
 
             # Recursive function to calculate what's needed
             def get_calcs_recursive(
@@ -138,15 +138,15 @@ class AIDApp:
                 Vy_F_DB,
                 Vp_F_DB,
                 kn_eff,
-                ξ_eff_F_DB,
-                ξn_eff,
+                xi_eff_F_DB,
+                xi_n_eff,
                 check_Vp_DB,
             ):
                 if check > 0.5:
                     i = i + 1
-                    ξ_eff_F_DB = values.get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame)
+                    xi_eff_F_DB = values.get_xi_eff_F_DB(Vp_kN, xi_DB, Vp_DB, xiFrame)
                     sa_ms2 = values.convert_to_ms2(
-                        values.get_Sa(input_coord.y_adrs_input, ξ_eff_F_DB)
+                        values.get_Sa(input_coord.y_adrs_input, xi_eff_F_DB)
                     )
                     sd_meters = values.get_Sd(sa_ms2_0, sd_meters_0, sa_ms2)
 
@@ -161,22 +161,22 @@ class AIDApp:
                         sd_meters,
                         coord.y_kn_eff(sd_meters, kn_eff),
                     )
-                    ξn_eff = values.get_ξn_eff(
-                        dp, adrs_spectrum, kn_eff_curve, ξ_eff_F_DB
+                    xi_n_eff = values.get_xi_n_eff(
+                        dp, adrs_spectrum, kn_eff_curve, xi_eff_F_DB
                     )
                     Vp_DB = values.get_Vp_DB(
-                        ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteration
+                        xi_n_eff, Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration
                     )
 
-                    check = values.get_check(ξ_eff_F_DB, ξn_eff)
+                    check = values.get_check(xi_eff_F_DB, xi_n_eff)
                     check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration)
                     display.print_brief(
                         i,
                         Vy_F_DB,
                         Vp_F_DB,
-                        ξ_eff_F_DB,
+                        xi_eff_F_DB,
                         Vp_DB_prev_iteration,
-                        ξn_eff,
+                        xi_n_eff,
                         Vp_DB,
                         check,
                         check_Vp_DB,
@@ -191,8 +191,8 @@ class AIDApp:
                         Vy_F_DB,
                         Vp_F_DB,
                         kn_eff,
-                        ξ_eff_F_DB,
-                        ξn_eff,
+                        xi_eff_F_DB,
+                        xi_n_eff,
                         check_Vp_DB,
                     )
 
@@ -206,8 +206,8 @@ class AIDApp:
                         Vy_F_DB,
                         Vp_F_DB,
                         kn_eff,
-                        ξ_eff_F_DB,
-                        ξn_eff,
+                        xi_eff_F_DB,
+                        xi_n_eff,
                         check_Vp_DB,
                         x_bilinear,
                         y_bilinear_ms2,

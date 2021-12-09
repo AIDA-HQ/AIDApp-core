@@ -122,7 +122,7 @@ class Ui_Dialog:
         Dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
         self.input_Box.setTitle(_translate("AIDApp", "Input Values"))
         self.dp_label.setText(_translate("AIDApp", "dp"))
-        self.u_DB_label.setText(_translate("AIDApp", "μ_DB"))
+        self.u_DB_label.setText(_translate("AIDApp", "mi_DB"))
         self.k_DB_label.setText(_translate("AIDApp", "k_DB"))
         self.Kf_label.setText(_translate("AIDApp", "Kf"))
         self.storey_number_label.setText(_translate("AIDApp", "# of storeys:"))
@@ -190,8 +190,8 @@ class Ui_Dialog:
             Vy_F_DB,
             Vp_F_DB,
             _kn_eff,
-            ξ_eff_F_DB,
-            ξn_eff,
+            xi_eff_F_DB,
+            xi_n_eff,
             check_Vp_DB,
             x_bilinear,
             y_bilinear_ms2,
@@ -204,8 +204,8 @@ class Ui_Dialog:
         i_string = "Iteration #" + str(i)
         Vy_F_DB_string = "Vy_F_DB: " + str(Vy_F_DB) + " m/s^2"
         Vp_F_DB_string = "Vp_F_DB: " + str(Vp_F_DB) + " m/s^2"
-        ξ_eff_F_DB_string = "ξ_eff_F_DB: " + str(ξ_eff_F_DB) + " %"
-        ξn_eff_string = "ξ" + str(i) + "_eff: " + str(ξn_eff)
+        xi_eff_F_DB_string = "xi_eff_F_DB: " + str(xi_eff_F_DB) + " %"
+        xi_n_eff_string = "xi" + str(i) + "_eff: " + str(xi_n_eff)
         Vp_DB_string = "Vp_DB: " + str(Vp_DB)
         check_string = "check: " + str(check) + " %"
         check_Vp_DB_string = "check_Vp_DB: " + str(check_Vp_DB) + " %"
@@ -228,13 +228,13 @@ class Ui_Dialog:
         self.Vp_F_DB_label.setText(Vp_F_DB_string)
         self.outputLayout.addRow(self.Vp_F_DB_label)
 
-        self.ξ_eff_F_DB_label = QLabel()
-        self.ξ_eff_F_DB_label.setText(ξ_eff_F_DB_string)
-        self.outputLayout.addRow(self.ξ_eff_F_DB_label)
+        self.xi_eff_F_DB_label = QLabel()
+        self.xi_eff_F_DB_label.setText(xi_eff_F_DB_string)
+        self.outputLayout.addRow(self.xi_eff_F_DB_label)
 
-        self.ξn_eff_label = QLabel()
-        self.ξn_eff_label.setText(ξn_eff_string)
-        self.outputLayout.addRow(self.ξn_eff_label)
+        self.xi_n_eff_label = QLabel()
+        self.xi_n_eff_label.setText(xi_n_eff_string)
+        self.outputLayout.addRow(self.xi_n_eff_label)
 
         self.check_label = QLabel()
         self.check_label.setText(check_string)
@@ -278,7 +278,7 @@ class Ui_Dialog:
         self.figure.clear()
         ax = self.figure.add_subplot(111)
 
-        ax.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
+        ax.plot(sd_meters, sa_ms2, color="#002260", label="xi=5%")
         ax.plot(x_bilinear, y_bilinear_ms2, color="#FF0000", label="Bare Frame")
         ax.plot(
             sd_meters,

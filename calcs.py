@@ -31,28 +31,28 @@ class Values:
         return np.array(ms2_list)  # [m/s^2]
 
     @staticmethod
-    def get_Γ(storey_masses, eigenvalues):
+    def get_gamma(storey_masses, eigenvalues):
         """
-        return Γ
+        return gamma
         """
         global m_tot
-        global φ
-        global Mφ
-        global φTMτ
-        global φTMφ
+        global Phi
+        global MPhi
+        global PhiTMTau
+        global PhiTMPhi
         global m_matrix
-        global Γ
+        global gamma
 
         m_matrix = np.diagflat(
             storey_masses
         )  # Storey masses displayed in a diagonal matrix
         m_tot = sum(storey_masses)  # Sum all storey masses together
-        φ = np.array(eigenvalues)  # Eigenvalues displayed in a 1-coloumn matrix
-        Mφ = np.matmul(m_matrix, φ)
-        φTMτ = np.matmul(φ, storey_masses)
-        φTMφ = np.matmul(φ, Mφ)
-        Γ = φTMτ / φTMφ
-        return Γ
+        Phi = np.array(eigenvalues)  # Eigenvalues displayed in a 1-coloumn matrix
+        MPhi = np.matmul(m_matrix, Phi)
+        PhiTMTau = np.matmul(Phi, storey_masses)
+        PhiTMPhi = np.matmul(Phi, MPhi)
+        gamma = PhiTMTau / PhiTMPhi
+        return gamma
 
     @staticmethod
     def get_m_matrix():
@@ -69,32 +69,32 @@ class Values:
         return m_tot
 
     @staticmethod
-    def get_φ():
+    def get_Phi():
         """
-        return φ
+        return Phi
         """
-        return φ
+        return Phi
 
     @staticmethod
-    def get_Mφ():
+    def get_MPhi():
         """
-        return Mφ
+        return MPhi
         """
-        return Mφ
+        return MPhi
 
     @staticmethod
-    def get_φTMτ():
+    def get_PhiTMTau():
         """
-        Return φTMτ
+        Return PhiTMTau
         """
-        return φTMτ
+        return PhiTMTau
 
     @staticmethod
-    def get_φTMφ():
+    def get_PhiTMPhi():
         """
-        Returns φTMφ
+        Returns PhiTMPhi
         """
-        return φTMφ
+        return PhiTMPhi
 
     @staticmethod
     def get_K1(x_p_sdof, y_p_sdof):
@@ -123,7 +123,7 @@ class Values:
         Get the mass of the storeys
         """
         global me
-        me = m_tot / Γ
+        me = m_tot / gamma
         return me
 
     @staticmethod
@@ -171,53 +171,53 @@ class Values:
         kn_eff = Vp_F_DB / dp
         return kn_eff
 
-    def get_ξFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
+    def get_xiFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
         """
-        Calculate the first value of ξFrame
+        Calculate the first value of xiFrame
         """
         dyF = dy  # [m]
         Vy_F_ms2 = self.get_Vy_F_ms2(Vy_kN)
         VpF_ms2 = Vp_ms2  # [m/s^2]
-        ξFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
-        return ξFrame  # [%]
+        xiFrame = (Kf * 63.7 * (Vy_F_ms2 * dp - VpF_ms2 * dyF)) / (VpF_ms2 * dp)
+        return xiFrame  # [%]
 
     @staticmethod
-    def get_ξ_eff_F_DB(Vp_kN, ξ_DB, Vp_DB, ξFrame):
+    def get_xi_eff_F_DB(Vp_kN, xi_DB, Vp_DB, xiFrame):
         """
-        Return the value of ξ_eff(F + DB), which,
-        for the iteration 0, was called "ξFrame"
-        ξFrame and Vp_kN are constants, defined initally.
-        ξ_DB and Vp_DB change every iteration.
+        Return the value of xi_eff(F + DB), which,
+        for the iteration 0, was called "xiFrame"
+        xiFrame and Vp_kN are constants, defined initally.
+        xi_DB and Vp_DB change every iteration.
         """
-        ξ_eff_F_DB = (ξFrame * Vp_kN + ξ_DB * Vp_DB) / (Vp_kN + Vp_DB)
-        return ξ_eff_F_DB  # [%]
+        xi_eff_F_DB = (xiFrame * Vp_kN + xi_DB * Vp_DB) / (Vp_kN + Vp_DB)
+        return xi_eff_F_DB  # [%]
 
-    def get_ξn_eff_0(self, dp, adrs_spectrum, k1_eff):
+    def get_xi_n_eff_0(self, dp, adrs_spectrum, k1_eff):
         """
-        Calculate first ever value of ξn_eff
+        Calculate first ever value of xi_n_eff
         """
         de = self.get_de(adrs_spectrum, k1_eff)
 
-        ξn_eff_0 = 10 * (de / dp) ** 2 - 10
-        return ξn_eff_0  # [%]
+        xi_n_eff_0 = 10 * (de / dp) ** 2 - 10
+        return xi_n_eff_0  # [%]
 
-    def get_ξn_eff(self, dp, adrs_spectrum, k1_eff_curve, ξ_eff_F_DB):
+    def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve, xi_eff_F_DB):
         """
-        Calculate iterated values of ξn_eff
+        Calculate iterated values of xi_n_eff
         """
         de = self.get_de(adrs_spectrum, k1_eff_curve)
-        ξn_eff = (10 + ξ_eff_F_DB) * (de / dp) ** 2 - 10
-        return ξn_eff  # [%]
+        xi_n_eff = (10 + xi_eff_F_DB) * (de / dp) ** 2 - 10
+        return xi_n_eff  # [%]
 
     @staticmethod
-    def get_Sa(y_adrs_input, ξ_eff_F_DB):
+    def get_Sa(y_adrs_input, xi_eff_F_DB):
         """
-        Calculate the value of Sa (ξeff)
+        Calculate the value of Sa (xieff)
         coordinates after the iteration 0.
         """
         Sa_list = []
         for element in y_adrs_input:
-            Sa_element = element * (10 / (10 + ξ_eff_F_DB)) ** 0.5
+            Sa_element = element * (10 / (10 + xi_eff_F_DB)) ** 0.5
             Sa_list.append(Sa_element)
         return np.array(Sa_list)  # [g]
 
@@ -252,33 +252,33 @@ class Values:
     #
 
     @staticmethod
-    def get_ξ_DB(μ_DB, k_DB):
-        ξ_DB = 63.7 * k_DB * ((μ_DB - 1) / μ_DB)
-        return ξ_DB  # [%]
+    def get_xi_DB(mi_DB, k_DB):
+        xi_DB = 63.7 * k_DB * ((mi_DB - 1) / mi_DB)
+        return xi_DB  # [%]
 
     @staticmethod
-    def get_dy_DB(μ_DB, dp_DB):
-        dy_DB = dp_DB / μ_DB
+    def get_dy_DB(mi_DB, dp_DB):
+        dy_DB = dp_DB / mi_DB
         return dy_DB  # [m]
 
     @staticmethod
-    def get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame):
+    def get_Vp_DB_0(xi_n_eff, Vp_kN, xi_DB, xiFrame):
         """
         Vy(DB) = VP(DB)
         Return the very first value of Vp_DB, which
         will be used by the following iteration.
         """
-        Vp_DB_1 = (ξn_eff - ξFrame) * (Vp_kN / ξ_DB)
+        Vp_DB_1 = (xi_n_eff - xiFrame) * (Vp_kN / xi_DB)
         return Vp_DB_1  # [kN]
 
     @staticmethod
-    def get_Vp_DB(ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteration):
+    def get_Vp_DB(xi_n_eff, Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration):
         """
         Vy(DB) = VP(DB)
         Return the value of Vp_DB [kN] which will be iterated various times
         """
         # Vp_DB_prev_iteration: previos value of Vp_DB
-        Vp_DB = (ξn_eff * (Vp_kN + Vp_DB_prev_iteration) - ξFrame * Vp_kN) / ξ_DB
+        Vp_DB = (xi_n_eff * (Vp_kN + Vp_DB_prev_iteration) - xiFrame * Vp_kN) / xi_DB
         return Vp_DB  # [kN]
 
     @staticmethod
@@ -287,11 +287,11 @@ class Values:
         return Kb  # [kN/m]
 
     @staticmethod
-    def get_check(ξ_eff, ξn_eff):
+    def get_check(xi_eff, xi_n_eff):
         """
-        Get the perecentage difference between ξ_eff(F+DB)/ξFrame and ξn_eff
+        Get the perecentage difference between xi_eff(F+DB)/xiFrame and xi_n_eff
         """
-        check = (np.absolute(ξn_eff - ξ_eff) / ξ_eff) * 100
+        check = (np.absolute(xi_n_eff - xi_eff) / xi_eff) * 100
         return check  # [%]
 
     @staticmethod
