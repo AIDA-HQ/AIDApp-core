@@ -12,13 +12,16 @@ from qtpy.QtWidgets import (
 from qtpy import QtCore
 from main import AIDApp
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 aidapp = AIDApp()
 
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("AIDApp")
-        Dialog.resize(281, 303)
+        Dialog.resize(900, 500)
         self.formLayout = QFormLayout(Dialog)
         self.formLayout.setObjectName("formLayout")
 
@@ -105,6 +108,12 @@ class Ui_Dialog(object):
         self.output_box.setObjectName("output_box")
         self.formLayout.setWidget(2, QFormLayout.LabelRole, self.output_box)
 
+        # a figure instance to plot on
+        self.figure = Figure()
+        # this is the Canvas Widget that displays the `figure`
+        # it takes the `figure` instance as a parameter to __init__
+        self.canvas = FigureCanvas(self.figure)
+
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -184,8 +193,14 @@ class Ui_Dialog(object):
             ξ_eff_F_DB,
             ξn_eff,
             check_Vp_DB,
+            x_bilinear,
+            y_bilinear_ms2,
+            sd_meters,
+            sa_ms2,
+            kn_eff_list,
+            sd_meters_0,
+            sa_ms2_0,
         ) = output_values
-        self.outputLayout = QFormLayout()
         i_string = "Iteraction #" + str(i)
         Vy_F_DB_string = "Vy_F_DB: " + str(Vy_F_DB) + " m/s^2"
         Vp_F_DB_string = "Vp_F_DB: " + str(Vp_F_DB) + " m/s^2"
@@ -194,6 +209,8 @@ class Ui_Dialog(object):
         Vp_DB_string = "Vp_DB: " + str(Vp_DB)
         check_string = "check: " + str(check) + " %"
         check_Vp_DB_string = "check_Vp_DB: " + str(check_Vp_DB) + " %"
+
+        self.outputLayout = QFormLayout()
 
         self.i_label = QLabel()
         self.i_label.setText(i_string)
@@ -226,8 +243,54 @@ class Ui_Dialog(object):
         self.check_Vp_DB_label = QLabel()
         self.ξn_eff_label.setText(check_Vp_DB_string)
         self.outputLayout.addRow(self.check_Vp_DB_label)
+        self.graphLayout = QFormLayout()
+
+        self.plot_final(
+            x_bilinear,
+            y_bilinear_ms2,
+            sd_meters,
+            sa_ms2,
+            kn_eff_list,
+            i,
+            sd_meters_0,
+            sa_ms2_0,
+        )
+        self.groupBox.setLayout(self.graphLayout)
+        self.graphLayout.addWidget(self.canvas)
 
         self.output_box.setLayout(self.outputLayout)
+
+    def plot_final(
+        self,
+        x_bilinear,
+        y_bilinear_ms2,
+        sd_meters,
+        sa_ms2,
+        kn_eff_list,
+        i,
+        sd_meters_0,
+        sa_ms2_0,
+    ):
+        """
+        Function to plot the final graph, meant to be displayed when
+        all the curves are calculated in the final iteration.
+        """
+        self.figure.clear()
+        ax = self.figure.add_subplot(111)
+
+        ax.plot(sd_meters, sa_ms2, color="#002260", label="ξ=5%")
+        ax.plot(x_bilinear, y_bilinear_ms2, color="#FF0000", label="Bare Frame")
+        ax.plot(
+            sd_meters,
+            kn_eff_list,
+            color="#00B050",
+            label=("K" + str(i) + "eff"),
+        )
+        ax.plot(sd_meters_0, sa_ms2_0, color="#FFC000", label="Sa(5%)")
+
+        ax.set_xlabel("Sd [m]", fontsize="large")
+        ax.set_ylabel("Sa [m/s^2]", fontsize="large")
+        self.canvas.draw()
 
 
 if __name__ == "__main__":

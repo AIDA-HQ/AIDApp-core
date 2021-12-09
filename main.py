@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 from calcs import Values, Area
 from coordinates import Coords
@@ -112,8 +111,6 @@ class AIDApp:
         if area_diff < 0.0004:
             sd_meters_0 = values.convert_to_meters(input_coord.x_adrs_input)
             sa_ms2_0 = values.convert_to_ms2(input_coord.y_adrs_input)
-            plt.plot(sd_meters_0, sa_ms2_0, color="#FFC000", label="Sa(5%)")
-
             adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
             k_eff = Vp_ms2 / dp
 
@@ -204,10 +201,6 @@ class AIDApp:
                 if check <= 0.5:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = np.array([0, Vy_F_DB, Vp_F_DB])
-                    graphs.plot_final(
-                        x_bilinear, y_bilinear_ms2, sd_meters, sa_ms2, kn_eff_list, i
-                    )
-                    plt.show()
                     return [
                         Vp_DB,
                         check,
@@ -218,6 +211,13 @@ class AIDApp:
                         ξ_eff_F_DB,
                         ξn_eff,
                         check_Vp_DB,
+                        x_bilinear,
+                        y_bilinear_ms2,
+                        sd_meters,
+                        sa_ms2,
+                        kn_eff_list,
+                        sd_meters_0,
+                        sa_ms2_0,
                     ]
 
             return get_calcs_recursive(
