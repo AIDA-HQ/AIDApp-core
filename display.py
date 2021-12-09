@@ -10,7 +10,7 @@ class Print:
         Vy_F_DB,
         Vp_F_DB,
         ξ_eff_F_DB,
-        Vp_DB_prev_iteraction,
+        Vp_DB_prev_iteration,
         ξn_eff,
         Vp_DB,
         check,
@@ -24,7 +24,7 @@ class Print:
         print("Vy_F_DB: " + str(Vy_F_DB) + " m/s^2")
         print("Vp_F_DB: " + str(Vp_F_DB) + " m/s^2")
         print("ξ_eff_F_DB: " + str(ξ_eff_F_DB) + " %")
-        print("Vp_DB_prev_iteraction: ", Vp_DB_prev_iteraction)
+        print("Vp_DB_prev_iteration: ", Vp_DB_prev_iteration)
         print("ξ" + str(i) + "_eff: " + str(ξn_eff))
         print("check: " + str(check) + " %")
         print("check_Vp_DB: " + str(check_Vp_DB) + " %")

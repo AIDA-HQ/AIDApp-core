@@ -201,7 +201,7 @@ class Ui_Dialog:
             sd_meters_0,
             sa_ms2_0,
         ) = output_values
-        i_string = "Iteraction #" + str(i)
+        i_string = "Iteration #" + str(i)
         Vy_F_DB_string = "Vy_F_DB: " + str(Vy_F_DB) + " m/s^2"
         Vp_F_DB_string = "Vp_F_DB: " + str(Vp_F_DB) + " m/s^2"
         ξ_eff_F_DB_string = "ξ_eff_F_DB: " + str(ξ_eff_F_DB) + " %"

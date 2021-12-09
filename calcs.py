@@ -272,13 +272,13 @@ class Values:
         return Vp_DB_1  # [kN]
 
     @staticmethod
-    def get_Vp_DB(ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction):
+    def get_Vp_DB(ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteration):
         """
         Vy(DB) = VP(DB)
         Return the value of Vp_DB [kN] which will be iterated various times
         """
-        # Vp_DB_prev_iteraction: previos value of Vp_DB
-        Vp_DB = (ξn_eff * (Vp_kN + Vp_DB_prev_iteraction) - ξFrame * Vp_kN) / ξ_DB
+        # Vp_DB_prev_iteration: previos value of Vp_DB
+        Vp_DB = (ξn_eff * (Vp_kN + Vp_DB_prev_iteration) - ξFrame * Vp_kN) / ξ_DB
         return Vp_DB  # [kN]
 
     @staticmethod
@@ -295,11 +295,11 @@ class Values:
         return check  # [%]
 
     @staticmethod
-    def get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteraction):
+    def get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration):
         """
-        Get the perecentage difference between Vp_DB and Vp_DB_prev_iteraction
+        Get the perecentage difference between Vp_DB and Vp_DB_prev_iteration
         """
-        check_Vp_DB = (np.absolute(Vp_DB - Vp_DB_prev_iteraction) / Vp_DB) * 100
+        check_Vp_DB = (np.absolute(Vp_DB - Vp_DB_prev_iteration) / Vp_DB) * 100
         return check_Vp_DB
 
 

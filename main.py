@@ -119,15 +119,15 @@ class AIDApp:
                 coord.y_kn_eff(sd_meters_0, k_eff),
             )
 
-            # Sui generis first iteraction
+            # Sui generis first iteration
             ξFrame = values.get_ξFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
 
             ξn_eff = values.get_ξn_eff_0(dp, adrs_spectrum, k1_eff_curve)
             ξ_DB = values.get_ξ_DB(μ_DB, k_DB)
-            Vp_DB_prev_iteraction = values.get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame)
+            Vp_DB_prev_iteration = values.get_Vp_DB_0(ξn_eff, Vp_kN, ξ_DB, ξFrame)
 
             check = values.get_check(ξFrame, ξn_eff)
-            Vp_DB = Vp_DB_prev_iteraction
+            Vp_DB = Vp_DB_prev_iteration
             display.print_iteration_zero(ξFrame, ξn_eff, Vp_DB, check)
 
             # Recursive function to calculate what's needed
@@ -154,7 +154,7 @@ class AIDApp:
 
                     adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
 
-                    Vp_DB_prev_iteraction = Vp_DB
+                    Vp_DB_prev_iteration = Vp_DB
 
                     Vy_F_DB = values.get_Vy_F_DB(Vp_DB)
                     Vp_F_DB = values.get_Vp_F_DB(Vp_kN, Vp_DB)
@@ -167,17 +167,17 @@ class AIDApp:
                         dp, adrs_spectrum, kn_eff_curve, ξ_eff_F_DB
                     )
                     Vp_DB = values.get_Vp_DB(
-                        ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteraction
+                        ξn_eff, Vp_kN, ξFrame, ξ_DB, Vp_DB_prev_iteration
                     )
 
                     check = values.get_check(ξ_eff_F_DB, ξn_eff)
-                    check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteraction)
+                    check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration)
                     display.print_brief(
                         i,
                         Vy_F_DB,
                         Vp_F_DB,
                         ξ_eff_F_DB,
-                        Vp_DB_prev_iteraction,
+                        Vp_DB_prev_iteration,
                         ξn_eff,
                         Vp_DB,
                         check,
