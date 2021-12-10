@@ -1,8 +1,9 @@
-name: Package Application with Pyinstaller
+name: Package Application and create new release
 
 on:
-  release:
-    types: [published, edited]
+  push:
+    tags:
+      - "v*"
 
 jobs:
   build_windows:
@@ -16,6 +17,12 @@ jobs:
           artifact: AIDApp
           use-dependencies: true
           no-console: true
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          generate_release_notes: true
+          files: dist\AIDApp.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
