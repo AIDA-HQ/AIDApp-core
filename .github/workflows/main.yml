@@ -6,24 +6,48 @@ on:
       - "v*"
 
 jobs:
-  build_windows:
+
+  package-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Package Application
+      - name: Package Windows Application
         uses: eric2788/pyinstaller-build@master
         with:
           main: src/gui
           artifact: AIDApp
           use-dependencies: true
           no-console: true
-      - name: Release
+      - name: Release Windows Artifact
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
           files: dist\AIDApp.exe
-      - name: Upload Artifact
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: AIDApp
+          path: dist
+
+  package-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Package Linux Application
+        uses: eric2788/pyinstaller-build@master
+        with:
+          main: src/gui
+          artifact: AIDApp
+          use-dependencies: true
+          no-console: true
+      - name: Release Linux Artifact
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          generate_release_notes: true
+          files: dist/AIDApp
+      - name: Upload Linux Artifact
         uses: actions/upload-artifact@v2
         with:
           name: AIDApp
