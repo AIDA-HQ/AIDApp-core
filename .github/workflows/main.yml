@@ -12,7 +12,7 @@ jobs:
       - name: Package Application
         uses: eric2788/pyinstaller-build@master
         with:
-          main: gui
+          main: src/gui
           artifact: AIDApp
           use-dependencies: true
           no-console: true
