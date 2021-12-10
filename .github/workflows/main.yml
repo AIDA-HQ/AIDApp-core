@@ -1,4 +1,3 @@
-
 name: Package Application with Pyinstaller
 
 on:
@@ -16,8 +15,9 @@ jobs:
           main: gui
           artifact: AIDApp
           use-dependencies: true
+          no-console: true
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: python_exe
+          name: AIDApp
           path: dist
