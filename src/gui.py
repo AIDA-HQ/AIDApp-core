@@ -200,13 +200,17 @@ class Ui_Dialog:
             kn_eff_list,
             sd_meters_0,
             sa_ms2_0,
+            dy_DB,
+            k_DB,
         ) = output_values
         i_string = "Iteration #" + str(i)
         Vy_F_DB_string = "Vy_F_DB: " + str(Vy_F_DB) + " m/s^2"
         Vp_F_DB_string = "Vp_F_DB: " + str(Vp_F_DB) + " m/s^2"
         xi_eff_F_DB_string = "xi_eff_F_DB: " + str(xi_eff_F_DB) + " %"
         xi_n_eff_string = "xi" + str(i) + "_eff: " + str(xi_n_eff)
-        Vp_DB_string = "Vp_DB: " + str(Vp_DB)
+        Vp_DB_string = "Vp_DB = Vy_DB: " + str(Vp_DB)
+        dy_DB_string = "dy_DB = " + str(dy_DB) + " m"
+        K_DB_string = "K_DB = " + str(k_DB) + " kN/m"
         check_string = "check: " + str(check) + " %"
         check_Vp_DB_string = "check_Vp_DB: " + str(check_Vp_DB) + " %"
 
@@ -235,6 +239,14 @@ class Ui_Dialog:
         self.xi_n_eff_label = QLabel()
         self.xi_n_eff_label.setText(xi_n_eff_string)
         self.outputLayout.addRow(self.xi_n_eff_label)
+
+        self.dy_DB_label = QLabel()
+        self.dy_DB_label.setText(dy_DB_string)
+        self.outputLayout.addRow(self.dy_DB_label)
+
+        self.K_DB_label = QLabel()
+        self.K_DB_label.setText(K_DB_string)
+        self.outputLayout.addRow(self.K_DB_label)
 
         self.check_label = QLabel()
         self.check_label.setText(check_string)
