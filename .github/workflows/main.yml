@@ -3,22 +3,21 @@ name: Package Application with Pyinstaller
 
 on:
   release:
-    types: [published]
+    types: [published, edited]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  build_windows:
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: .
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: name-of-artifact
-        path: dist/windows
+      - uses: actions/checkout@v2
+      - name: Package Application
+        uses: eric2788/pyinstaller-build@master
+        with:
+          main: gui
+          artifact: AIDApp
+          use-dependencies: true
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: python_exe
+          path: dist
