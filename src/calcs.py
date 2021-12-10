@@ -144,7 +144,6 @@ class Values:
         """
         Return the value of Vy(F) in m/s^2
         """
-        global Vy_F_ms2
         Vy_F_ms2 = Vy_F_kN / me  # [m/s^2]
         return Vy_F_ms2
 

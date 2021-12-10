@@ -117,9 +117,9 @@ class Ui_Dialog:
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
+        dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
         self.input_Box.setTitle(_translate("AIDApp", "Input Values"))
         self.dp_label.setText(_translate("AIDApp", "dp"))
         self.u_DB_label.setText(_translate("AIDApp", "mi_DB"))
