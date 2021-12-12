@@ -200,6 +200,7 @@ class AIDApp:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = np.array([0, Vy_F_DB, Vp_F_DB])
                     dy_DB = values.get_dy_DB(mi_DB, dp)
+                    kb = values.get_Kb(dy_DB, Vp_DB)
                     return [
                         Vp_DB,
                         check,
@@ -218,7 +219,7 @@ class AIDApp:
                         sd_meters_0,
                         sa_ms2_0,
                         dy_DB,
-                        k_DB,
+                        kb,
                     ]
 
             return get_calcs_recursive(
