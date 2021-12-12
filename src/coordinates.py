@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import absolute, array, linspace, polyfit, column_stack
 from shapely.geometry.linestring import LineString
 from input_coordinates import Input
 
@@ -16,7 +16,7 @@ class Coords:
         for element in sd_m:
             new_coord = element * kn_eff
             y_kn_eff_list.append(new_coord)
-        return np.array(y_kn_eff_list)
+        return array(y_kn_eff_list)
 
     # Generate SDOF pushover curve
     @staticmethod
@@ -25,7 +25,7 @@ class Coords:
         for element in input_coord.x_p_mdof:
             new_coord = element / gamma
             x_p_sdof_list.append(new_coord)
-        return np.array(x_p_sdof_list)
+        return array(x_p_sdof_list)
 
     @staticmethod
     def y_p_sdof(gamma):
@@ -33,13 +33,13 @@ class Coords:
         for element in input_coord.y_p_mdof:
             new_coord = element / gamma
             y_p_sdof_list.append(new_coord)
-        return np.array(y_p_sdof_list)
+        return array(y_p_sdof_list)
 
     ##
 
     @staticmethod
     def x_bilinear_line(start_graph, end_graph):
-        return np.linspace(start_graph, end_graph, 1000)
+        return linspace(start_graph, end_graph, 1000)
 
     @staticmethod
     def find_intersections(curve_1, curve_2):
@@ -58,7 +58,7 @@ class Coords:
         """
         Find the index of the minimum/lowest element from the array.
         """
-        difference_array_x = np.absolute(curve_coordinates - coord)
+        difference_array_x = absolute(curve_coordinates - coord)
         index = difference_array_x.argmin()
         return index
 
@@ -77,7 +77,7 @@ class Coords:
         Returns a tuple with m and q to generate one
         straight line which composes the bilinear line.
         """
-        m, q = np.polyfit(x=[x_1, x_2], y=[y_1, y_2], deg=1)
+        m, q = polyfit(x=[x_1, x_2], y=[y_1, y_2], deg=1)
         return m, q
 
     def generate_line(self, x_p_sdof, x_1_array, x_2_array, y_1_array, y_2_array):
@@ -93,7 +93,7 @@ class Coords:
 
     @staticmethod
     def interpolate_curve(x_coords, y_coords):
-        curve = LineString(np.column_stack((x_coords, y_coords)))
+        curve = LineString(column_stack((x_coords, y_coords)))
         return curve
 
     def find_range_pushover(self, pushover_coord, line_1_coord, line_2_coord):

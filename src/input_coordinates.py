@@ -1,8 +1,8 @@
-import numpy as np
+from numpy import array
 
 
 class Input:
-    x_adrs_input = np.array(
+    x_adrs_input = array(
         [
             0,
             0.130494775,
@@ -129,7 +129,7 @@ class Input:
         ]
     )
 
-    y_adrs_input = np.array(
+    y_adrs_input = array(
         [
             0.242142,
             0.328353,
@@ -256,7 +256,7 @@ class Input:
         ]
     )
 
-    x_p_mdof = np.array(
+    x_p_mdof = array(
         [
             0,
             0.0004,
@@ -562,7 +562,7 @@ class Input:
         ]
     )
 
-    y_p_mdof = np.array(
+    y_p_mdof = array(
         [
             0,
             6.111379948,

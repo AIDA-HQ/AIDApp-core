@@ -132,10 +132,10 @@ class Ui_Dialog:
 
     def getInfo(self):
         storey_masses = []
-        for element in mass_dict.values():
+        for element in self.mass_dict.values():
             storey_masses.append(element.value())
         eigenvalues = []
-        for element in eigenvalue_dict.values():
+        for element in self.eigenvalue_dict.values():
             eigenvalues.append(element.value())
         # Feed the values to the main program
         output = aidapp.main(
@@ -154,11 +154,8 @@ class Ui_Dialog:
         self.show_storey_boxes(self.storey_number_SpinBar.value())
 
     def show_storey_boxes(self, i):
-        global mass_dict
-        global eigenvalue_dict
-
-        mass_dict = {}
-        eigenvalue_dict = {}
+        self.mass_dict = {}
+        self.eigenvalue_dict = {}
 
         k = 1
         while k < (i+1):
@@ -168,17 +165,17 @@ class Ui_Dialog:
             mass_value = QDoubleSpinBox()
             mass_value.setDecimals(3)
             mass_value.setMaximum(10000)
-            mass_dict[mass_key] = mass_value
+            self.mass_dict[mass_key] = mass_value
             eigenvalue_value = QDoubleSpinBox()
             eigenvalue_value.setDecimals(10)
-            eigenvalue_dict[eigenvalue_key] = eigenvalue_value
+            self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
 
             self.inputLayout.addRow(
-                QLabel("Storey #" + str(k) + " mass"), mass_dict[mass_key]
+                QLabel(f"Storey #{k} mass"), self.mass_dict[mass_key]
             )
             self.inputLayout.addRow(
-                QLabel("Storey #" + str(k) + " eigenvalue"),
-                eigenvalue_dict[eigenvalue_key],
+                QLabel(f"Storey #{k} eigenvalue"),
+                self.eigenvalue_dict[eigenvalue_key],
             )
             k += 1
         self.input_Box.setLayout(self.inputLayout)
@@ -204,16 +201,16 @@ class Ui_Dialog:
             dy_DB,
             kb,
         ) = output_values
-        i_string = "Iteration #" + str(i)
-        Vy_F_DB_string = "Vy_F_DB: " + str(Vy_F_DB) + " m/s^2"
-        Vp_F_DB_string = "Vp_F_DB: " + str(Vp_F_DB) + " m/s^2"
-        xi_eff_F_DB_string = "xi_eff_F_DB: " + str(xi_eff_F_DB) + " %"
-        xi_n_eff_string = "xi" + str(i) + "_eff: " + str(xi_n_eff)
-        Vp_DB_string = "Vp_DB = Vy_DB: " + str(Vp_DB)
-        dy_DB_string = "dy_DB = " + str(dy_DB) + " m"
-        kb_string = "K_DB = " + str(kb) + " kN/m"
-        check_string = "check: " + str(check) + " %"
-        check_Vp_DB_string = "check_Vp_DB: " + str(check_Vp_DB) + " %"
+        i_string = f"Iteration #{i}"
+        Vy_F_DB_string = f"Vy_F_DB: {Vy_F_DB} m/s^2"
+        Vp_F_DB_string = f"Vp_F_DB: {Vp_F_DB} m/s^2"
+        xi_eff_F_DB_string = f"xi_eff_F_DB: {xi_eff_F_DB} %"
+        xi_n_eff_string = f"xi{i}_eff: {xi_n_eff}"
+        Vp_DB_string = f"Vp_DB = Vy_DB: {Vp_DB}"
+        dy_DB_string = f"dy_DB = {dy_DB} m"
+        kb_string = f"K_DB = {kb} kN/m"
+        check_string = f"check: {check} %"
+        check_Vp_DB_string = f"check_Vp_DB: {check_Vp_DB} %"
 
         self.outputLayout = QFormLayout()
 
@@ -319,11 +316,12 @@ class Ui_Dialog:
 
 
 if __name__ == "__main__":
-    import sys
+    from sys import argv, exit
 
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     Dialog = QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
     Dialog.show()
-    sys.exit(app.exec_())
+
+    exit(app.exec_())
