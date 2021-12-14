@@ -255,6 +255,8 @@ class Ui_Dialog:
         self.check_Vp_DB_label = QLabel()
         self.check_Vp_DB_label.setText(check_Vp_DB_string)
         self.outputLayout.addRow(self.check_Vp_DB_label)
+
+        self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()
 
         self.plot_final(
