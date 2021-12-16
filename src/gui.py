@@ -8,6 +8,7 @@ from qtpy.QtWidgets import (
     QSpinBox,
     QDialogButtonBox,
     QFormLayout,
+    QHBoxLayout
 )
 from qtpy import QtCore
 from main import AIDApp
@@ -36,48 +37,59 @@ class Ui_Dialog:
         self.inputLayout = QFormLayout(self.input_Box)
         self.inputLayout.setObjectName("inputLayout")
 
+        # Input buttons
+        self.input_file_layout = QHBoxLayout()
+        self.input_file_layout.setObjectName("input_file_layout")
+        self.file1_button = QPushButton(self.input_Box)
+        self.file1_button.setObjectName("file1_button")
+        self.input_file_layout.addWidget(self.file1_button)
+        self.file2_button = QPushButton(self.input_Box)
+        self.file2_button.setObjectName("file2_button")
+        self.input_file_layout.addWidget(self.file2_button)
+        self.inputLayout.setLayout(0, QFormLayout.SpanningRole, self.input_file_layout)
+
         # dp
         self.dp_label = QLabel(self.input_Box)
         self.dp_label.setObjectName("dp_label")
-        self.inputLayout.setWidget(0, QFormLayout.LabelRole, self.dp_label)
+        self.inputLayout.setWidget(1, QFormLayout.LabelRole, self.dp_label)
         self.dp_SpinBar = QDoubleSpinBox(self.input_Box)
         self.dp_SpinBar.setMaximum(99.99)
         self.dp_SpinBar.setDecimals(10)
         self.dp_SpinBar.setObjectName("dp_SpinBar")
 
-        self.inputLayout.setWidget(0, QFormLayout.FieldRole, self.dp_SpinBar)
+        self.inputLayout.setWidget(1, QFormLayout.FieldRole, self.dp_SpinBar)
 
         # u_DB
         self.u_DB_label = QLabel(self.input_Box)
         self.u_DB_label.setObjectName("u_DB_label")
-        self.inputLayout.setWidget(2, QFormLayout.LabelRole, self.u_DB_label)
+        self.inputLayout.setWidget(3, QFormLayout.LabelRole, self.u_DB_label)
         self.u_DB_SpinBar = QDoubleSpinBox(self.input_Box)
         self.u_DB_SpinBar.setObjectName("u_DB_SpinBar")
 
-        self.inputLayout.setWidget(2, QFormLayout.FieldRole, self.u_DB_SpinBar)
+        self.inputLayout.setWidget(3, QFormLayout.FieldRole, self.u_DB_SpinBar)
 
         # k_DB
         self.k_DB_label = QLabel(self.input_Box)
         self.k_DB_label.setObjectName("k_DB_label")
-        self.inputLayout.setWidget(4, QFormLayout.LabelRole, self.k_DB_label)
+        self.inputLayout.setWidget(5, QFormLayout.LabelRole, self.k_DB_label)
         self.k_DB_SpinBar = QDoubleSpinBox(self.input_Box)
         self.k_DB_SpinBar.setObjectName("k_DB_SpinBar")
 
-        self.inputLayout.setWidget(4, QFormLayout.FieldRole, self.k_DB_SpinBar)
+        self.inputLayout.setWidget(5, QFormLayout.FieldRole, self.k_DB_SpinBar)
 
         # Kf
         self.Kf_label = QLabel(self.input_Box)
         self.Kf_label.setObjectName("Kf_label")
-        self.inputLayout.setWidget(5, QFormLayout.LabelRole, self.Kf_label)
+        self.inputLayout.setWidget(6, QFormLayout.LabelRole, self.Kf_label)
         self.Kf_SpinBar = QDoubleSpinBox(self.input_Box)
         self.Kf_SpinBar.setObjectName("Kf_SpinBar")
 
-        self.inputLayout.setWidget(5, QFormLayout.FieldRole, self.Kf_SpinBar)
+        self.inputLayout.setWidget(6, QFormLayout.FieldRole, self.Kf_SpinBar)
 
         # Storey Number
         self.storey_number_label = QLabel(self.input_Box)
         self.storey_number_label.setObjectName("storey_number_label")
-        self.inputLayout.setWidget(6, QFormLayout.LabelRole, self.storey_number_label)
+        self.inputLayout.setWidget(7, QFormLayout.LabelRole, self.storey_number_label)
 
         # Send button
         self.sendButton = QPushButton(self.input_Box)
@@ -86,10 +98,10 @@ class Ui_Dialog:
         self.sendButton.setObjectName("sendButton")
         self.sendButton.clicked.connect(self.count_storey_boxes)
 
-        self.inputLayout.setWidget(7, QFormLayout.FieldRole, self.sendButton)
+        self.inputLayout.setWidget(8, QFormLayout.FieldRole, self.sendButton)
         self.storey_number_SpinBar = QSpinBox(self.input_Box)
         self.storey_number_SpinBar.setObjectName("storey_number_SpinBar")
-        self.inputLayout.setWidget(7, QFormLayout.LabelRole, self.storey_number_SpinBar)
+        self.inputLayout.setWidget(8, QFormLayout.LabelRole, self.storey_number_SpinBar)
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.input_Box)
         self.groupBox = QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
@@ -129,6 +141,8 @@ class Ui_Dialog:
         self.sendButton.setText(_translate("AIDApp", "Send"))
         self.groupBox.setTitle(_translate("AIDApp", "Graph"))
         self.output_box.setTitle(_translate("AIDApp", "Output Values"))
+        self.file2_button.setText(_translate("Dialog", "PushButton2"))
+        self.file1_button.setText(_translate("Dialog", "PushButton1"))
 
     def getInfo(self):
         storey_masses = []
