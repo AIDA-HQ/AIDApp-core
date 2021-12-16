@@ -101,10 +101,9 @@ class Values:
         """
         Calculate the slope of first 7 values of SDOF Pushover Curve
         """
-        a = np.array([x_p_sdof[2:10]])
-        b = np.array([y_p_sdof[2:10]])
+        a = np.array(x_p_sdof[2:10])
+        b = np.array(y_p_sdof[2:10])
 
-        # TODO - Find an alternative to linregress
         slope, _intercept, _r, _p, _se = linregress(a, b)  # kN
         return slope  # Slope
 
