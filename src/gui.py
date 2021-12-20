@@ -202,7 +202,7 @@ class Ui_Dialog:
             self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
 
             self.inputLayout.addRow(
-                QLabel(f"Storey #{k} mass"), self.mass_dict[mass_key]
+                QLabel(f"Storey #{k} mass [ton]"), self.mass_dict[mass_key]
             )
             self.inputLayout.addRow(
                 QLabel(f"Storey #{k} eigenvalue"),
