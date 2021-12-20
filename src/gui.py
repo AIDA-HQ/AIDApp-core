@@ -148,7 +148,7 @@ class Ui_Dialog:
         _translate = QtCore.QCoreApplication.translate
         dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
         self.input_Box.setTitle(_translate("AIDApp", "Input Values"))
-        self.dp_label.setText(_translate("AIDApp", "dp"))
+        self.dp_label.setText(_translate("AIDApp", "dp [m]"))
         self.u_DB_label.setText(_translate("AIDApp", "\u03BC_DB"))
         self.k_DB_label.setText(_translate("AIDApp", "\u03BA_DB"))
         self.Kf_label.setText(_translate("AIDApp", "\u03BA(F)"))
