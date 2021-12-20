@@ -4,17 +4,19 @@ from calcs import Area, Values
 from coordinates import Coords
 from display import Print
 from input_coordinates import Input
+from coordinate_handler import CoordinateHandler
 
 area = Area()
 coord = Coords()
 input_coord = Input()
 display = Print()
 values = Values()
+handlr = CoordinateHandler()
 
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_mi_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues
+        self, arg_dp, arg_mi_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path1, arg_path2
     ):
 
         self.dp = arg_dp
@@ -23,11 +25,13 @@ class AIDApp:
         self.Kf = arg_Kf
         self.storey_masses = arg_storey_masses
         self.eigenvalues = arg_eigenvalues
+        self.path1 = handlr.generate_array(arg_path1)
+        self.path2 = handlr.generate_array(arg_path2)
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
-        self.y_p_sdof = coord.y_p_sdof(self.gamma)
-        self.x_p_sdof = coord.x_p_sdof(self.gamma)
+        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path2)
+        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path1)
         self.Vp_kN = self.y_p_sdof[coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)]
         self.Vp_ms2 = self.Vp_kN / self.me  # m/s^2
 

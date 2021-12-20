@@ -8,7 +8,8 @@ from qtpy.QtWidgets import (
     QSpinBox,
     QDialogButtonBox,
     QFormLayout,
-    QHBoxLayout
+    QHBoxLayout,
+    QFileDialog,
 )
 from qtpy import QtCore
 from main import AIDApp
@@ -47,6 +48,8 @@ class Ui_Dialog:
         self.file2_button.setObjectName("file2_button")
         self.input_file_layout.addWidget(self.file2_button)
         self.inputLayout.setLayout(0, QFormLayout.SpanningRole, self.input_file_layout)
+        self.file1_button.clicked.connect(self.open_1)
+        self.file2_button.clicked.connect(self.open_2)
 
         # dp
         self.dp_label = QLabel(self.input_Box)
@@ -129,6 +132,18 @@ class Ui_Dialog:
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
+    def open_1(self):
+        path = (QFileDialog.getOpenFileName())
+        if path != ('', ''):
+            print(path[0])
+        self.path1 = path[0]
+
+    def open_2(self):
+        path = (QFileDialog.getOpenFileName())
+        if path != ('', ''):
+            print(path[0])
+        self.path2 = path[0]
+
     def retranslateUi(self, dialog):
         _translate = QtCore.QCoreApplication.translate
         dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
@@ -141,8 +156,8 @@ class Ui_Dialog:
         self.sendButton.setText(_translate("AIDApp", "Send"))
         self.groupBox.setTitle(_translate("AIDApp", "Graph"))
         self.output_box.setTitle(_translate("AIDApp", "Output Values"))
-        self.file2_button.setText(_translate("Dialog", "PushButton2"))
-        self.file1_button.setText(_translate("Dialog", "PushButton1"))
+        self.file2_button.setText(_translate("Dialog", "Y Pushover"))
+        self.file1_button.setText(_translate("Dialog", "X Pushover"))
 
     def getInfo(self):
         storey_masses = []
@@ -159,6 +174,8 @@ class Ui_Dialog:
             self.Kf_SpinBar.value(),
             storey_masses,
             eigenvalues,
+            self.path1,
+            self.path2,
         )
 
         self.output_field(output)
