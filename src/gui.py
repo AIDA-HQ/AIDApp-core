@@ -165,8 +165,9 @@ class Ui_Dialog:
             # dynamically create key
             mass_key = k
             eigenvalue_key = k
-            mass_value = QSpinBox()
-            mass_value.setMaximum(1000)
+            mass_value = QDoubleSpinBox()
+            mass_value.setDecimals(3)
+            mass_value.setMaximum(10000)
             mass_dict[mass_key] = mass_value
             eigenvalue_value = QDoubleSpinBox()
             eigenvalue_value.setDecimals(10)
