@@ -160,8 +160,8 @@ class Ui_Dialog:
         mass_dict = {}
         eigenvalue_dict = {}
 
-        k = 0
-        while k < i:
+        k = 1
+        while k < (i+1):
             # dynamically create key
             mass_key = k
             eigenvalue_key = k
