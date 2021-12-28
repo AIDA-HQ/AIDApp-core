@@ -149,9 +149,9 @@ class Ui_Dialog:
         dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
         self.input_Box.setTitle(_translate("AIDApp", "Input Values"))
         self.dp_label.setText(_translate("AIDApp", "dp"))
-        self.u_DB_label.setText(_translate("AIDApp", "mi_DB"))
-        self.k_DB_label.setText(_translate("AIDApp", "k_DB"))
-        self.Kf_label.setText(_translate("AIDApp", "Kf"))
+        self.u_DB_label.setText(_translate("AIDApp", "\u03BC_DB"))
+        self.k_DB_label.setText(_translate("AIDApp", "\u03BA_DB"))
+        self.Kf_label.setText(_translate("AIDApp", "\u03BA(F)"))
         self.storey_number_label.setText(_translate("AIDApp", "# of storeys:"))
         self.sendButton.setText(_translate("AIDApp", "Send"))
         self.groupBox.setTitle(_translate("AIDApp", "Graph"))
@@ -235,11 +235,11 @@ class Ui_Dialog:
         i_string = f"Iteration #{i}"
         Vy_F_DB_string = f"Vy_F_DB: {Vy_F_DB} m/s^2"
         Vp_F_DB_string = f"Vp_F_DB: {Vp_F_DB} m/s^2"
-        xi_eff_F_DB_string = f"xi_eff_F_DB: {xi_eff_F_DB} %"
-        xi_n_eff_string = f"xi{i}_eff: {xi_n_eff}"
+        xi_eff_F_DB_string = f"\u03BE_eff_F_DB: {xi_eff_F_DB} %"
+        xi_n_eff_string = f"\u03BE{i}_eff: {xi_n_eff}"
         Vp_DB_string = f"Vp_DB = Vy_DB: {Vp_DB}"
         dy_DB_string = f"dy_DB = {dy_DB} m"
-        kb_string = f"K_DB = {kb} kN/m"
+        kb_string = f"\u03BA_DB = {kb} kN/m"
         check_string = f"check: {check} %"
         check_Vp_DB_string = f"check_Vp_DB: {check_Vp_DB} %"
 
