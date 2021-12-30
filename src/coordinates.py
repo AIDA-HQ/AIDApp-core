@@ -12,28 +12,16 @@ class Coords:
         Calculate the y coordinates of kn_eff curve (line),
         by taking the sd_m value list and kn_eff as input values.
         """
-        y_kn_eff_list = []
-        for element in sd_m:
-            new_coord = element * kn_eff
-            y_kn_eff_list.append(new_coord)
-        return array(y_kn_eff_list)
+        return array([element * kn_eff for element in sd_m])
 
     # Generate SDOF pushover curve
     @staticmethod
-    def x_p_sdof(gamma, x_p_mdof):
-        x_p_sdof_list = []
-        for element in x_p_mdof:
-            new_coord = element / gamma
-            x_p_sdof_list.append(new_coord)
-        return array(x_p_sdof_list)
+    def x_p_sdof(gamma, x_p_mdof):      
+        return array([element / gamma for element in x_p_mdof])
 
     @staticmethod
     def y_p_sdof(gamma, y_p_mdof):
-        y_p_sdof_list = []
-        for element in y_p_mdof:
-            new_coord = element / gamma
-            y_p_sdof_list.append(new_coord)
-        return array(y_p_sdof_list)
+        return array([element / gamma for element in y_p_mdof])
 
     ##
 

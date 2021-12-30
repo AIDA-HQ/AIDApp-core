@@ -12,22 +12,14 @@ class Values:
         """
         Convert the input array values to m
         """
-        coord_m_list = []
-        for element in coord_mm:
-            new_coord = element / 1000
-            coord_m_list.append(new_coord)
-        return array(coord_m_list)  # [m]
+        return array([element/1000 for element in coord_mm])  # [m]
 
     @staticmethod
     def convert_to_ms2(coord_g):
         """
         Convert the input array values to m/s^2
         """
-        ms2_list = []
-        for element in coord_g:
-            new_coord = element * 9.81
-            ms2_list.append(new_coord)
-        return array(ms2_list)  # [m/s^2]
+        return array([element * 9.81 for element in coord_g])  # [m/s^2]
 
     def get_gamma(self, storey_masses, eigenvalues):
         """
@@ -190,11 +182,7 @@ class Values:
         Calculate the value of Sa (xieff)
         coordinates after the iteration 0.
         """
-        Sa_list = []
-        for element in y_adrs_input:
-            Sa_element = element * (10 / (10 + xi_eff_F_DB)) ** 0.5
-            Sa_list.append(Sa_element)
-        return array(Sa_list)  # [g]
+        return array([element * (10 / (10 + xi_eff_F_DB)) ** 0.5 for element in y_adrs_input])  # [g]
 
     # TODO Convert the Sa values to m/s^2
 
@@ -203,11 +191,7 @@ class Values:
         """
         Calculate the value of T period
         """
-        T_list = []
-        for sd, sa in zip(sd_meters_0, sa_ms2_0):
-            T_element = 2 * pi * (sd / sa) ** 0.5
-            T_list.append(T_element)
-        return array(T_list)  # [s]
+        return array([2 * pi * (sd / sa) ** 0.5 for sd, sa in zip(sd_meters_0, sa_ms2_0)])  # [s]
 
     def get_Sd(self, sa_ms2_0, sd_meters_0, sa_ms2):
         """
@@ -216,11 +200,7 @@ class Values:
         # sa_ms2_0 is the initial array of Sa, the one input by the user
         # sa_ms2 is the array calculated by the program
         t_array = self.get_T(sa_ms2_0, sd_meters_0)
-        Sd_list = []
-        for sa, t in zip(sa_ms2, t_array):
-            Sd_element = sa * ((t / 2 / pi) ** 2)
-            Sd_list.append(Sd_element)
-        return array(Sd_list)  # [m]
+        return array([sa * ((t / 2 / pi) ** 2) for sa, t in zip(sa_ms2, t_array)])  # [m]
 
     #
     # Dissipative Brace (DB) methods
