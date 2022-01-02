@@ -133,14 +133,14 @@ class Ui_Dialog:
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def open_x(self):
-        path = (QFileDialog.getOpenFileName())
-        if path != ('', ''):
+        path = QFileDialog.getOpenFileName()
+        if path != ("", ""):
             print(path[0])
         self.path_x = path[0]
 
     def open_y(self):
-        path = (QFileDialog.getOpenFileName())
-        if path != ('', ''):
+        path = QFileDialog.getOpenFileName()
+        if path != ("", ""):
             print(path[0])
         self.path_y = path[0]
 
@@ -262,37 +262,51 @@ class Ui_Dialog:
 
         self.Vp_F_DB_label = QLabel()
         self.Vp_F_DB_label.setText(Vp_F_DB_string)
-        self.Vp_F_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.Vp_F_DB_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.Vp_F_DB_label)
 
         self.xi_eff_F_DB_label = QLabel()
         self.xi_eff_F_DB_label.setText(xi_eff_F_DB_string)
-        self.xi_eff_F_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.xi_eff_F_DB_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.xi_eff_F_DB_label)
 
         self.xi_n_eff_label = QLabel()
         self.xi_n_eff_label.setText(xi_n_eff_string)
-        self.xi_n_eff_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.xi_n_eff_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.xi_n_eff_label)
 
         self.dy_DB_label = QLabel()
         self.dy_DB_label.setText(dy_DB_string)
-        self.dy_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.dy_DB_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.dy_DB_label)
 
         self.kb_label = QLabel()
         self.kb_label.setText(kb_string)
-        self.kb_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.kb_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.kb_label)
 
         self.check_label = QLabel()
         self.check_label.setText(check_string)
-        self.check_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.check_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.check_label)
 
         self.check_Vp_DB_label = QLabel()
         self.check_Vp_DB_label.setText(check_Vp_DB_string)
-        self.check_Vp_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.check_Vp_DB_label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         self.outputLayout.addRow(self.check_Vp_DB_label)
 
         self.buttonBox.setEnabled(False)
