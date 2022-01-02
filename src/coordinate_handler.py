@@ -1,15 +1,10 @@
-from numpy import fromfile, float64
-import warnings
-warnings.filterwarnings("error")
+from numpy import loadtxt
 
 class CoordinateHandler:
-
+  
     def generate_array(self, coordinate_file):
         """
-        This function takes a file containing coordinates (with the dot as decimal 
-        separator) separated one from the other by commas and returns a numpy array.
+        This function takes a file containing coordinates separated 
+        one from the other by a newline and returns a numpy array.
         """
-        try:
-            return fromfile(file=coordinate_file, sep=',')
-        except DeprecationWarning:
-            return "Something wrong happened, check your file"
+        return loadtxt(fname=coordinate_file, delimiter='\n', converters = {0: lambda s: float(s.decode("UTF-8").replace(",", "."))})
