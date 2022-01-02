@@ -41,15 +41,15 @@ class Ui_Dialog:
         # Input buttons
         self.input_file_layout = QHBoxLayout()
         self.input_file_layout.setObjectName("input_file_layout")
-        self.file1_button = QPushButton(self.input_Box)
-        self.file1_button.setObjectName("file1_button")
-        self.input_file_layout.addWidget(self.file1_button)
-        self.file2_button = QPushButton(self.input_Box)
-        self.file2_button.setObjectName("file2_button")
-        self.input_file_layout.addWidget(self.file2_button)
+        self.file_x_button = QPushButton(self.input_Box)
+        self.file_x_button.setObjectName("file_x_button")
+        self.input_file_layout.addWidget(self.file_x_button)
+        self.file_y_button = QPushButton(self.input_Box)
+        self.file_y_button.setObjectName("file_y_button")
+        self.input_file_layout.addWidget(self.file_y_button)
         self.inputLayout.setLayout(0, QFormLayout.SpanningRole, self.input_file_layout)
-        self.file1_button.clicked.connect(self.open_1)
-        self.file2_button.clicked.connect(self.open_2)
+        self.file_x_button.clicked.connect(self.open_x)
+        self.file_y_button.clicked.connect(self.open_y)
 
         # dp
         self.dp_label = QLabel(self.input_Box)
@@ -132,17 +132,17 @@ class Ui_Dialog:
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def open_1(self):
+    def open_x(self):
         path = (QFileDialog.getOpenFileName())
         if path != ('', ''):
             print(path[0])
-        self.path1 = path[0]
+        self.path_x = path[0]
 
-    def open_2(self):
+    def open_y(self):
         path = (QFileDialog.getOpenFileName())
         if path != ('', ''):
             print(path[0])
-        self.path2 = path[0]
+        self.path_y = path[0]
 
     def retranslateUi(self, dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -156,8 +156,8 @@ class Ui_Dialog:
         self.sendButton.setText(_translate("AIDApp", "Send"))
         self.groupBox.setTitle(_translate("AIDApp", "Graph"))
         self.output_box.setTitle(_translate("AIDApp", "Output Values"))
-        self.file2_button.setText(_translate("Dialog", "Y Pushover"))
-        self.file1_button.setText(_translate("Dialog", "X Pushover"))
+        self.file_y_button.setText(_translate("Dialog", "Y Pushover"))
+        self.file_x_button.setText(_translate("Dialog", "X Pushover"))
 
     def getInfo(self):
         storey_masses = []
@@ -174,8 +174,8 @@ class Ui_Dialog:
             self.Kf_SpinBar.value(),
             storey_masses,
             eigenvalues,
-            self.path1,
-            self.path2,
+            self.path_x,
+            self.path_y,
         )
 
         self.output_field(output)

@@ -16,7 +16,7 @@ handlr = CoordinateHandler()
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_mi_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path1, arg_path2
+        self, arg_dp, arg_mi_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path_x, arg_path_y
     ):
 
         self.dp = arg_dp
@@ -25,13 +25,13 @@ class AIDApp:
         self.Kf = arg_Kf
         self.storey_masses = arg_storey_masses
         self.eigenvalues = arg_eigenvalues
-        self.path1 = handlr.generate_array(arg_path1)
-        self.path2 = handlr.generate_array(arg_path2)
+        self.path_x = handlr.generate_array(arg_path_x)
+        self.path_y = handlr.generate_array(arg_path_y)
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
-        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path2)
-        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path1)
+        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path_y)
+        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path_x)
         self.Vp_kN = self.y_p_sdof[coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)]
         self.Vp_ms2 = self.Vp_kN / self.me  # m/s^2
 
