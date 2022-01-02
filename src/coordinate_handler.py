@@ -1,8 +1,9 @@
 from numpy import loadtxt
 
 class CoordinateHandler:
-  
-    def generate_array(self, coordinate_file):
+
+    @staticmethod
+    def generate_array(coordinate_file):
         """
         This function takes a file containing coordinates separated 
         one from the other by a newline and returns a numpy array.
