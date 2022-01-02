@@ -16,11 +16,11 @@ handlr = CoordinateHandler()
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_mi_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path_x, arg_path_y
+        self, arg_dp, arg_mu_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path_x, arg_path_y
     ):
 
         self.dp = arg_dp
-        self.mi_DB = arg_mi_DB
+        self.mu_DB = arg_mu_DB
         self.k_DB = arg_k_DB
         self.Kf = arg_Kf
         self.storey_masses = arg_storey_masses
@@ -112,7 +112,7 @@ class AIDApp:
             xiFrame = values.get_xiFrame(self.Kf, self.dp, dy, Vy_kN, self.Vp_ms2)
 
             xi_n_eff = values.get_xi_n_eff_0(self.dp, adrs_spectrum, k1_eff_curve)
-            xi_DB = values.get_xi_DB(self.mi_DB, self.k_DB)
+            xi_DB = values.get_xi_DB(self.mu_DB, self.k_DB)
             Vp_DB_prev_iteration = values.get_Vp_DB_0(xi_n_eff, self.Vp_kN, xi_DB, xiFrame)
 
             check = values.get_check(xiFrame, xi_n_eff)
@@ -190,7 +190,7 @@ class AIDApp:
                 if check <= 0.5:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
-                    dy_DB = values.get_dy_DB(self.mi_DB, self.dp)
+                    dy_DB = values.get_dy_DB(self.mu_DB, self.dp)
                     kb = values.get_Kb(dy_DB, Vp_DB)
                     return [
                         Vp_DB,

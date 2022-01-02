@@ -227,13 +227,13 @@ class Values:
     #
 
     @staticmethod
-    def get_xi_DB(mi_DB, k_DB):
-        xi_DB = 63.7 * k_DB * ((mi_DB - 1) / mi_DB)
+    def get_xi_DB(mu_DB, k_DB):
+        xi_DB = 63.7 * k_DB * ((mu_DB - 1) / mu_DB)
         return xi_DB  # [%]
 
     @staticmethod
-    def get_dy_DB(mi_DB, dp_DB):
-        dy_DB = dp_DB / mi_DB
+    def get_dy_DB(mu_DB, dp_DB):
+        dy_DB = dp_DB / mu_DB
         return dy_DB  # [m]
 
     @staticmethod
