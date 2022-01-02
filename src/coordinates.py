@@ -20,17 +20,17 @@ class Coords:
 
     # Generate SDOF pushover curve
     @staticmethod
-    def x_p_sdof(gamma):
+    def x_p_sdof(gamma, x_p_mdof):
         x_p_sdof_list = []
-        for element in input_coord.x_p_mdof:
+        for element in x_p_mdof:
             new_coord = element / gamma
             x_p_sdof_list.append(new_coord)
         return array(x_p_sdof_list)
 
     @staticmethod
-    def y_p_sdof(gamma):
+    def y_p_sdof(gamma, y_p_mdof):
         y_p_sdof_list = []
-        for element in input_coord.y_p_mdof:
+        for element in y_p_mdof:
             new_coord = element / gamma
             y_p_sdof_list.append(new_coord)
         return array(y_p_sdof_list)
