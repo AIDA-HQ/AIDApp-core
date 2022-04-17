@@ -30,7 +30,7 @@ class Values:
         )  # Storey masses displayed in a diagonal matrix
         self.m_tot = sum(storey_masses)  # Sum all storey masses together
         self.Phi = array(eigenvalues)  # Eigenvalues displayed in a 1-coloumn matrix
-        self.MPhi = matmul(self.m_matrix, self.Phi)
+        self.MPhi = matmul(self.m_matrix, self.Phi) # narray containing the values of masses * eigenvalues
         self.PhiTMTau = matmul(self.Phi, storey_masses)
         self.PhiTMPhi = matmul(self.Phi, self.MPhi)
         self.gamma = self.PhiTMTau / self.PhiTMPhi
@@ -59,6 +59,13 @@ class Values:
         return MPhi
         """
         return self.MPhi
+    
+    def get_sum_MPhi(self):
+        """
+        Return the sum of all the values in MPhi array
+        """
+        self.sum_MPhi = sum(self.MPhi)
+        return self.sum_MPhi
 
     def get_PhiTMTau(self):
         """
@@ -255,12 +262,26 @@ class Values:
         check_Vp_DB = (absolute(Vp_DB - Vp_DB_prev_iteration) / Vp_DB) * 100
         return check_Vp_DB
 
+    # Upwinds methods
+
     def get_Vy_DB_final(self, Vp_DB):
         """
         Calculate the value of Vy(DB)
         """
-        Vy_DB_final = Vp_DB * self.gamma
-        return Vy_DB_final
+        self.Vy_DB_final = Vp_DB * self.gamma
+        return self.Vy_DB_final
+
+    def get_Fy_n_DB_array(self):
+        """
+        Calculate the values of Fy(DB)
+        """
+        Fy_n_DB_array = []
+        for element in self.MPhi:
+            Fy_n_DB = (self.Vy_DB_final * element) / self.get_sum_MPhi()
+            Fy_n_DB_array.append(Fy_n_DB)
+        return Fy_n_DB_array
+
+
 
 
 class Area:

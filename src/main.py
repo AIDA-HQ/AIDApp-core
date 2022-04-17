@@ -179,9 +179,11 @@ class AIDApp:
                     dy_DB = values.get_dy_DB(self.mu_DB, self.dp)
                     kb = values.get_Kb(dy_DB, Vp_DB)
                     Vy_DB_final = values.get_Vy_DB_final(Vp_DB)
+                    Fy_n_DB_array = values.get_Fy_n_DB_array()
                     return [
                         Vp_DB,
                         Vy_DB_final,
+                        Fy_n_DB_array,
                         check,
                         i,
                         Vy_F_DB,

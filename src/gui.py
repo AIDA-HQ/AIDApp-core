@@ -215,6 +215,7 @@ class Ui_Dialog:
         (
             Vp_DB,
             Vy_DB_final,
+            Fy_n_DB_array,
             check,
             i,
             Vy_F_DB,
@@ -240,6 +241,7 @@ class Ui_Dialog:
         xi_n_eff_string = f"\u03BE{i}_eff: {xi_n_eff}"
         Vp_DB_string = f"Vp_DB = {Vp_DB} kN"
         Vy_DB_final_string = f"Vy_DB = {Vy_DB_final} kN"
+        Fy_n_DB_string = f"Fy_n_DB = {Fy_n_DB_array} kN"
         dy_DB_string = f"dy_DB = {dy_DB} m"
         kb_string = f"\u03BA_DB = {kb} kN/m"
         check_string = f"check: {check} %"
@@ -261,6 +263,11 @@ class Ui_Dialog:
         self.Vy_DB_final_label.setText(Vy_DB_final_string)
         self.Vy_DB_final_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.outputLayout.addRow(self.Vy_DB_final_label)
+
+        self.Fy_n_DB_label = QLabel()
+        self.Fy_n_DB_label.setText(Fy_n_DB_string)
+        self.Fy_n_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.outputLayout.addRow(self.Fy_n_DB_label)
 
         self.Vy_F_DB_label = QLabel()
         self.Vy_F_DB_label.setText(Vy_F_DB_string)
