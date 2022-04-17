@@ -213,17 +213,9 @@ class Ui_Dialog:
 
     def output_field(self, output_values):
         (
-            Vp_DB,
             Vy_DB_final,
             Fy_n_DB_array,
-            check,
             i,
-            Vy_F_DB,
-            Vp_F_DB,
-            _kn_eff,
-            xi_eff_F_DB,
-            xi_n_eff,
-            check_Vp_DB,
             x_bilinear,
             y_bilinear_ms2,
             sd_meters,
@@ -231,21 +223,10 @@ class Ui_Dialog:
             kn_eff_list,
             sd_meters_0,
             sa_ms2_0,
-            dy_DB,
-            kb,
         ) = output_values
         i_string = f"Iteration #{i}"
-        Vy_F_DB_string = f"Vy_F_DB: {Vy_F_DB} m/s^2"
-        Vp_F_DB_string = f"Vp_F_DB: {Vp_F_DB} m/s^2"
-        xi_eff_F_DB_string = f"\u03BE_eff_F_DB: {xi_eff_F_DB} %"
-        xi_n_eff_string = f"\u03BE{i}_eff: {xi_n_eff}"
-        Vp_DB_string = f"Vp_DB = {Vp_DB} kN"
         Vy_DB_final_string = f"Vy_DB = {Vy_DB_final} kN"
         Fy_n_DB_string = f"Fy_n_DB = {Fy_n_DB_array} kN"
-        dy_DB_string = f"dy_DB = {dy_DB} m"
-        kb_string = f"\u03BA_DB = {kb} kN/m"
-        check_string = f"check: {check} %"
-        check_Vp_DB_string = f"check_Vp_DB: {check_Vp_DB} %"
 
         self.outputLayout = QFormLayout()
 
@@ -254,10 +235,6 @@ class Ui_Dialog:
         self.i_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.outputLayout.addRow(self.i_label)
 
-        self.Vp_DB_label = QLabel()
-        self.Vp_DB_label.setText(Vp_DB_string)
-        self.Vp_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-        self.outputLayout.addRow(self.Vp_DB_label)
 
         self.Vy_DB_final_label = QLabel()
         self.Vy_DB_final_label.setText(Vy_DB_final_string)
@@ -268,60 +245,6 @@ class Ui_Dialog:
         self.Fy_n_DB_label.setText(Fy_n_DB_string)
         self.Fy_n_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.outputLayout.addRow(self.Fy_n_DB_label)
-
-        self.Vy_F_DB_label = QLabel()
-        self.Vy_F_DB_label.setText(Vy_F_DB_string)
-        self.Vy_F_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-        self.outputLayout.addRow(self.Vy_F_DB_label)
-
-        self.Vp_F_DB_label = QLabel()
-        self.Vp_F_DB_label.setText(Vp_F_DB_string)
-        self.Vp_F_DB_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.Vp_F_DB_label)
-
-        self.xi_eff_F_DB_label = QLabel()
-        self.xi_eff_F_DB_label.setText(xi_eff_F_DB_string)
-        self.xi_eff_F_DB_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.xi_eff_F_DB_label)
-
-        self.xi_n_eff_label = QLabel()
-        self.xi_n_eff_label.setText(xi_n_eff_string)
-        self.xi_n_eff_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.xi_n_eff_label)
-
-        self.dy_DB_label = QLabel()
-        self.dy_DB_label.setText(dy_DB_string)
-        self.dy_DB_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.dy_DB_label)
-
-        self.kb_label = QLabel()
-        self.kb_label.setText(kb_string)
-        self.kb_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.kb_label)
-
-        self.check_label = QLabel()
-        self.check_label.setText(check_string)
-        self.check_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.check_label)
-
-        self.check_Vp_DB_label = QLabel()
-        self.check_Vp_DB_label.setText(check_Vp_DB_string)
-        self.check_Vp_DB_label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        self.outputLayout.addRow(self.check_Vp_DB_label)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()

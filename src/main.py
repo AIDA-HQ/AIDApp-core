@@ -176,22 +176,12 @@ class AIDApp:
                 if check <= 0.5:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
-                    dy_DB = values.get_dy_DB(self.mu_DB, self.dp)
-                    kb = values.get_Kb(dy_DB, Vp_DB)
                     Vy_DB_final = values.get_Vy_DB_final(Vp_DB)
                     Fy_n_DB_array = values.get_Fy_n_DB_array()
                     return [
-                        Vp_DB,
                         Vy_DB_final,
                         Fy_n_DB_array,
-                        check,
                         i,
-                        Vy_F_DB,
-                        Vp_F_DB,
-                        kn_eff,
-                        xi_eff_F_DB,
-                        xi_n_eff,
-                        check_Vp_DB,
                         x_bilinear,
                         y_bilinear_ms2,
                         sd_meters,
@@ -199,8 +189,6 @@ class AIDApp:
                         kn_eff_list,
                         sd_meters_0,
                         sa_ms2_0,
-                        dy_DB,
-                        kb,
                     ]
 
             return get_calcs_recursive(
