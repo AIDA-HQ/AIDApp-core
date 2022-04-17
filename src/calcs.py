@@ -219,7 +219,6 @@ class Values:
     @staticmethod
     def get_Vp_DB_0(xi_n_eff, Vp_kN, xi_DB, xiFrame):
         """
-        Vy(DB) = VP(DB)
         Return the very first value of Vp_DB, which
         will be used by the following iteration.
         """
@@ -229,7 +228,6 @@ class Values:
     @staticmethod
     def get_Vp_DB(xi_n_eff, Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration):
         """
-        Vy(DB) = VP(DB)
         Return the value of Vp_DB [kN] which will be iterated various times
         """
         # Vp_DB_prev_iteration: previos value of Vp_DB
@@ -256,6 +254,13 @@ class Values:
         """
         check_Vp_DB = (absolute(Vp_DB - Vp_DB_prev_iteration) / Vp_DB) * 100
         return check_Vp_DB
+
+    def get_Vy_DB_final(self, Vp_DB):
+        """
+        Calculate the value of Vy(DB)
+        """
+        Vy_DB_final = Vp_DB * self.gamma
+        return Vy_DB_final
 
 
 class Area:

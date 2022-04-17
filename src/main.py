@@ -178,8 +178,10 @@ class AIDApp:
                     y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
                     dy_DB = values.get_dy_DB(self.mu_DB, self.dp)
                     kb = values.get_Kb(dy_DB, Vp_DB)
+                    Vy_DB_final = values.get_Vy_DB_final(Vp_DB)
                     return [
                         Vp_DB,
+                        Vy_DB_final,
                         check,
                         i,
                         Vy_F_DB,
