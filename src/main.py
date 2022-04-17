@@ -2,14 +2,12 @@ from numpy import array
 
 from calcs import Area, Values
 from coordinates import Coords
-from display import Print
 from input_coordinates import Input
 from coordinate_handler import CoordinateHandler
 
 area = Area()
 coord = Coords()
 input_coord = Input()
-display = Print()
 values = Values()
 handlr = CoordinateHandler()
 
@@ -117,7 +115,6 @@ class AIDApp:
 
             check = values.get_check(xiFrame, xi_n_eff)
             Vp_DB = Vp_DB_prev_iteration
-            display.print_iteration_zero(xiFrame, xi_n_eff, Vp_DB, check)
 
             # Recursive function to calculate what's needed
             def get_calcs_recursive(
@@ -161,17 +158,6 @@ class AIDApp:
 
                     check = values.get_check(xi_eff_F_DB, xi_n_eff)
                     check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration)
-                    display.print_brief(
-                        i,
-                        Vy_F_DB,
-                        Vp_F_DB,
-                        xi_eff_F_DB,
-                        Vp_DB_prev_iteration,
-                        xi_n_eff,
-                        Vp_DB,
-                        check,
-                        check_Vp_DB,
-                    )
 
                     return get_calcs_recursive(
                         Vp_DB,
