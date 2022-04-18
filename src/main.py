@@ -181,12 +181,14 @@ class AIDApp:
                     dy_DB_final = values.get_dy_DB_final(self.mu_DB, self.dp)
                     Vy_DB_array = values.get_Vy_n_DB_array()
                     dy_n_array = values.get_dy_n_array(self.eigenvalues)
+                    K_storey_n_array = values.get_K_storey_n_array()
                     return [
                         Vy_DB_final,
                         Fy_n_DB_array,
                         dy_DB_final,
                         Vy_DB_array,
                         dy_n_array,
+                        K_storey_n_array,
                         i,
                         x_bilinear,
                         y_bilinear_ms2,

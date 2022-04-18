@@ -224,6 +224,7 @@ class Ui_Dialog:
             dy_DB_final,
             Vy_DB_array,
             dy_n_array,
+            K_storey_n_array,
             i,
             x_bilinear,
             y_bilinear_ms2,
@@ -239,6 +240,7 @@ class Ui_Dialog:
         dy_DB_final_string = f"dy_DB = {dy_DB_final} m"
         Vy_DB_array_string = f"Vy_DB_array = {Vy_DB_array} kN"
         dy_n_array_string = f"dy_n_array = {dy_n_array} m"
+        K_storey_n_string = f"K_storey_n = {K_storey_n_array} kN/m"
 
         self.outputLayout = QFormLayout()
 
@@ -249,6 +251,7 @@ class Ui_Dialog:
         methods.add_output_line(dy_DB_final_string, self.outputLayout)
         methods.add_output_line(Vy_DB_array_string, self.outputLayout)
         methods.add_output_line(dy_n_array_string, self.outputLayout)
+        methods.add_output_line(K_storey_n_string, self.outputLayout)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()
