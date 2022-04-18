@@ -281,6 +281,13 @@ class Values:
             Fy_n_DB_array.append(Fy_n_DB)
         return Fy_n_DB_array
 
+    def get_dy_DB_final(self, mu_DB, dp_DB):
+        """
+        Calculate the value of dy(DB)
+        """
+        dy_db = self.get_dy_DB(mu_DB, dp_DB)
+        self.dy_DB_final = dy_db * self.gamma
+        return self.dy_DB_final
 
 
 

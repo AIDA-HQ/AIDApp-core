@@ -215,6 +215,7 @@ class Ui_Dialog:
         (
             Vy_DB_final,
             Fy_n_DB_array,
+            dy_DB_final,
             i,
             x_bilinear,
             y_bilinear_ms2,
@@ -227,6 +228,7 @@ class Ui_Dialog:
         i_string = f"Iteration #{i}"
         Vy_DB_final_string = f"Vy_DB = {Vy_DB_final} kN"
         Fy_n_DB_string = f"Fy_n_DB = {Fy_n_DB_array} kN"
+        dy_DB_final_string = f"dy_DB = {dy_DB_final} m"
 
         self.outputLayout = QFormLayout()
 
@@ -245,6 +247,11 @@ class Ui_Dialog:
         self.Fy_n_DB_label.setText(Fy_n_DB_string)
         self.Fy_n_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.outputLayout.addRow(self.Fy_n_DB_label)
+
+        self.dy_DB_final_label = QLabel()
+        self.dy_DB_final_label.setText(dy_DB_final_string)
+        self.dy_DB_final_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.outputLayout.addRow(self.dy_DB_final_label)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()
