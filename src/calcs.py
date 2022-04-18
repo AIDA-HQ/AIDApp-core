@@ -295,6 +295,14 @@ class Values:
         """
         Vy_DB_array = (cumsum(self.Fy_n_DB_array[::-1]))[::-1]
         return Vy_DB_array
+    
+    def get_dy_n_array(self, eigenvalues):
+        """
+        Calculate the values of dy,n
+        """
+        dy_n_array = []
+        dy_n_array = [eigenvalues[0]*self.dy_DB_final] + ([(y - x)* self.dy_DB_final for x,y in zip(eigenvalues,eigenvalues[1:])])
+        return dy_n_array
 
 
 
