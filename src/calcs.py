@@ -340,6 +340,17 @@ class Values:
         upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
         K_n_DB_array = self.Vy_DB_array / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght)**2))
         return K_n_DB_array
+    
+    def get_Ny_n_DB_array(self, span_length, interfloor_height):
+        """
+        Calculate the values of Ny(DB)
+        """
+        Ny_n_DB_array = []
+        upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
+        for element in self.Vy_DB_array:
+            Ny_n_DB = element / self.cos_alpha(span_length, upwind_lenght)
+            Ny_n_DB_array.append(Ny_n_DB)
+        return Ny_n_DB_array
 
 
 class Area:
