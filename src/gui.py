@@ -262,6 +262,7 @@ class Ui_Dialog:
             K_storey_n_array,
             K_n_DB_array,
             kc_n_s_array,
+            Fc_n_s_array,
             i,
             x_bilinear,
             y_bilinear_ms2,
@@ -280,6 +281,7 @@ class Ui_Dialog:
         K_storey_n_string = f"K_storey_n = {K_storey_n_array} kN/m"
         K_n_DB_array_string = f"K_n_DB_array = {K_n_DB_array} kN/m"
         kc_n_s_array_string = f"kc_n_s_array = {kc_n_s_array} kN/m"
+        Fc_n_s_array_string = f"Fc_n_s_array = {Fc_n_s_array} kN"
 
         self.outputLayout = QFormLayout()
 
@@ -293,6 +295,7 @@ class Ui_Dialog:
         methods.add_output_line(K_storey_n_string, self.outputLayout)
         methods.add_output_line(K_n_DB_array_string, self.outputLayout)
         methods.add_output_line(kc_n_s_array_string, self.outputLayout)
+        methods.add_output_line(Fc_n_s_array_string, self.outputLayout)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()

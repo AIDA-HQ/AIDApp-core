@@ -187,6 +187,7 @@ class AIDApp:
                     K_storey_n_array = values.get_K_storey_n_array()
                     K_n_DB_array = values.get_K_n_DB_array(self.span_length, self.interfloor_height)
                     kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
+                    Fc_n_s_array = values.get_Fc_n_s_array(self.brace_number, self.span_length, self.interfloor_height)
                     return [
                         Vy_DB_final,
                         Fy_n_DB_array,
@@ -196,6 +197,7 @@ class AIDApp:
                         K_storey_n_array,
                         K_n_DB_array,
                         kc_n_s_array,
+                        Fc_n_s_array,
                         i,
                         x_bilinear,
                         y_bilinear_ms2,

@@ -364,6 +364,17 @@ class Values:
             kc_n_s_array.append(kc_n_s)
         return kc_n_s_array
 
+    def get_Fc_n_s_array(self, brace_number, span_length, interfloor_height):
+        """
+        Calculate the values of the brace force for each floor (Fc_n_s)
+        """
+        Fc_n_s_array = []
+        k = 0
+        for element in self.get_Ny_n_DB_array(span_length, interfloor_height):
+            Fc_n_s = element / brace_number[0+k]
+            k = k+1
+            Fc_n_s_array.append(Fc_n_s)
+        return Fc_n_s_array
 
 class Area:
     @staticmethod
