@@ -338,8 +338,8 @@ class Values:
         Calculate the values of K_n(DB)
         """
         upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
-        K_n_DB_array = self.Vy_DB_array / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght)**2))
-        return K_n_DB_array
+        self.K_n_DB_array = self.Vy_DB_array / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght)**2))
+        return self.K_n_DB_array
     
     def get_Ny_n_DB_array(self, span_length, interfloor_height):
         """
@@ -351,6 +351,18 @@ class Values:
             Ny_n_DB = element / self.cos_alpha(span_length, upwind_lenght)
             Ny_n_DB_array.append(Ny_n_DB)
         return Ny_n_DB_array
+    
+    def get_kc_n_s_array(self, brace_number):
+        """
+        Calculate the values of the brace rigidity for each floor (kc_n_s)
+        """
+        kc_n_s_array = []
+        k = 0
+        for element in self.K_n_DB_array:
+            kc_n_s = element / brace_number[0+k]
+            k = k+1
+            kc_n_s_array.append(kc_n_s)
+        return kc_n_s_array
 
 
 class Area:

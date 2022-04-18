@@ -192,6 +192,9 @@ class Ui_Dialog:
         eigenvalues = []
         for element in self.eigenvalue_dict.values():
             eigenvalues.append(element.value())
+        brace_number = []
+        for element in self.brace_number_dict.values():
+            brace_number.append(element.value())
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBar.value(),
@@ -202,6 +205,7 @@ class Ui_Dialog:
             eigenvalues,
             self.path_x,
             self.path_y,
+            brace_number,
             self.span_length.value(),
             self.interfloor_height.value(),
         )
@@ -215,12 +219,14 @@ class Ui_Dialog:
     def show_storey_boxes(self, i):
         self.mass_dict = {}
         self.eigenvalue_dict = {}
+        self.brace_number_dict = {}
 
         k = 1
         while k < (i+1):
             # dynamically create key
             mass_key = k
             eigenvalue_key = k
+            brace_number_key = k
             mass_value = QDoubleSpinBox()
             mass_value.setDecimals(3)
             mass_value.setMaximum(10000)
@@ -228,6 +234,9 @@ class Ui_Dialog:
             eigenvalue_value = QDoubleSpinBox()
             eigenvalue_value.setDecimals(10)
             self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
+            brace_number_value = QDoubleSpinBox()
+            brace_number_value.setDecimals(0)
+            self.brace_number_dict[brace_number_key] = brace_number_value
 
             self.inputLayout.addRow(
                 QLabel(f"Storey #{k} mass [ton]"), self.mass_dict[mass_key]
@@ -235,6 +244,10 @@ class Ui_Dialog:
             self.inputLayout.addRow(
                 QLabel(f"Storey #{k} eigenvalue"),
                 self.eigenvalue_dict[eigenvalue_key],
+            )
+            self.inputLayout.addRow(
+                QLabel(f"Storey #{k} brace #"),
+                self.brace_number_dict[brace_number_key],
             )
             k += 1
         self.input_Box.setLayout(self.inputLayout)
@@ -248,6 +261,7 @@ class Ui_Dialog:
             dy_n_array,
             K_storey_n_array,
             K_n_DB_array,
+            kc_n_s_array,
             i,
             x_bilinear,
             y_bilinear_ms2,
@@ -265,6 +279,7 @@ class Ui_Dialog:
         dy_n_array_string = f"dy_n_array = {dy_n_array} m"
         K_storey_n_string = f"K_storey_n = {K_storey_n_array} kN/m"
         K_n_DB_array_string = f"K_n_DB_array = {K_n_DB_array} kN/m"
+        kc_n_s_array_string = f"kc_n_s_array = {kc_n_s_array} kN/m"
 
         self.outputLayout = QFormLayout()
 
@@ -277,6 +292,7 @@ class Ui_Dialog:
         methods.add_output_line(dy_n_array_string, self.outputLayout)
         methods.add_output_line(K_storey_n_string, self.outputLayout)
         methods.add_output_line(K_n_DB_array_string, self.outputLayout)
+        methods.add_output_line(kc_n_s_array_string, self.outputLayout)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()

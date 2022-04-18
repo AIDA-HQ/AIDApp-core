@@ -14,7 +14,7 @@ handlr = CoordinateHandler()
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_mu_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path_x, arg_path_y, arg_span_length, arg_interfloor_height
+        self, arg_dp, arg_mu_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_brace_number, arg_path_x, arg_path_y, arg_span_length, arg_interfloor_height
     ):
 
         self.dp = arg_dp
@@ -27,6 +27,7 @@ class AIDApp:
         self.path_y = handlr.generate_array(arg_path_y)
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
+        self.brace_number = arg_brace_number
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
@@ -185,6 +186,7 @@ class AIDApp:
                     dy_n_array = values.get_dy_n_array(self.eigenvalues)
                     K_storey_n_array = values.get_K_storey_n_array()
                     K_n_DB_array = values.get_K_n_DB_array(self.span_length, self.interfloor_height)
+                    kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
                     return [
                         Vy_DB_final,
                         Fy_n_DB_array,
@@ -193,6 +195,7 @@ class AIDApp:
                         dy_n_array,
                         K_storey_n_array,
                         K_n_DB_array,
+                        kc_n_s_array,
                         i,
                         x_bilinear,
                         y_bilinear_ms2,
