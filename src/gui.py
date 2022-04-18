@@ -19,6 +19,12 @@ from matplotlib.figure import Figure
 
 aidapp = AIDApp()
 
+class Gui_Methods:
+    def add_output_line(self, string, layout):
+        label = QLabel()
+        label.setText(string)
+        label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        layout.addRow(label)
 
 class Ui_Dialog:
     def setupUi(self, Dialog):
@@ -232,26 +238,11 @@ class Ui_Dialog:
 
         self.outputLayout = QFormLayout()
 
-        self.i_label = QLabel()
-        self.i_label.setText(i_string)
-        self.i_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-        self.outputLayout.addRow(self.i_label)
-
-
-        self.Vy_DB_final_label = QLabel()
-        self.Vy_DB_final_label.setText(Vy_DB_final_string)
-        self.Vy_DB_final_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-        self.outputLayout.addRow(self.Vy_DB_final_label)
-
-        self.Fy_n_DB_label = QLabel()
-        self.Fy_n_DB_label.setText(Fy_n_DB_string)
-        self.Fy_n_DB_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-        self.outputLayout.addRow(self.Fy_n_DB_label)
-
-        self.dy_DB_final_label = QLabel()
-        self.dy_DB_final_label.setText(dy_DB_final_string)
-        self.dy_DB_final_label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-        self.outputLayout.addRow(self.dy_DB_final_label)
+        methods = Gui_Methods()
+        methods.add_output_line(i_string, self.outputLayout)
+        methods.add_output_line(Vy_DB_final_string, self.outputLayout)
+        methods.add_output_line(Fy_n_DB_string, self.outputLayout)
+        methods.add_output_line(dy_DB_final_string, self.outputLayout)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()
