@@ -95,10 +95,28 @@ class Ui_Dialog:
 
         self.inputLayout.setWidget(6, QFormLayout.FieldRole, self.Kf_SpinBar)
 
+        # Span lenght
+        self.span_length_label = QLabel(self.input_Box)
+        self.span_length_label.setObjectName("span_length_label")
+        self.inputLayout.setWidget(7, QFormLayout.LabelRole, self.span_length_label)
+        self.span_length = QDoubleSpinBox(self.input_Box)
+        self.span_length.setObjectName("span_length")
+
+        self.inputLayout.setWidget(7, QFormLayout.FieldRole, self.span_length)
+
+        # Interfloor Height interfloor_height
+        self.interfloor_height_label = QLabel(self.input_Box)
+        self.interfloor_height_label.setObjectName("span_length_label")
+        self.inputLayout.setWidget(8, QFormLayout.LabelRole, self.interfloor_height_label)
+        self.interfloor_height = QDoubleSpinBox(self.input_Box)
+        self.interfloor_height.setObjectName("interfloor_height")
+
+        self.inputLayout.setWidget(8, QFormLayout.FieldRole, self.interfloor_height)
+
         # Storey Number
         self.storey_number_label = QLabel(self.input_Box)
         self.storey_number_label.setObjectName("storey_number_label")
-        self.inputLayout.setWidget(7, QFormLayout.LabelRole, self.storey_number_label)
+        self.inputLayout.setWidget(9, QFormLayout.LabelRole, self.storey_number_label)
 
         # Send button
         self.sendButton = QPushButton(self.input_Box)
@@ -107,10 +125,10 @@ class Ui_Dialog:
         self.sendButton.setObjectName("sendButton")
         self.sendButton.clicked.connect(self.count_storey_boxes)
 
-        self.inputLayout.setWidget(8, QFormLayout.FieldRole, self.sendButton)
+        self.inputLayout.setWidget(10, QFormLayout.FieldRole, self.sendButton)
         self.storey_number_SpinBar = QSpinBox(self.input_Box)
         self.storey_number_SpinBar.setObjectName("storey_number_SpinBar")
-        self.inputLayout.setWidget(8, QFormLayout.LabelRole, self.storey_number_SpinBar)
+        self.inputLayout.setWidget(10, QFormLayout.LabelRole, self.storey_number_SpinBar)
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.input_Box)
         self.groupBox = QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
@@ -158,6 +176,8 @@ class Ui_Dialog:
         self.u_DB_label.setText(_translate("AIDApp", "\u03BC_DB"))
         self.k_DB_label.setText(_translate("AIDApp", "\u03BA_DB"))
         self.Kf_label.setText(_translate("AIDApp", "\u03BA(F)"))
+        self.span_length_label.setText(_translate("AIDApp", "Span Length [m]"))
+        self.interfloor_height_label.setText(_translate("AIDApp", "Inter-floor Height [m]"))
         self.storey_number_label.setText(_translate("AIDApp", "# of storeys:"))
         self.sendButton.setText(_translate("AIDApp", "Send"))
         self.groupBox.setTitle(_translate("AIDApp", "Graph"))
@@ -182,6 +202,8 @@ class Ui_Dialog:
             eigenvalues,
             self.path_x,
             self.path_y,
+            self.span_length.value(),
+            self.interfloor_height.value(),
         )
 
         self.output_field(output)
@@ -225,6 +247,7 @@ class Ui_Dialog:
             Vy_DB_array,
             dy_n_array,
             K_storey_n_array,
+            K_n_DB_array,
             i,
             x_bilinear,
             y_bilinear_ms2,
@@ -241,6 +264,7 @@ class Ui_Dialog:
         Vy_DB_array_string = f"Vy_DB_array = {Vy_DB_array} kN"
         dy_n_array_string = f"dy_n_array = {dy_n_array} m"
         K_storey_n_string = f"K_storey_n = {K_storey_n_array} kN/m"
+        K_n_DB_array_string = f"K_n_DB_array = {K_n_DB_array} kN/m"
 
         self.outputLayout = QFormLayout()
 
@@ -252,6 +276,7 @@ class Ui_Dialog:
         methods.add_output_line(Vy_DB_array_string, self.outputLayout)
         methods.add_output_line(dy_n_array_string, self.outputLayout)
         methods.add_output_line(K_storey_n_string, self.outputLayout)
+        methods.add_output_line(K_n_DB_array_string, self.outputLayout)
 
         self.buttonBox.setEnabled(False)
         self.graphLayout = QFormLayout()

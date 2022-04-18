@@ -1,4 +1,4 @@
-from numpy import absolute, array, cumsum, diagflat, matmul, pi, trapz
+from numpy import absolute, arctan, array, cumsum, diagflat, matmul, pi, sqrt, trapz
 from scipy.stats import linregress
 
 from coordinates import Coords
@@ -311,6 +311,35 @@ class Values:
         K_storey_n_array = self.Vy_DB_array/self.dy_n_array
         return K_storey_n_array
 
+    ## Frame data
+    def get_upwind_lenght(self, span_length, interfloor_height):
+        """
+        Calculate the lenght of the upwind
+        """
+        upwind_lenght = sqrt(span_length**2 + interfloor_height**2)
+        return upwind_lenght
+    
+    def get_slope(self, span_length, interfloor_height):
+        """
+        Calculate the slope of the upwind
+        """
+        slope = arctan(interfloor_height/span_length)
+        return slope
+    
+    def cos_alpha(self, span_length, upwind_lenght):
+        """
+        Calculate the cos(alpha) of the upwind
+        """
+        cos_alpha = span_length/upwind_lenght
+        return cos_alpha
+
+    def get_K_n_DB_array(self, span_length, interfloor_height):
+        """
+        Calculate the values of K_n(DB)
+        """
+        upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
+        K_n_DB_array = self.Vy_DB_array / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght)**2))
+        return K_n_DB_array
 
 
 class Area:
