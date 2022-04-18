@@ -179,10 +179,12 @@ class AIDApp:
                     Vy_DB_final = values.get_Vy_DB_final(Vp_DB)
                     Fy_n_DB_array = values.get_Fy_n_DB_array()
                     dy_DB_final = values.get_dy_DB_final(self.mu_DB, self.dp)
+                    Vy_DB_array = values.get_Vy_n_DB_array()
                     return [
                         Vy_DB_final,
                         Fy_n_DB_array,
                         dy_DB_final,
+                        Vy_DB_array,
                         i,
                         x_bilinear,
                         y_bilinear_ms2,

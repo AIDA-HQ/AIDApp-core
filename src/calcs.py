@@ -1,4 +1,4 @@
-from numpy import absolute, array, diagflat, matmul, pi, trapz
+from numpy import absolute, array, cumsum, diagflat, matmul, pi, trapz
 from scipy.stats import linregress
 
 from coordinates import Coords
@@ -275,11 +275,11 @@ class Values:
         """
         Calculate the values of Fy(DB)
         """
-        Fy_n_DB_array = []
+        self.Fy_n_DB_array = []
         for element in self.MPhi:
             Fy_n_DB = (self.Vy_DB_final * element) / self.get_sum_MPhi()
-            Fy_n_DB_array.append(Fy_n_DB)
-        return Fy_n_DB_array
+            self.Fy_n_DB_array.append(Fy_n_DB)
+        return self.Fy_n_DB_array
 
     def get_dy_DB_final(self, mu_DB, dp_DB):
         """
@@ -288,6 +288,13 @@ class Values:
         dy_db = self.get_dy_DB(mu_DB, dp_DB)
         self.dy_DB_final = dy_db * self.gamma
         return self.dy_DB_final
+    
+    def get_Vy_n_DB_array(self):
+        """
+        Calculate the values of Vy(DB)
+        """
+        Vy_DB_array = (cumsum(self.Fy_n_DB_array[::-1]))[::-1]
+        return Vy_DB_array
 
 
 
