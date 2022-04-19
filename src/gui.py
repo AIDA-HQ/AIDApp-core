@@ -1,14 +1,7 @@
 from qtpy.QtWidgets import (
-    QDialog,
-    QApplication,
-    QPushButton,
-    QGroupBox,
     QLabel,
     QDoubleSpinBox,
-    QSpinBox,
-    QDialogButtonBox,
     QFormLayout,
-    QHBoxLayout,
     QFileDialog,
 )
 from qtpy import QtCore
@@ -16,6 +9,8 @@ from main import AIDApp
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+
+from PyQt5 import QtCore, QtWidgets
 
 aidapp = AIDApp()
 
@@ -26,135 +21,234 @@ class Gui_Methods:
         label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         layout.addRow(label)
 
-class Ui_Dialog:
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("AIDApp")
-        Dialog.resize(900, 500)
-        self.formLayout = QFormLayout(Dialog)
-        self.formLayout.setObjectName("formLayout")
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.main_scrollArea = QtWidgets.QScrollArea(self.centralwidget)
+        self.main_scrollArea.setWidgetResizable(True)
+        self.main_scrollArea.setObjectName("main_scrollArea")
+        self.main_scroll_widget = QtWidgets.QWidget()
+        self.main_scroll_widget.setGeometry(QtCore.QRect(0, 0, 774, 550))
+        self.main_scroll_widget.setObjectName("main_scroll_widget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.main_scroll_widget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
 
         # Input Box
-        self.input_Box = QGroupBox(Dialog)
-        self.input_Box.setEnabled(True)
-        self.input_Box.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        self.input_Box.setAutoFillBackground(False)
-        self.input_Box.setFlat(False)
-        self.input_Box.setCheckable(False)
-        self.input_Box.setObjectName("input_Box")
-        self.inputLayout = QFormLayout(self.input_Box)
-        self.inputLayout.setObjectName("inputLayout")
+        self.input_box = QtWidgets.QGroupBox(self.main_scroll_widget)
+        self.input_box.setMinimumSize(QtCore.QSize(330, 500))
+        self.input_box.setMaximumSize(QtCore.QSize(330, 1000))
+        self.input_box.setAutoFillBackground(False)
+        self.input_box.setFlat(False)
+        self.input_box.setCheckable(False)
+        self.input_box.setObjectName("input_box")
+        self.input_box_layout = QtWidgets.QVBoxLayout(self.input_box)
+        self.input_box_layout.setObjectName("input_box_layout")
 
         # Input buttons
-        self.input_file_layout = QHBoxLayout()
-        self.input_file_layout.setObjectName("input_file_layout")
-        self.file_x_button = QPushButton(self.input_Box)
+        self.file_upload_layout = QtWidgets.QHBoxLayout()
+        self.file_upload_layout.setObjectName("file_upload_layout")
+        self.file_x_button = QtWidgets.QPushButton(self.input_box)
+        self.file_x_button.setEnabled(True)
+        self.file_x_button.setAutoDefault(False)
         self.file_x_button.setObjectName("file_x_button")
-        self.input_file_layout.addWidget(self.file_x_button)
-        self.file_y_button = QPushButton(self.input_Box)
+        self.file_upload_layout.addWidget(self.file_x_button)
+        self.file_y_button = QtWidgets.QPushButton(self.input_box)
+        self.file_y_button.setAutoDefault(False)
         self.file_y_button.setObjectName("file_y_button")
-        self.input_file_layout.addWidget(self.file_y_button)
-        self.inputLayout.setLayout(0, QFormLayout.SpanningRole, self.input_file_layout)
+        self.file_upload_layout.addWidget(self.file_y_button)
+        self.input_box_layout.addLayout(self.file_upload_layout)
         self.file_x_button.clicked.connect(self.open_x)
         self.file_y_button.clicked.connect(self.open_y)
 
-        # dp
-        self.dp_label = QLabel(self.input_Box)
-        self.dp_label.setObjectName("dp_label")
-        self.inputLayout.setWidget(1, QFormLayout.LabelRole, self.dp_label)
-        self.dp_SpinBar = QDoubleSpinBox(self.input_Box)
-        self.dp_SpinBar.setMaximum(99.99)
-        self.dp_SpinBar.setDecimals(10)
-        self.dp_SpinBar.setObjectName("dp_SpinBar")
+        # Input value area
+        self.input_scroll_area = QtWidgets.QScrollArea(self.input_box)
+        self.input_scroll_area.setWidgetResizable(True)
+        self.input_scroll_area.setObjectName("input_scroll_area")
+        self.input_scroll_widget = QtWidgets.QWidget()
+        self.input_scroll_widget.setGeometry(QtCore.QRect(0, 0, 283, 391))
+        self.input_scroll_widget.setObjectName("input_scroll_widget")
+        self.input_scroll_layout = QtWidgets.QVBoxLayout(self.input_scroll_widget)
+        self.input_scroll_layout.setObjectName("input_scroll_layout")
 
-        self.inputLayout.setWidget(1, QFormLayout.FieldRole, self.dp_SpinBar)
+        # dp
+        self.dp_layout = QtWidgets.QHBoxLayout()
+        self.dp_layout.setObjectName("dp_layout")
+        self.dp_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.dp_label.setObjectName("dp_label")
+        self.dp_layout.addWidget(self.dp_label)
+        self.dp_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.dp_SpinBox.setDecimals(10)
+        self.dp_SpinBox.setMaximum(99.0)
+        self.dp_SpinBox.setObjectName("dp_SpinBox")
+        self.dp_layout.addWidget(self.dp_SpinBox)
+        self.input_scroll_layout.addLayout(self.dp_layout)
 
         # u_DB
-        self.u_DB_label = QLabel(self.input_Box)
+        self.u_DB_layout = QtWidgets.QHBoxLayout()
+        self.u_DB_layout.setObjectName("u_DB_layout")
+        self.u_DB_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.u_DB_label.setObjectName("u_DB_label")
-        self.inputLayout.setWidget(3, QFormLayout.LabelRole, self.u_DB_label)
-        self.u_DB_SpinBar = QDoubleSpinBox(self.input_Box)
-        self.u_DB_SpinBar.setObjectName("u_DB_SpinBar")
-
-        self.inputLayout.setWidget(3, QFormLayout.FieldRole, self.u_DB_SpinBar)
+        self.u_DB_layout.addWidget(self.u_DB_label)
+        self.u_DB_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.u_DB_SpinBox.setObjectName("u_DB_SpinBox")
+        self.u_DB_layout.addWidget(self.u_DB_SpinBox)
+        self.input_scroll_layout.addLayout(self.u_DB_layout)
 
         # k_DB
-        self.k_DB_label = QLabel(self.input_Box)
+        self.k_DB_layout = QtWidgets.QHBoxLayout()
+        self.k_DB_layout.setObjectName("k_DB_layout")
+        self.k_DB_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.k_DB_label.setObjectName("k_DB_label")
-        self.inputLayout.setWidget(5, QFormLayout.LabelRole, self.k_DB_label)
-        self.k_DB_SpinBar = QDoubleSpinBox(self.input_Box)
-        self.k_DB_SpinBar.setObjectName("k_DB_SpinBar")
+        self.k_DB_layout.addWidget(self.k_DB_label)
+        self.k_DB_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.k_DB_SpinBox.setObjectName("k_DB_SpinBox")
+        self.k_DB_layout.addWidget(self.k_DB_SpinBox)
+        self.input_scroll_layout.addLayout(self.k_DB_layout)
 
-        self.inputLayout.setWidget(5, QFormLayout.FieldRole, self.k_DB_SpinBar)
+        # kf
+        self.kf_layout = QtWidgets.QHBoxLayout()
+        self.kf_layout.setObjectName("kf_layout")
+        self.kf_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.kf_label.setObjectName("kf_label")
+        self.kf_layout.addWidget(self.kf_label)
+        self.kf_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.kf_SpinBox.setObjectName("kf_SpinBox")
+        self.kf_layout.addWidget(self.kf_SpinBox)
+        self.input_scroll_layout.addLayout(self.kf_layout)
 
-        # Kf
-        self.Kf_label = QLabel(self.input_Box)
-        self.Kf_label.setObjectName("Kf_label")
-        self.inputLayout.setWidget(6, QFormLayout.LabelRole, self.Kf_label)
-        self.Kf_SpinBar = QDoubleSpinBox(self.input_Box)
-        self.Kf_SpinBar.setObjectName("Kf_SpinBar")
-
-        self.inputLayout.setWidget(6, QFormLayout.FieldRole, self.Kf_SpinBar)
-
-        # Span lenght
-        self.span_length_label = QLabel(self.input_Box)
+        # Span length
+        self.span_length_layout = QtWidgets.QHBoxLayout()
+        self.span_length_layout.setObjectName("span_length_layout")
+        self.span_length_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.span_length_label.setObjectName("span_length_label")
-        self.inputLayout.setWidget(7, QFormLayout.LabelRole, self.span_length_label)
-        self.span_length = QDoubleSpinBox(self.input_Box)
-        self.span_length.setObjectName("span_length")
+        self.span_length_layout.addWidget(self.span_length_label)
+        self.span_length_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.span_length_SpinBox.setObjectName("span_length_SpinBox")
+        self.span_length_layout.addWidget(self.span_length_SpinBox)
+        self.input_scroll_layout.addLayout(self.span_length_layout)
 
-        self.inputLayout.setWidget(7, QFormLayout.FieldRole, self.span_length)
+        # Interfloor height
+        self.interfloor_height_layout = QtWidgets.QHBoxLayout()
+        self.interfloor_height_layout.setObjectName("interfloor_height_layout")
+        self.interfloor_height_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.interfloor_height_label.setObjectName("interfloor_height_label")
+        self.interfloor_height_layout.addWidget(self.interfloor_height_label)
+        self.interfloor_height_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.interfloor_height_SpinBox.setObjectName("interfloor_height_SpinBox")
+        self.interfloor_height_layout.addWidget(self.interfloor_height_SpinBox)
+        self.input_scroll_layout.addLayout(self.interfloor_height_layout)
 
-        # Interfloor Height interfloor_height
-        self.interfloor_height_label = QLabel(self.input_Box)
-        self.interfloor_height_label.setObjectName("span_length_label")
-        self.inputLayout.setWidget(8, QFormLayout.LabelRole, self.interfloor_height_label)
-        self.interfloor_height = QDoubleSpinBox(self.input_Box)
-        self.interfloor_height.setObjectName("interfloor_height")
+        # Line
+        self.line = QtWidgets.QFrame(self.input_scroll_widget)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.input_scroll_layout.addWidget(self.line)
 
-        self.inputLayout.setWidget(8, QFormLayout.FieldRole, self.interfloor_height)
-
-        # Storey Number
-        self.storey_number_label = QLabel(self.input_Box)
+        # Storey number
+        self.storey_number_layout = QtWidgets.QHBoxLayout()
+        self.storey_number_layout.setObjectName("storey_number_layout")
+        self.storey_number_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.storey_number_label.setObjectName("storey_number_label")
-        self.inputLayout.setWidget(9, QFormLayout.LabelRole, self.storey_number_label)
+        self.storey_number_layout.addWidget(self.storey_number_label)
+        self.storey_number_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
+        self.storey_number_layout.addWidget(self.storey_number_SpinBox)
 
         # Send button
-        self.sendButton = QPushButton(self.input_Box)
-        self.sendButton.setDefault(False)
-        self.sendButton.setFlat(False)
-        self.sendButton.setObjectName("sendButton")
-        self.sendButton.clicked.connect(self.count_storey_boxes)
+        self.send_button = QtWidgets.QPushButton(self.input_scroll_widget)
+        self.send_button.setAutoDefault(False)
+        self.send_button.setDefault(False)
+        self.send_button.setObjectName("send_button")
+        self.storey_number_layout.addWidget(self.send_button)
+        self.input_scroll_layout.addLayout(self.storey_number_layout)
+        self.send_button.clicked.connect(self.count_storey_boxes)
 
-        self.inputLayout.setWidget(10, QFormLayout.FieldRole, self.sendButton)
-        self.storey_number_SpinBar = QSpinBox(self.input_Box)
-        self.storey_number_SpinBar.setObjectName("storey_number_SpinBar")
-        self.inputLayout.setWidget(10, QFormLayout.LabelRole, self.storey_number_SpinBar)
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.input_Box)
-        self.groupBox = QGroupBox(Dialog)
-        self.groupBox.setObjectName("groupBox")
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.groupBox)
 
-        # Main button
-        self.buttonBox = QDialogButtonBox(Dialog)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
+        self.storey_layout = QtWidgets.QFormLayout()
+        self.storey_layout.setObjectName("storey_layout")
+        self.input_scroll_layout.addLayout(self.storey_layout)
+        self.input_scroll_area.setWidget(self.input_scroll_widget)
+        self.input_box_layout.addWidget(self.input_scroll_area)
+
+        # Ok button
+        self.buttonBox = QtWidgets.QHBoxLayout()
         self.buttonBox.setObjectName("buttonBox")
-        self.buttonBox.accepted.connect(self.getInfo)
-        self.buttonBox.rejected.connect(Dialog.reject)
+        self.ok_button = QtWidgets.QPushButton(self.input_box)
+        self.ok_button.setObjectName("ok_button")
+        self.buttonBox.addWidget(self.ok_button)
+        self.input_box_layout.addLayout(self.buttonBox)
+        self.ok_button.clicked.connect(self.getInfo)
+        self.horizontalLayout.addWidget(self.input_box)
 
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.buttonBox)
-        self.output_box = QGroupBox(Dialog)
+        # Output box
+        self.output_box = QtWidgets.QGroupBox(self.main_scroll_widget)
         self.output_box.setObjectName("output_box")
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.output_box)
+        self.output_box_layout = QtWidgets.QVBoxLayout(self.output_box)
+        self.output_box_layout.setObjectName("output_box_layout")
+        self.output_scroll_area = QtWidgets.QScrollArea(self.output_box)
+        self.output_scroll_area.setWidgetResizable(True)
+        self.output_scroll_area.setObjectName("output_scroll_area")
+        self.output_scroll_widget = QtWidgets.QWidget()
+        self.output_scroll_widget.setGeometry(QtCore.QRect(0, 0, 385, 475))
+        self.output_scroll_widget.setObjectName("output_scroll_widget")
+        self.output_scroll_layout = QtWidgets.QVBoxLayout(self.output_scroll_widget)
+        self.output_scroll_layout.setObjectName("output_scroll_layout")
 
+        self.output_layout = QtWidgets.QFormLayout()
+        self.output_layout.setObjectName("output_layout")
+        self.output_scroll_layout.addLayout(self.output_layout)
+        self.output_scroll_area.setWidget(self.output_scroll_widget)
+        self.output_box_layout.addWidget(self.output_scroll_area)
+        self.horizontalLayout.addWidget(self.output_box)
+
+        # Graph Box
         # a figure instance to plot on
         self.figure = Figure()
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
         self.canvas = FigureCanvas(self.figure)
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        # Update layout
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.main_scrollArea.setWidget(self.main_scroll_widget)
+        self.verticalLayout_8.addWidget(self.main_scrollArea)
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        # Menu bar
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 24))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
+        self.input_box.setTitle(_translate("MainWindow", "Input Values"))
+        self.file_x_button.setText(_translate("MainWindow", "X Pushover"))
+        self.file_y_button.setText(_translate("MainWindow", "Y Pushover"))
+        self.dp_label.setText(_translate("MainWindow", "dp [m]"))
+        self.u_DB_label.setText(_translate("MainWindow", "\u03BC_DB"))
+        self.k_DB_label.setText(_translate("MainWindow", "\u03BA_DB"))
+        self.kf_label.setText(_translate("MainWindow", "\u03BA(F)"))
+        self.span_length_label.setText(_translate("MainWindow", "Span Length [m]"))
+        self.interfloor_height_label.setText(_translate("MainWindow", "Inter-floor Height [m]"))
+        self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
+        self.send_button.setText(_translate("MainWindow", "Send"))
+        self.ok_button.setText(_translate("MainWindow", "Ok"))
+        self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
     def open_x(self):
         path = QFileDialog.getOpenFileName()
@@ -168,23 +262,6 @@ class Ui_Dialog:
             print(path[0])
         self.path_y = path[0]
 
-    def retranslateUi(self, dialog):
-        _translate = QtCore.QCoreApplication.translate
-        dialog.setWindowTitle(_translate("AIDApp", "AIDApp"))
-        self.input_Box.setTitle(_translate("AIDApp", "Input Values"))
-        self.dp_label.setText(_translate("AIDApp", "dp [m]"))
-        self.u_DB_label.setText(_translate("AIDApp", "\u03BC_DB"))
-        self.k_DB_label.setText(_translate("AIDApp", "\u03BA_DB"))
-        self.Kf_label.setText(_translate("AIDApp", "\u03BA(F)"))
-        self.span_length_label.setText(_translate("AIDApp", "Span Length [m]"))
-        self.interfloor_height_label.setText(_translate("AIDApp", "Inter-floor Height [m]"))
-        self.storey_number_label.setText(_translate("AIDApp", "# of storeys:"))
-        self.sendButton.setText(_translate("AIDApp", "Send"))
-        self.groupBox.setTitle(_translate("AIDApp", "Graph"))
-        self.output_box.setTitle(_translate("AIDApp", "Output Values"))
-        self.file_y_button.setText(_translate("Dialog", "Y Pushover"))
-        self.file_x_button.setText(_translate("Dialog", "X Pushover"))
-
     def getInfo(self):
         storey_masses = []
         for element in self.mass_dict.values():
@@ -197,24 +274,24 @@ class Ui_Dialog:
             brace_number.append(element.value())
         # Feed the values to the main program
         output = aidapp.main(
-            self.dp_SpinBar.value(),
-            self.u_DB_SpinBar.value(),
-            self.k_DB_SpinBar.value(),
-            self.Kf_SpinBar.value(),
+            self.dp_SpinBox.value(),
+            self.u_DB_SpinBox.value(),
+            self.k_DB_SpinBox.value(),
+            self.kf_SpinBox.value(),
             storey_masses,
             eigenvalues,
+            brace_number,
             self.path_x,
             self.path_y,
-            brace_number,
-            self.span_length.value(),
-            self.interfloor_height.value(),
+            self.span_length_SpinBox.value(),
+            self.interfloor_height_SpinBox.value(),
         )
 
         self.output_field(output)
 
     def count_storey_boxes(self):
-        self.sendButton.setEnabled(False)
-        self.show_storey_boxes(self.storey_number_SpinBar.value())
+        self.show_storey_boxes(self.storey_number_SpinBox.value())
+
 
     def show_storey_boxes(self, i):
         self.mass_dict = {}
@@ -238,23 +315,22 @@ class Ui_Dialog:
             brace_number_value.setDecimals(0)
             self.brace_number_dict[brace_number_key] = brace_number_value
 
-            self.inputLayout.addRow(
+            self.storey_layout.addRow(
                 QLabel(f"Storey #{k} mass [ton]"), self.mass_dict[mass_key]
             )
-            self.inputLayout.addRow(
+            self.storey_layout.addRow(
                 QLabel(f"Storey #{k} eigenvalue"),
                 self.eigenvalue_dict[eigenvalue_key],
             )
-            self.inputLayout.addRow(
+            self.storey_layout.addRow(
                 QLabel(f"Storey #{k} brace #"),
                 self.brace_number_dict[brace_number_key],
             )
             k += 1
-        self.input_Box.setLayout(self.inputLayout)
 
     def output_field(self, output_values):
         (
-            Vy_DB_final,
+            Vy_DB,
             Fy_n_DB_array,
             dy_DB_final,
             Vy_DB_array,
@@ -273,12 +349,12 @@ class Ui_Dialog:
             sa_ms2_0,
         ) = output_values
         i_string = f"Iteration #{i}"
-        Vy_DB_final_string = f"Vy_DB = {Vy_DB_final} kN"
+        Vy_DB_string = f"Vy_DB = {Vy_DB} kN"
         Fy_n_DB_string = f"Fy_n_DB = {Fy_n_DB_array} kN"
         dy_DB_final_string = f"dy_DB = {dy_DB_final} m"
         Vy_DB_array_string = f"Vy_DB_array = {Vy_DB_array} kN"
         dy_n_array_string = f"dy_n_array = {dy_n_array} m"
-        K_storey_n_string = f"K_storey_n = {K_storey_n_array} kN/m"
+        K_storey_n_string = f"K_storey_n = {K_storey_n} kN/m"
         K_n_DB_array_string = f"K_n_DB_array = {K_n_DB_array} kN/m"
         kc_n_s_array_string = f"kc_n_s_array = {kc_n_s_array} kN/m"
         Fc_n_s_array_string = f"Fc_n_s_array = {Fc_n_s_array} kN"
@@ -287,7 +363,7 @@ class Ui_Dialog:
 
         methods = Gui_Methods()
         methods.add_output_line(i_string, self.outputLayout)
-        methods.add_output_line(Vy_DB_final_string, self.outputLayout)
+        methods.add_output_line(Vy_DB_string, self.outputLayout)
         methods.add_output_line(Fy_n_DB_string, self.outputLayout)
         methods.add_output_line(dy_DB_final_string, self.outputLayout)
         methods.add_output_line(Vy_DB_array_string, self.outputLayout)
@@ -310,10 +386,32 @@ class Ui_Dialog:
             sd_meters_0,
             sa_ms2_0,
         )
-        self.groupBox.setLayout(self.graphLayout)
+
+        self.graph_box = QtWidgets.QGroupBox(self.main_scroll_widget)
+        self.graph_box.setObjectName("graph_box")
+        self.graph_box.setTitle("Graph")
+
+        self.graph_box_layout = QtWidgets.QVBoxLayout(self.graph_box)
+        self.graph_box_layout.setObjectName("graph_box_layout")
+        self.graph_scroll_area = QtWidgets.QScrollArea(self.graph_box)
+        self.graph_scroll_area.setWidgetResizable(True)
+        self.graph_scroll_area.setObjectName("graph_scroll_area")
+        self.graph_scroll_widget = QtWidgets.QWidget()
+        self.graph_scroll_widget.setObjectName("graph_scroll_widget")
+        self.graph_scroll_layout = QtWidgets.QHBoxLayout(self.graph_scroll_widget)
+        self.graph_scroll_layout.setObjectName("graph_scroll_layout")
+
+        self.graph_layout = QtWidgets.QFormLayout()
+        self.graph_layout.setObjectName("graph_layout")
+        self.graph_box.setMinimumSize(QtCore.QSize(500, 500))
+        self.graph_scroll_layout.addLayout(self.graphLayout)
+        self.graph_scroll_area.setWidget(self.graph_scroll_widget)
+        self.graph_box_layout.addWidget(self.graph_scroll_area)
+        self.verticalLayout.addWidget(self.graph_box)
         self.graphLayout.addWidget(self.canvas)
 
-        self.output_box.setLayout(self.outputLayout)
+        # Display output values
+        self.output_scroll_layout.addLayout(self.outputLayout)
 
     def plot_final(
         self,
@@ -348,12 +446,13 @@ class Ui_Dialog:
         self.canvas.draw()
 
 
+
 if __name__ == "__main__":
     from sys import argv, exit
 
-    app = QApplication(argv)
-    Dialog = QDialog()
-    ui = Ui_Dialog()
+    app = QtWidgets.QApplication(argv)
+    Dialog = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
     ui.setupUi(Dialog)
     Dialog.show()
 
