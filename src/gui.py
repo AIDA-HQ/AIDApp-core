@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.input_box_layout = QtWidgets.QVBoxLayout(self.input_box)
         self.input_box_layout.setObjectName("input_box_layout")
 
-        # Input buttons
+        # Pushover coord buttons
         self.file_upload_layout = QtWidgets.QHBoxLayout()
         self.file_upload_layout.setObjectName("file_upload_layout")
         self.file_x_button = QtWidgets.QPushButton(self.input_box)
@@ -61,6 +61,7 @@ class Ui_MainWindow(object):
         self.file_x_button.setObjectName("file_x_button")
         self.file_upload_layout.addWidget(self.file_x_button)
         self.file_y_button = QtWidgets.QPushButton(self.input_box)
+        self.file_y_button.setEnabled(True)
         self.file_y_button.setAutoDefault(False)
         self.file_y_button.setObjectName("file_y_button")
         self.file_upload_layout.addWidget(self.file_y_button)
@@ -290,6 +291,7 @@ class Ui_MainWindow(object):
         self.output_field(output)
 
     def count_storey_boxes(self):
+        self.send_button.setEnabled(False)
         self.show_storey_boxes(self.storey_number_SpinBox.value())
 
 
@@ -373,7 +375,20 @@ class Ui_MainWindow(object):
         methods.add_output_line(kc_n_s_array_string, self.outputLayout)
         methods.add_output_line(Fc_n_s_array_string, self.outputLayout)
 
-        self.buttonBox.setEnabled(False)
+        # Disable the buttons and SpinBoxes: as of now to user  
+        # has to reload the program in order to get new values
+        self.file_x_button.setEnabled(False)
+        self.file_y_button.setEnabled(False)
+        self.ok_button.setEnabled(False)
+
+        self.dp_SpinBox.setEnabled(False)
+        self.u_DB_SpinBox.setEnabled(False)
+        self.k_DB_SpinBox.setEnabled(False)
+        self.kf_SpinBox.setEnabled(False)
+        self.span_length_SpinBox.setEnabled(False)
+        self.interfloor_height_SpinBox.setEnabled(False)
+        self.storey_number_SpinBox.setEnabled(False)
+
         self.graphLayout = QFormLayout()
 
         self.plot_final(
