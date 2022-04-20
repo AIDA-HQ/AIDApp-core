@@ -17,7 +17,7 @@ aidapp = AIDApp()
 class Gui_Methods:
     def add_output_line(self, string, layout):
         label = QLabel()
-        label.setText(string)
+        label.setText(str(string))
         label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         layout.addRow(label)
 
@@ -351,29 +351,65 @@ class Ui_MainWindow(object):
             sa_ms2_0,
         ) = output_values
         i_string = f"Iteration #{i}"
-        Vy_DB_string = f"Vy_DB = {Vy_DB} kN"
-        Fy_n_DB_string = f"Fy_n_DB = {Fy_n_DB_array} kN"
-        dy_DB_final_string = f"dy_DB = {dy_DB_final} m"
-        Vy_DB_array_string = f"Vy_DB_array = {Vy_DB_array} kN"
-        dy_n_array_string = f"dy_n_array = {dy_n_array} m"
-        K_storey_n_string = f"K_storey_n = {K_storey_n} kN/m"
-        K_n_DB_array_string = f"K_n_DB_array = {K_n_DB_array} kN/m"
-        kc_n_s_array_string = f"kc_n_s_array = {kc_n_s_array} kN/m"
-        Fc_n_s_array_string = f"Fc_n_s_array = {Fc_n_s_array} kN"
-
         self.outputLayout = QFormLayout()
 
         methods = Gui_Methods()
         methods.add_output_line(i_string, self.outputLayout)
+
+        Vy_DB_string = f" \nVy(DB) = {Vy_DB} kN"
         methods.add_output_line(Vy_DB_string, self.outputLayout)
-        methods.add_output_line(Fy_n_DB_string, self.outputLayout)
+
+        methods.add_output_line("\nFy,i(DB) array:", self.outputLayout)
+        n=1
+        for element in Fy_n_DB_array:
+            label = "Fy," + str(n) + "(DB)" + " = " + str(element) + " kN"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
+
+        methods.add_output_line("\nVy,i(DB) array:", self.outputLayout)
+        n=1
+        for element in Vy_DB_array:
+            label = "Vy," + str(n) + "(DB)" + " = " + str(element) + " kN"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
+
+        dy_DB_final_string = f"\ndy(DB) = {dy_DB_final} m"
         methods.add_output_line(dy_DB_final_string, self.outputLayout)
-        methods.add_output_line(Vy_DB_array_string, self.outputLayout)
-        methods.add_output_line(dy_n_array_string, self.outputLayout)
-        methods.add_output_line(K_storey_n_string, self.outputLayout)
-        methods.add_output_line(K_n_DB_array_string, self.outputLayout)
-        methods.add_output_line(kc_n_s_array_string, self.outputLayout)
-        methods.add_output_line(Fc_n_s_array_string, self.outputLayout)
+
+        methods.add_output_line("\ndy,i array:", self.outputLayout)
+        n=1
+        for element in dy_n_array:
+            label = "dy," + str(n) + " = " + str(element) + " m"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
+
+        methods.add_output_line("\nKstorey,i array:", self.outputLayout)
+        n=1
+        for element in K_storey_n_array:
+            label = "Kstorey," + str(n) + " = " + str(element) + " kN/m"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
+
+        methods.add_output_line("\nKi(DB) array:", self.outputLayout)
+        n=1
+        for element in K_n_DB_array:
+            label = "K" + str(n) + "," + "(DB)" + " = " + str(element) + " kN/m"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
+
+        methods.add_output_line("\nkc,i,s array:", self.outputLayout)
+        n=1
+        for element in kc_n_s_array:
+            label = "kc" + str(n) + "," + "(s)" + " = " + str(element) + " kN"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
+
+        methods.add_output_line("\nFc,i,s array:", self.outputLayout)
+        n=1
+        for element in Fc_n_s_array:
+            label = "Fc," + str(n) + "," + "(s)" + " = " + str(element) + " kN"
+            methods.add_output_line(label, self.outputLayout)
+            n = n+1
 
         # Disable the buttons and SpinBoxes: as of now to user  
         # has to reload the program in order to get new values
