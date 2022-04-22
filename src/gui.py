@@ -79,6 +79,38 @@ class Ui_MainWindow(object):
         self.input_scroll_layout = QtWidgets.QVBoxLayout(self.input_scroll_widget)
         self.input_scroll_layout.setObjectName("input_scroll_layout")
 
+        # Storey number
+        self.storey_number_layout = QtWidgets.QHBoxLayout()
+        self.storey_number_layout.setObjectName("storey_number_layout")
+        self.storey_number_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.storey_number_label.setObjectName("storey_number_label")
+        self.storey_number_layout.addWidget(self.storey_number_label)
+        self.storey_number_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
+        self.storey_number_layout.addWidget(self.storey_number_SpinBox)
+
+        # Send button
+        self.send_button = QtWidgets.QPushButton(self.input_scroll_widget)
+        self.send_button.setAutoDefault(False)
+        self.send_button.setDefault(False)
+        self.send_button.setObjectName("send_button")
+        self.storey_number_layout.addWidget(self.send_button)
+        self.input_scroll_layout.addLayout(self.storey_number_layout)
+        self.send_button.clicked.connect(self.count_storey_boxes)
+
+        self.storey_layout = QtWidgets.QFormLayout()
+        self.storey_layout.setObjectName("storey_layout")
+        self.input_scroll_layout.addLayout(self.storey_layout)
+        self.input_scroll_area.setWidget(self.input_scroll_widget)
+        self.input_box_layout.addWidget(self.input_scroll_area)
+
+        # Line
+        self.line = QtWidgets.QFrame(self.input_scroll_widget)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.input_scroll_layout.addWidget(self.line)
+
         # dp
         self.dp_layout = QtWidgets.QHBoxLayout()
         self.dp_layout.setObjectName("dp_layout")
@@ -146,39 +178,6 @@ class Ui_MainWindow(object):
         self.interfloor_height_SpinBox.setObjectName("interfloor_height_SpinBox")
         self.interfloor_height_layout.addWidget(self.interfloor_height_SpinBox)
         self.input_scroll_layout.addLayout(self.interfloor_height_layout)
-
-        # Line
-        self.line = QtWidgets.QFrame(self.input_scroll_widget)
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.input_scroll_layout.addWidget(self.line)
-
-        # Storey number
-        self.storey_number_layout = QtWidgets.QHBoxLayout()
-        self.storey_number_layout.setObjectName("storey_number_layout")
-        self.storey_number_label = QtWidgets.QLabel(self.input_scroll_widget)
-        self.storey_number_label.setObjectName("storey_number_label")
-        self.storey_number_layout.addWidget(self.storey_number_label)
-        self.storey_number_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
-        self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
-        self.storey_number_layout.addWidget(self.storey_number_SpinBox)
-
-        # Send button
-        self.send_button = QtWidgets.QPushButton(self.input_scroll_widget)
-        self.send_button.setAutoDefault(False)
-        self.send_button.setDefault(False)
-        self.send_button.setObjectName("send_button")
-        self.storey_number_layout.addWidget(self.send_button)
-        self.input_scroll_layout.addLayout(self.storey_number_layout)
-        self.send_button.clicked.connect(self.count_storey_boxes)
-
-
-        self.storey_layout = QtWidgets.QFormLayout()
-        self.storey_layout.setObjectName("storey_layout")
-        self.input_scroll_layout.addLayout(self.storey_layout)
-        self.input_scroll_area.setWidget(self.input_scroll_widget)
-        self.input_box_layout.addWidget(self.input_scroll_area)
 
         # Ok button
         self.buttonBox = QtWidgets.QHBoxLayout()
