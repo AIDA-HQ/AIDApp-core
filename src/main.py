@@ -204,27 +204,18 @@ class AIDApp:
                 if check <= 0.5:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
-                    Vy_DB_final = values.get_Vy_DB_final(Vp_DB)
-                    Fy_n_DB_array = values.get_Fy_n_DB_array()
-                    dy_DB_final = values.get_dy_DB_final(self.mu_DB, self.dp)
-                    Vy_DB_array = values.get_Vy_n_DB_array().tolist()
-                    dy_n_array = values.get_dy_n_array(self.eigenvalues)
-                    K_storey_n_array = values.get_K_storey_n_array().tolist()
-                    K_n_DB_array = values.get_K_n_DB_array(
-                        self.span_length, self.interfloor_height
-                    )
+                    values.get_Vy_DB_final(Vp_DB)
+                    values.get_Fy_n_DB_array()
+                    values.get_dy_DB_final(self.mu_DB, self.dp)
+                    values.get_Vy_n_DB_array().tolist()
+                    values.get_dy_n_array(self.eigenvalues)
+                    values.get_K_storey_n_array().tolist()
+                    values.get_K_n_DB_array(self.span_length, self.interfloor_height)
                     kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
                     Fc_n_s_array = values.get_Fc_n_s_array(
                         self.brace_number, self.span_length, self.interfloor_height
                     )
                     return [
-                        Vy_DB_final,
-                        Fy_n_DB_array,
-                        dy_DB_final,
-                        Vy_DB_array,
-                        dy_n_array,
-                        K_storey_n_array,
-                        K_n_DB_array,
                         kc_n_s_array,
                         Fc_n_s_array,
                         i,

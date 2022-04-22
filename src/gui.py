@@ -338,13 +338,6 @@ class Ui_MainWindow(object):
 
     def output_field(self, output_values):
         (
-            Vy_DB,
-            Fy_n_DB_array,
-            dy_DB_final,
-            Vy_DB_array,
-            dy_n_array,
-            K_storey_n_array,
-            K_n_DB_array,
             kc_n_s_array,
             Fc_n_s_array,
             i,
@@ -361,47 +354,6 @@ class Ui_MainWindow(object):
 
         methods = Gui_Methods()
         methods.add_output_line(i_string, self.outputLayout)
-
-        Vy_DB_string = f" \nVy(DB) = {Vy_DB} kN"
-        methods.add_output_line(Vy_DB_string, self.outputLayout)
-
-        methods.add_output_line("\nFy,i(DB) array:", self.outputLayout)
-        n = 1
-        for element in Fy_n_DB_array:
-            label = "Fy," + str(n) + "(DB)" + " = " + str(element) + " kN"
-            methods.add_output_line(label, self.outputLayout)
-            n = n + 1
-
-        methods.add_output_line("\nVy,i(DB) array:", self.outputLayout)
-        n = 1
-        for element in Vy_DB_array:
-            label = "Vy," + str(n) + "(DB)" + " = " + str(element) + " kN"
-            methods.add_output_line(label, self.outputLayout)
-            n = n + 1
-
-        dy_DB_final_string = f"\ndy(DB) = {dy_DB_final} m"
-        methods.add_output_line(dy_DB_final_string, self.outputLayout)
-
-        methods.add_output_line("\ndy,i array:", self.outputLayout)
-        n = 1
-        for element in dy_n_array:
-            label = "dy," + str(n) + " = " + str(element) + " m"
-            methods.add_output_line(label, self.outputLayout)
-            n = n + 1
-
-        methods.add_output_line("\nKstorey,i array:", self.outputLayout)
-        n = 1
-        for element in K_storey_n_array:
-            label = "Kstorey," + str(n) + " = " + str(element) + " kN/m"
-            methods.add_output_line(label, self.outputLayout)
-            n = n + 1
-
-        methods.add_output_line("\nKi(DB) array:", self.outputLayout)
-        n = 1
-        for element in K_n_DB_array:
-            label = "K" + str(n) + "," + "(DB)" + " = " + str(element) + " kN/m"
-            methods.add_output_line(label, self.outputLayout)
-            n = n + 1
 
         methods.add_output_line("\nkc,i,s array:", self.outputLayout)
         n = 1
