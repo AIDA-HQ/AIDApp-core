@@ -14,12 +14,16 @@ from PyQt5 import QtCore, QtWidgets
 
 aidapp = AIDApp()
 
+
 class Gui_Methods:
     def add_output_line(self, string, layout):
         label = QLabel()
         label.setText(str(string))
-        label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        label.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
+        )
         layout.addRow(label)
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -174,7 +178,9 @@ class Ui_MainWindow(object):
         self.interfloor_height_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.interfloor_height_label.setObjectName("interfloor_height_label")
         self.interfloor_height_layout.addWidget(self.interfloor_height_label)
-        self.interfloor_height_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.interfloor_height_SpinBox = QtWidgets.QDoubleSpinBox(
+            self.input_scroll_widget
+        )
         self.interfloor_height_SpinBox.setObjectName("interfloor_height_SpinBox")
         self.interfloor_height_layout.addWidget(self.interfloor_height_SpinBox)
         self.input_scroll_layout.addLayout(self.interfloor_height_layout)
@@ -244,7 +250,9 @@ class Ui_MainWindow(object):
         self.k_DB_label.setText(_translate("MainWindow", "\u03BA_DB"))
         self.kf_label.setText(_translate("MainWindow", "\u03BA(F)"))
         self.span_length_label.setText(_translate("MainWindow", "Span Length [m]"))
-        self.interfloor_height_label.setText(_translate("MainWindow", "Inter-floor Height [m]"))
+        self.interfloor_height_label.setText(
+            _translate("MainWindow", "Inter-floor Height [m]")
+        )
         self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
         self.send_button.setText(_translate("MainWindow", "Send"))
         self.ok_button.setText(_translate("MainWindow", "Ok"))
@@ -293,14 +301,13 @@ class Ui_MainWindow(object):
         self.send_button.setEnabled(False)
         self.show_storey_boxes(self.storey_number_SpinBox.value())
 
-
     def show_storey_boxes(self, i):
         self.mass_dict = {}
         self.eigenvalue_dict = {}
         self.brace_number_dict = {}
 
         k = 1
-        while k < (i+1):
+        while k < (i + 1):
             # dynamically create key
             mass_key = k
             eigenvalue_key = k
@@ -359,58 +366,58 @@ class Ui_MainWindow(object):
         methods.add_output_line(Vy_DB_string, self.outputLayout)
 
         methods.add_output_line("\nFy,i(DB) array:", self.outputLayout)
-        n=1
+        n = 1
         for element in Fy_n_DB_array:
             label = "Fy," + str(n) + "(DB)" + " = " + str(element) + " kN"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
         methods.add_output_line("\nVy,i(DB) array:", self.outputLayout)
-        n=1
+        n = 1
         for element in Vy_DB_array:
             label = "Vy," + str(n) + "(DB)" + " = " + str(element) + " kN"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
         dy_DB_final_string = f"\ndy(DB) = {dy_DB_final} m"
         methods.add_output_line(dy_DB_final_string, self.outputLayout)
 
         methods.add_output_line("\ndy,i array:", self.outputLayout)
-        n=1
+        n = 1
         for element in dy_n_array:
             label = "dy," + str(n) + " = " + str(element) + " m"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
         methods.add_output_line("\nKstorey,i array:", self.outputLayout)
-        n=1
+        n = 1
         for element in K_storey_n_array:
             label = "Kstorey," + str(n) + " = " + str(element) + " kN/m"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
         methods.add_output_line("\nKi(DB) array:", self.outputLayout)
-        n=1
+        n = 1
         for element in K_n_DB_array:
             label = "K" + str(n) + "," + "(DB)" + " = " + str(element) + " kN/m"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
         methods.add_output_line("\nkc,i,s array:", self.outputLayout)
-        n=1
+        n = 1
         for element in kc_n_s_array:
             label = "kc" + str(n) + "," + "(s)" + " = " + str(element) + " kN"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
         methods.add_output_line("\nFc,i,s array:", self.outputLayout)
-        n=1
+        n = 1
         for element in Fc_n_s_array:
             label = "Fc," + str(n) + "," + "(s)" + " = " + str(element) + " kN"
             methods.add_output_line(label, self.outputLayout)
-            n = n+1
+            n = n + 1
 
-        # Disable the buttons and SpinBoxes: as of now to user  
+        # Disable the buttons and SpinBoxes: as of now to user
         # has to reload the program in order to get new values
         self.file_x_button.setEnabled(False)
         self.file_y_button.setEnabled(False)
@@ -494,7 +501,6 @@ class Ui_MainWindow(object):
         ax.set_xlabel("Sd [m]", fontsize="large")
         ax.set_ylabel("Sa [m/s^2]", fontsize="large")
         self.canvas.draw()
-
 
 
 if __name__ == "__main__":

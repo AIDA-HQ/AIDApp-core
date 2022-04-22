@@ -14,7 +14,18 @@ handlr = CoordinateHandler()
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_mu_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_brace_number, arg_path_x, arg_path_y, arg_span_length, arg_interfloor_height
+        self,
+        arg_dp,
+        arg_mu_DB,
+        arg_k_DB,
+        arg_Kf,
+        arg_storey_masses,
+        arg_eigenvalues,
+        arg_brace_number,
+        arg_path_x,
+        arg_path_y,
+        arg_span_length,
+        arg_interfloor_height,
     ):
 
         self.dp = arg_dp
@@ -33,7 +44,9 @@ class AIDApp:
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path_y)
         self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path_x)
-        self.Vp_kN = self.y_p_sdof[coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)]
+        self.Vp_kN = self.y_p_sdof[
+            coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)
+        ]
         self.Vp_ms2 = self.Vp_kN / self.me  # m/s^2
 
         # Slope of first n values of SDOF Pushover Curve
@@ -55,7 +68,11 @@ class AIDApp:
         # Straight line passing through 1st and 2nd point of bilinear curve
         # Generate the 1st part of the bilinear
         bilinear_line_kN_1 = coord.bilinear_line(
-            self.x_p_sdof, x_bilinear[0], x_bilinear[1], y_bilinear_kN[0], y_bilinear_kN[1]
+            self.x_p_sdof,
+            x_bilinear[0],
+            x_bilinear[1],
+            y_bilinear_kN[0],
+            y_bilinear_kN[1],
         )
         # Intersections of bilinear #1
         intersection_bilinear1_psdof_coords = coord.find_intersections(
@@ -65,7 +82,11 @@ class AIDApp:
         # Straight line passing through 2nd and 3rd point of the bilinear curve
         # Generate the 2nd part of the bilinear
         bilinear_line_kN_2 = coord.bilinear_line(
-            self.x_p_sdof, x_bilinear[1], x_bilinear[2], y_bilinear_kN[1], y_bilinear_kN[2]
+            self.x_p_sdof,
+            x_bilinear[1],
+            x_bilinear[2],
+            y_bilinear_kN[1],
+            y_bilinear_kN[2],
         )
         # Intersections of bilinear #2
         intersection_bilinear2_psdof_coords = coord.find_intersections(
@@ -114,7 +135,9 @@ class AIDApp:
 
             xi_n_eff = values.get_xi_n_eff_0(self.dp, adrs_spectrum, k1_eff_curve)
             xi_DB = values.get_xi_DB(self.mu_DB, self.k_DB)
-            Vp_DB_prev_iteration = values.get_Vp_DB_0(xi_n_eff, self.Vp_kN, xi_DB, xiFrame)
+            Vp_DB_prev_iteration = values.get_Vp_DB_0(
+                xi_n_eff, self.Vp_kN, xi_DB, xiFrame
+            )
 
             check = values.get_check(xiFrame, xi_n_eff)
             Vp_DB = Vp_DB_prev_iteration
@@ -135,7 +158,9 @@ class AIDApp:
             ):
                 if check > 0.5:
                     i = i + 1
-                    xi_eff_F_DB = values.get_xi_eff_F_DB(self.Vp_kN, xi_DB, Vp_DB, xiFrame)
+                    xi_eff_F_DB = values.get_xi_eff_F_DB(
+                        self.Vp_kN, xi_DB, Vp_DB, xiFrame
+                    )
                     sa_ms2 = values.convert_to_ms2(
                         values.get_Sa(input_coord.y_adrs_input, xi_eff_F_DB)
                     )
@@ -185,9 +210,13 @@ class AIDApp:
                     Vy_DB_array = values.get_Vy_n_DB_array().tolist()
                     dy_n_array = values.get_dy_n_array(self.eigenvalues)
                     K_storey_n_array = values.get_K_storey_n_array().tolist()
-                    K_n_DB_array = values.get_K_n_DB_array(self.span_length, self.interfloor_height)
+                    K_n_DB_array = values.get_K_n_DB_array(
+                        self.span_length, self.interfloor_height
+                    )
                     kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
-                    Fc_n_s_array = values.get_Fc_n_s_array(self.brace_number, self.span_length, self.interfloor_height)
+                    Fc_n_s_array = values.get_Fc_n_s_array(
+                        self.brace_number, self.span_length, self.interfloor_height
+                    )
                     return [
                         Vy_DB_final,
                         Fy_n_DB_array,

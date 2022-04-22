@@ -12,7 +12,7 @@ class Values:
         """
         Convert the input array values to m
         """
-        return array([element/1000 for element in coord_mm])  # [m]
+        return array([element / 1000 for element in coord_mm])  # [m]
 
     @staticmethod
     def convert_to_ms2(coord_g):
@@ -30,7 +30,9 @@ class Values:
         )  # Storey masses displayed in a diagonal matrix
         self.m_tot = sum(storey_masses)  # Sum all storey masses together
         self.Phi = array(eigenvalues)  # Eigenvalues displayed in a 1-coloumn matrix
-        self.MPhi = matmul(self.m_matrix, self.Phi) # narray containing the values of masses * eigenvalues
+        self.MPhi = matmul(
+            self.m_matrix, self.Phi
+        )  # narray containing the values of masses * eigenvalues
         self.PhiTMTau = matmul(self.Phi, storey_masses)
         self.PhiTMPhi = matmul(self.Phi, self.MPhi)
         self.gamma = self.PhiTMTau / self.PhiTMPhi
@@ -59,7 +61,7 @@ class Values:
         return MPhi
         """
         return self.MPhi
-    
+
     def get_sum_MPhi(self):
         """
         Return the sum of all the values in MPhi array
@@ -189,7 +191,9 @@ class Values:
         Calculate the value of Sa (xieff)
         coordinates after the iteration 0.
         """
-        return array([element * (10 / (10 + xi_eff_F_DB)) ** 0.5 for element in y_adrs_input])  # [g]
+        return array(
+            [element * (10 / (10 + xi_eff_F_DB)) ** 0.5 for element in y_adrs_input]
+        )  # [g]
 
     # TODO Convert the Sa values to m/s^2
 
@@ -198,7 +202,9 @@ class Values:
         """
         Calculate the value of T period
         """
-        return array([2 * pi * (sd / sa) ** 0.5 for sd, sa in zip(sd_meters_0, sa_ms2_0)])  # [s]
+        return array(
+            [2 * pi * (sd / sa) ** 0.5 for sd, sa in zip(sd_meters_0, sa_ms2_0)]
+        )  # [s]
 
     def get_Sd(self, sa_ms2_0, sd_meters_0, sa_ms2):
         """
@@ -207,7 +213,9 @@ class Values:
         # sa_ms2_0 is the initial array of Sa, the one input by the user
         # sa_ms2 is the array calculated by the program
         t_array = self.get_T(sa_ms2_0, sd_meters_0)
-        return array([sa * ((t / 2 / pi) ** 2) for sa, t in zip(sa_ms2, t_array)])  # [m]
+        return array(
+            [sa * ((t / 2 / pi) ** 2) for sa, t in zip(sa_ms2, t_array)]
+        )  # [m]
 
     #
     # Dissipative Brace (DB) methods
@@ -288,27 +296,29 @@ class Values:
         dy_db = self.get_dy_DB(mu_DB, dp_DB)
         self.dy_DB_final = dy_db * self.gamma
         return self.dy_DB_final
-    
+
     def get_Vy_n_DB_array(self):
         """
         Calculate the values of Vy(DB)
         """
         self.Vy_DB_array = (cumsum(self.Fy_n_DB_array[::-1]))[::-1]
         return self.Vy_DB_array
-    
+
     def get_dy_n_array(self, eigenvalues):
         """
         Calculate the values of dy,n
         """
         self.dy_n_array = []
-        self.dy_n_array = [eigenvalues[0]*self.dy_DB_final] + ([(y - x)* self.dy_DB_final for x,y in zip(eigenvalues,eigenvalues[1:])])
+        self.dy_n_array = [eigenvalues[0] * self.dy_DB_final] + (
+            [(y - x) * self.dy_DB_final for x, y in zip(eigenvalues, eigenvalues[1:])]
+        )
         return self.dy_n_array
-    
+
     def get_K_storey_n_array(self):
         """
         Calculate the values of K_storey,n
         """
-        K_storey_n_array = self.Vy_DB_array/self.dy_n_array
+        K_storey_n_array = self.Vy_DB_array / self.dy_n_array
         return K_storey_n_array
 
     ## Frame data
@@ -318,19 +328,19 @@ class Values:
         """
         upwind_lenght = sqrt(span_length**2 + interfloor_height**2)
         return upwind_lenght
-    
+
     def get_slope(self, span_length, interfloor_height):
         """
         Calculate the slope of the upwind
         """
-        slope = arctan(interfloor_height/span_length)
+        slope = arctan(interfloor_height / span_length)
         return slope
-    
+
     def cos_alpha(self, span_length, upwind_lenght):
         """
         Calculate the cos(alpha) of the upwind
         """
-        cos_alpha = span_length/upwind_lenght
+        cos_alpha = span_length / upwind_lenght
         return cos_alpha
 
     def get_K_n_DB_array(self, span_length, interfloor_height):
@@ -338,9 +348,11 @@ class Values:
         Calculate the values of K_n(DB)
         """
         upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
-        self.K_n_DB_array = self.Vy_DB_array / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght)**2))
+        self.K_n_DB_array = self.Vy_DB_array / (
+            self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght) ** 2)
+        )
         return self.K_n_DB_array
-    
+
     def get_Ny_n_DB_array(self, span_length, interfloor_height):
         """
         Calculate the values of Ny(DB)
@@ -351,7 +363,7 @@ class Values:
             Ny_n_DB = element / self.cos_alpha(span_length, upwind_lenght)
             Ny_n_DB_array.append(Ny_n_DB)
         return Ny_n_DB_array
-    
+
     def get_kc_n_s_array(self, brace_number):
         """
         Calculate the values of the brace rigidity for each floor (kc_n_s)
@@ -359,8 +371,8 @@ class Values:
         kc_n_s_array = []
         k = 0
         for element in self.K_n_DB_array:
-            kc_n_s = element / brace_number[0+k]
-            k = k+1
+            kc_n_s = element / brace_number[0 + k]
+            k = k + 1
             kc_n_s_array.append(kc_n_s)
         return kc_n_s_array
 
@@ -371,10 +383,11 @@ class Values:
         Fc_n_s_array = []
         k = 0
         for element in self.get_Ny_n_DB_array(span_length, interfloor_height):
-            Fc_n_s = element / brace_number[0+k]
-            k = k+1
+            Fc_n_s = element / brace_number[0 + k]
+            k = k + 1
             Fc_n_s_array.append(Fc_n_s)
         return Fc_n_s_array
+
 
 class Area:
     @staticmethod
