@@ -16,7 +16,7 @@ class Coords:
 
     # Generate SDOF pushover curve
     @staticmethod
-    def x_p_sdof(gamma, x_p_mdof):      
+    def x_p_sdof(gamma, x_p_mdof):
         return array([element / gamma for element in x_p_mdof])
 
     @staticmethod

@@ -2,21 +2,30 @@ from numpy import array
 
 from calcs import Area, Values
 from coordinates import Coords
-from display import Print
 from input_coordinates import Input
 from coordinate_handler import CoordinateHandler
 
 area = Area()
 coord = Coords()
 input_coord = Input()
-display = Print()
 values = Values()
 handlr = CoordinateHandler()
 
 
 class AIDApp:
     def main(
-        self, arg_dp, arg_mu_DB, arg_k_DB, arg_Kf, arg_storey_masses, arg_eigenvalues, arg_path_x, arg_path_y
+        self,
+        arg_dp,
+        arg_mu_DB,
+        arg_k_DB,
+        arg_Kf,
+        arg_storey_masses,
+        arg_eigenvalues,
+        arg_brace_number,
+        arg_path_x,
+        arg_path_y,
+        arg_span_length,
+        arg_interfloor_height,
     ):
 
         self.dp = arg_dp
@@ -27,12 +36,17 @@ class AIDApp:
         self.eigenvalues = arg_eigenvalues
         self.path_x = handlr.generate_array(arg_path_x)
         self.path_y = handlr.generate_array(arg_path_y)
+        self.span_length = arg_span_length
+        self.interfloor_height = arg_interfloor_height
+        self.brace_number = arg_brace_number
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path_y)
         self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path_x)
-        self.Vp_kN = self.y_p_sdof[coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)]
+        self.Vp_kN = self.y_p_sdof[
+            coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)
+        ]
         self.Vp_ms2 = self.Vp_kN / self.me  # m/s^2
 
         # Slope of first n values of SDOF Pushover Curve
@@ -54,7 +68,11 @@ class AIDApp:
         # Straight line passing through 1st and 2nd point of bilinear curve
         # Generate the 1st part of the bilinear
         bilinear_line_kN_1 = coord.bilinear_line(
-            self.x_p_sdof, x_bilinear[0], x_bilinear[1], y_bilinear_kN[0], y_bilinear_kN[1]
+            self.x_p_sdof,
+            x_bilinear[0],
+            x_bilinear[1],
+            y_bilinear_kN[0],
+            y_bilinear_kN[1],
         )
         # Intersections of bilinear #1
         intersection_bilinear1_psdof_coords = coord.find_intersections(
@@ -64,7 +82,11 @@ class AIDApp:
         # Straight line passing through 2nd and 3rd point of the bilinear curve
         # Generate the 2nd part of the bilinear
         bilinear_line_kN_2 = coord.bilinear_line(
-            self.x_p_sdof, x_bilinear[1], x_bilinear[2], y_bilinear_kN[1], y_bilinear_kN[2]
+            self.x_p_sdof,
+            x_bilinear[1],
+            x_bilinear[2],
+            y_bilinear_kN[1],
+            y_bilinear_kN[2],
         )
         # Intersections of bilinear #2
         intersection_bilinear2_psdof_coords = coord.find_intersections(
@@ -113,11 +135,12 @@ class AIDApp:
 
             xi_n_eff = values.get_xi_n_eff_0(self.dp, adrs_spectrum, k1_eff_curve)
             xi_DB = values.get_xi_DB(self.mu_DB, self.k_DB)
-            Vp_DB_prev_iteration = values.get_Vp_DB_0(xi_n_eff, self.Vp_kN, xi_DB, xiFrame)
+            Vp_DB_prev_iteration = values.get_Vp_DB_0(
+                xi_n_eff, self.Vp_kN, xi_DB, xiFrame
+            )
 
             check = values.get_check(xiFrame, xi_n_eff)
             Vp_DB = Vp_DB_prev_iteration
-            display.print_iteration_zero(xiFrame, xi_n_eff, Vp_DB, check)
 
             # Recursive function to calculate what's needed
             def get_calcs_recursive(
@@ -135,7 +158,9 @@ class AIDApp:
             ):
                 if check > 0.5:
                     i = i + 1
-                    xi_eff_F_DB = values.get_xi_eff_F_DB(self.Vp_kN, xi_DB, Vp_DB, xiFrame)
+                    xi_eff_F_DB = values.get_xi_eff_F_DB(
+                        self.Vp_kN, xi_DB, Vp_DB, xiFrame
+                    )
                     sa_ms2 = values.convert_to_ms2(
                         values.get_Sa(input_coord.y_adrs_input, xi_eff_F_DB)
                     )
@@ -161,17 +186,6 @@ class AIDApp:
 
                     check = values.get_check(xi_eff_F_DB, xi_n_eff)
                     check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration)
-                    display.print_brief(
-                        i,
-                        Vy_F_DB,
-                        Vp_F_DB,
-                        xi_eff_F_DB,
-                        Vp_DB_prev_iteration,
-                        xi_n_eff,
-                        Vp_DB,
-                        check,
-                        check_Vp_DB,
-                    )
 
                     return get_calcs_recursive(
                         Vp_DB,
@@ -190,18 +204,21 @@ class AIDApp:
                 if check <= 0.5:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
-                    dy_DB = values.get_dy_DB(self.mu_DB, self.dp)
-                    kb = values.get_Kb(dy_DB, Vp_DB)
+                    values.get_Vy_DB_final(Vp_DB)
+                    values.get_Fy_n_DB_array()
+                    values.get_dy_DB_final(self.mu_DB, self.dp)
+                    values.get_Vy_n_DB_array().tolist()
+                    values.get_dy_n_array(self.eigenvalues)
+                    values.get_K_storey_n_array().tolist()
+                    values.get_K_n_DB_array(self.span_length, self.interfloor_height)
+                    kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
+                    Fc_n_s_array = values.get_Fc_n_s_array(
+                        self.brace_number, self.span_length, self.interfloor_height
+                    )
                     return [
-                        Vp_DB,
-                        check,
+                        kc_n_s_array,
+                        Fc_n_s_array,
                         i,
-                        Vy_F_DB,
-                        Vp_F_DB,
-                        kn_eff,
-                        xi_eff_F_DB,
-                        xi_n_eff,
-                        check_Vp_DB,
                         x_bilinear,
                         y_bilinear_ms2,
                         sd_meters,
@@ -209,8 +226,6 @@ class AIDApp:
                         kn_eff_list,
                         sd_meters_0,
                         sa_ms2_0,
-                        dy_DB,
-                        kb,
                     ]
 
             return get_calcs_recursive(
