@@ -1,5 +1,4 @@
-from numpy import absolute, arctan, array, cumsum, diagflat, matmul, pi, sqrt, trapz
-from scipy.stats import linregress
+from numpy import absolute, arctan, array, cov, cumsum, diagflat, matmul, pi, sqrt, trapz
 
 from coordinates import Coords
 
@@ -88,8 +87,9 @@ class Values:
         """
         a = array(x_p_sdof[2:10])
         b = array(y_p_sdof[2:10])
+        ssam, ssabm, _, _ssbm = cov(a, b, bias=1).flat
+        slope = ssabm / ssam
 
-        slope, _intercept, _r, _p, _se = linregress(a, b)  # kN
         return slope  # Slope
 
     def get_Vy_kN(self, K1, dy):

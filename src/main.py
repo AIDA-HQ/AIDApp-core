@@ -3,13 +3,13 @@ from numpy import array
 from calcs import Area, Values
 from coordinates import Coords
 from input_coordinates import Input
-from coordinate_handler import CoordinateHandler
+from coordinate_handler import InputHandler
 
 area = Area()
 coord = Coords()
 input_coord = Input()
 values = Values()
-handlr = CoordinateHandler()
+handlr = InputHandler()
 
 
 class AIDApp:
@@ -34,8 +34,8 @@ class AIDApp:
         self.Kf = arg_Kf
         self.storey_masses = arg_storey_masses
         self.eigenvalues = arg_eigenvalues
-        self.path_x = handlr.generate_array(arg_path_x)
-        self.path_y = handlr.generate_array(arg_path_y)
+        self.path_x = handlr.generate_pushover_array(arg_path_x)
+        self.path_y = handlr.generate_pushover_array(arg_path_y)
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
         self.brace_number = arg_brace_number
