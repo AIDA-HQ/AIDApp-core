@@ -16,13 +16,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.10.2
-      - name: Build package with pyinstaller
+      - name: Build package with PyInstaller
         shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pyinstaller==4.7
-          pyinstaller --clean -y --dist ./dist --noconsole --name AIDApp-$GIT_TAG_NAME-windows --onefile src/gui.py
+          pip install pyinstaller==5.0.1
+          pyinstaller --clean -y --dist ./dist -w --splash res/splash.png -i res/icon.icns -n AIDApp-$GIT_TAG_NAME-windows -F src/gui.py
           chown -R --reference=. ./dist
       - name: Release Windows Artifact
         uses: softprops/action-gh-release@v1

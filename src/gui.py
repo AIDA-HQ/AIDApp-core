@@ -583,6 +583,14 @@ class Ui_MainWindow(object):
 if __name__ == "__main__":
     from sys import argv, exit
 
+    # Check if the program is being packaged with a splash screen
+    # using PyInstaller, if so, close the splash when the it's finished
+    # loading.
+    import os, importlib
+    if '_PYIBoot_SPLASH' in os.environ and importlib.util.find_spec("pyi_splash"):
+        import pyi_splash
+        pyi_splash.close()
+
     app = QtWidgets.QApplication(argv)
     Dialog = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
