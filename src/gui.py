@@ -1,23 +1,16 @@
-from qtpy.QtWidgets import (
-    QLabel,
-    QDoubleSpinBox,
-    QFormLayout,
-    QFileDialog,
-)
-from qtpy import QtCore
+from qtpy import QtCore, QtWidgets
+
 from main import AIDApp
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
-from PyQt5 import QtCore, QtWidgets
 
 aidapp = AIDApp()
 
 
 class Gui_Methods:
     def add_output_line(self, string, layout):
-        label = QLabel()
+        label = QtWidgets.QLabel()
         label.setText(str(string))
         label.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
@@ -259,13 +252,13 @@ class Ui_MainWindow(object):
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
     def open_x(self):
-        path = QFileDialog.getOpenFileName()
+        path = QtWidgets.QFileDialog.getOpenFileName()
         if path != ("", ""):
             print(path[0])
         self.path_x = path[0]
 
     def open_y(self):
-        path = QFileDialog.getOpenFileName()
+        path = QtWidgets.QFileDialog.getOpenFileName()
         if path != ("", ""):
             print(path[0])
         self.path_y = path[0]
@@ -312,26 +305,26 @@ class Ui_MainWindow(object):
             mass_key = k
             eigenvalue_key = k
             brace_number_key = k
-            mass_value = QDoubleSpinBox()
+            mass_value = QtWidgets.QDoubleSpinBox()
             mass_value.setDecimals(3)
             mass_value.setMaximum(10000)
             self.mass_dict[mass_key] = mass_value
-            eigenvalue_value = QDoubleSpinBox()
+            eigenvalue_value = QtWidgets.QDoubleSpinBox()
             eigenvalue_value.setDecimals(10)
             self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
-            brace_number_value = QDoubleSpinBox()
+            brace_number_value = QtWidgets.QDoubleSpinBox()
             brace_number_value.setDecimals(0)
             self.brace_number_dict[brace_number_key] = brace_number_value
 
             self.storey_layout.addRow(
-                QLabel(f"Storey #{k} mass [ton]"), self.mass_dict[mass_key]
+                QtWidgets.QLabel(f"Storey #{k} mass [ton]"), self.mass_dict[mass_key]
             )
             self.storey_layout.addRow(
-                QLabel(f"Storey #{k} eigenvalue"),
+                QtWidgets.QLabel(f"Storey #{k} eigenvalue"),
                 self.eigenvalue_dict[eigenvalue_key],
             )
             self.storey_layout.addRow(
-                QLabel(f"Storey #{k} brace #"),
+                QtWidgets.QLabel(f"Storey #{k} brace #"),
                 self.brace_number_dict[brace_number_key],
             )
             k += 1
@@ -350,7 +343,7 @@ class Ui_MainWindow(object):
             sa_ms2_0,
         ) = output_values
         i_string = f"Iteration #{i}"
-        self.outputLayout = QFormLayout()
+        self.outputLayout = QtWidgets.QFormLayout()
 
         methods = Gui_Methods()
         methods.add_output_line(i_string, self.outputLayout)
@@ -383,7 +376,7 @@ class Ui_MainWindow(object):
         self.interfloor_height_SpinBox.setEnabled(False)
         self.storey_number_SpinBox.setEnabled(False)
 
-        self.graphLayout = QFormLayout()
+        self.graphLayout = QtWidgets.QFormLayout()
 
         self.plot_final(
             x_bilinear,
