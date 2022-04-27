@@ -2,12 +2,11 @@ from numpy import array
 
 from calcs import Area, Values
 from coordinates import Coords
-from input_coordinates import Input
 from coordinate_handler import InputHandler
+from ntc import Ntc
 
 area = Area()
 coord = Coords()
-input_coord = Input()
 values = Values()
 handlr = InputHandler()
 
@@ -22,10 +21,17 @@ class AIDApp:
         arg_storey_masses,
         arg_eigenvalues,
         arg_brace_number,
+        arg_path_zonation,
         arg_path_x,
         arg_path_y,
         arg_span_length,
         arg_interfloor_height,
+        arg_nominal_age,
+        arg_functional_class,
+        arg_topographic_factor,
+        arg_soil_class,
+        arg_limit_state,
+        arg_damping_coeff,
     ):
 
         self.dp = arg_dp
@@ -36,9 +42,17 @@ class AIDApp:
         self.eigenvalues = arg_eigenvalues
         self.path_x = handlr.generate_pushover_array(arg_path_x)
         self.path_y = handlr.generate_pushover_array(arg_path_y)
+        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(arg_path_zonation)
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
         self.brace_number = arg_brace_number
+
+        self.nominal_age = arg_nominal_age
+        self.functional_class = arg_functional_class
+        self.topographic_factor = arg_topographic_factor
+        self.soil_class = arg_soil_class
+        self.limit_state = arg_limit_state
+        self.damping_coeff = arg_damping_coeff
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
@@ -120,8 +134,19 @@ class AIDApp:
         _a1, _a2, area_diff = areas_kN
 
         if area_diff < 0.0004:
-            sd_meters_0 = values.convert_to_meters(input_coord.x_adrs_input)
-            sa_ms2_0 = values.convert_to_ms2(input_coord.y_adrs_input)
+            ntc = Ntc(
+                self.limit_state,
+                self.nominal_age,
+                self.functional_class,
+                self.soil_class,
+                self.topographic_factor,
+                self.ag_input,
+                self.fo_input,
+                self.tc_input,
+                self.damping_coeff,
+            )
+            sd_meters_0 = (ntc.get_movement_curve_SDe())
+            sa_ms2_0 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
             adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
             k_eff = self.Vp_ms2 / self.dp
 

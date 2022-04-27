@@ -1,4 +1,15 @@
-from numpy import absolute, arctan, array, cov, cumsum, diagflat, matmul, pi, sqrt, trapz
+from numpy import (
+    absolute,
+    arctan,
+    array,
+    cov,
+    cumsum,
+    diagflat,
+    matmul,
+    pi,
+    sqrt,
+    trapz,
+)
 
 from coordinates import Coords
 

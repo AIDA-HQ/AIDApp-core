@@ -12,17 +12,25 @@ class Ntc(object):
         ag_input,
         fo_input,
         tc_input,
-        xi, #damping coefficient
+        xi,  # damping coefficient
     ):
         self.limit_state = limit_state
         self.V_N = V_N
-        self.C_U = C_U
         self.soil_class = soil_class
         self.topographic_category = topographic_category
         self.ag_input = ag_input
         self.fo_input = fo_input
         self.tc_input = tc_input
         self.xi = xi
+        match C_U:
+            case "I":
+                self.C_U = 0.7
+            case "II":
+                self.C_U = 1
+            case "III":
+                self.C_U = 1.5
+            case "IV":
+                self.C_U = 2
 
     def get_V_R(self):
         """
@@ -432,7 +440,7 @@ class Ntc(object):
             )
             self.Se_coords.append(coord)
 
-        return self.Se_coords
+        return array(self.Se_coords)
 
     def get_movement_curve_SDe(self):
         self.get_acceleration_curve_T()
@@ -440,6 +448,6 @@ class Ntc(object):
         self.SDe_coords_movement = []
 
         for s, g in zip(self.t_acceleration_coords, self.Se_coords):
-            coord = g * 9.806 * (s / (2 * pi)) ** 2
+            coord = (g * 9.806 * (s / (2 * pi)) ** 2) 
             self.SDe_coords_movement.append(coord)
-        return self.SDe_coords_movement
+        return array(self.SDe_coords_movement)

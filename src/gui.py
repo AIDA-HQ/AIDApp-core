@@ -40,8 +40,8 @@ class Ui_MainWindow(object):
 
         # Input Box
         self.input_box = QtWidgets.QGroupBox(self.main_scroll_widget)
-        self.input_box.setMinimumSize(QtCore.QSize(330, 500))
-        self.input_box.setMaximumSize(QtCore.QSize(330, 1000))
+        self.input_box.setMinimumSize(QtCore.QSize(365, 500))
+        self.input_box.setMaximumSize(QtCore.QSize(365, 1000))
         self.input_box.setAutoFillBackground(False)
         self.input_box.setFlat(False)
         self.input_box.setCheckable(False)
@@ -49,22 +49,36 @@ class Ui_MainWindow(object):
         self.input_box_layout = QtWidgets.QVBoxLayout(self.input_box)
         self.input_box_layout.setObjectName("input_box_layout")
 
-        # Pushover coord buttons
-        self.file_upload_layout = QtWidgets.QHBoxLayout()
+        # File upload boxes layout
+        self.file_upload_layout = QtWidgets.QVBoxLayout()
         self.file_upload_layout.setObjectName("file_upload_layout")
+
+        # Zonation button
+        self.file_zonation_button = QtWidgets.QPushButton(self.input_box)
+        self.file_zonation_button.setEnabled(True)
+        self.file_zonation_button.setAutoDefault(False)
+        self.file_zonation_button.setObjectName("file_x_button")
+        self.file_upload_layout.addWidget(self.file_zonation_button)
+        self.file_zonation_button.clicked.connect(self.open_zonation)
+
+        # Pushover coord buttons
+        self.file_pushover_layout = QtWidgets.QHBoxLayout()
+        self.file_pushover_layout.setObjectName("file_pushover_layout")
         self.file_x_button = QtWidgets.QPushButton(self.input_box)
         self.file_x_button.setEnabled(True)
         self.file_x_button.setAutoDefault(False)
         self.file_x_button.setObjectName("file_x_button")
-        self.file_upload_layout.addWidget(self.file_x_button)
+        self.file_pushover_layout.addWidget(self.file_x_button)
         self.file_y_button = QtWidgets.QPushButton(self.input_box)
         self.file_y_button.setEnabled(True)
         self.file_y_button.setAutoDefault(False)
         self.file_y_button.setObjectName("file_y_button")
-        self.file_upload_layout.addWidget(self.file_y_button)
-        self.input_box_layout.addLayout(self.file_upload_layout)
+        self.file_pushover_layout.addWidget(self.file_y_button)
         self.file_x_button.clicked.connect(self.open_x)
         self.file_y_button.clicked.connect(self.open_y)
+        self.file_upload_layout.addLayout(self.file_pushover_layout)
+
+        self.input_box_layout.addLayout(self.file_upload_layout)
 
         # Input value area
         self.input_scroll_area = QtWidgets.QScrollArea(self.input_box)
@@ -75,6 +89,88 @@ class Ui_MainWindow(object):
         self.input_scroll_widget.setObjectName("input_scroll_widget")
         self.input_scroll_layout = QtWidgets.QVBoxLayout(self.input_scroll_widget)
         self.input_scroll_layout.setObjectName("input_scroll_layout")
+
+        # Damping coefficient
+        self.damping_coeff_layout = QtWidgets.QHBoxLayout()
+        self.damping_coeff_layout.setObjectName("damping_coeff_layout")
+        self.damping_coeff_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.damping_coeff_label.setObjectName("damping_coeff_label")
+        self.damping_coeff_layout.addWidget(self.damping_coeff_label)
+        self.damping_coeff_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.damping_coeff_SpinBox.setMaximum(0)
+        self.damping_coeff_SpinBox.setMaximum(100)
+        self.damping_coeff_SpinBox.setObjectName("damping_coeff_SpinBox")
+        self.damping_coeff_layout.addWidget(self.damping_coeff_SpinBox)
+        self.input_scroll_layout.addLayout(self.damping_coeff_layout)
+
+        # Nominal age
+        self.nominal_age_layout = QtWidgets.QHBoxLayout()
+        self.nominal_age_layout.setObjectName("nominal_age_layout")
+        self.nominal_age_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.nominal_age_label.setObjectName("nominal_age_label")
+        self.nominal_age_layout.addWidget(self.nominal_age_label)
+        self.nominal_age_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.nominal_age_SpinBox.setMaximum(0)
+        self.nominal_age_SpinBox.setMaximum(9999)
+
+        self.nominal_age_SpinBox.setObjectName("nominal_age_SpinBox")
+        self.nominal_age_layout.addWidget(self.nominal_age_SpinBox)
+        self.input_scroll_layout.addLayout(self.nominal_age_layout)
+
+        # Functional class
+        self.functional_class_layout = QtWidgets.QHBoxLayout()
+        self.functional_class_layout.setObjectName("functional_class_layout")
+        self.functional_class_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.functional_class_label.setObjectName("functional_class_label")
+        self.functional_class_layout.addWidget(self.functional_class_label)
+        self.input_scroll_layout.addLayout(self.functional_class_layout)
+        self.functional_class_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.functional_class_comboBox.setObjectName("comboBox")
+        self.functional_class_comboBox.addItems(["I", "II", "III", "IV"])
+        self.functional_class_layout.addWidget(self.functional_class_comboBox)
+
+        # Topographic factor
+        self.topographic_factor_layout = QtWidgets.QHBoxLayout()
+        self.topographic_factor_layout.setObjectName("topographic_factor_layout")
+        self.topographic_factor_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.topographic_factor_label.setObjectName("topographic_factor_label")
+        self.topographic_factor_layout.addWidget(self.topographic_factor_label)
+        self.input_scroll_layout.addLayout(self.topographic_factor_layout)
+        self.topographic_factor_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.topographic_factor_comboBox.setObjectName("comboBox")
+        self.topographic_factor_comboBox.addItems(["T1", "T2", "T3", "T4"])
+        self.topographic_factor_layout.addWidget(self.topographic_factor_comboBox)
+
+        # Soil class
+        self.soil_class_layout = QtWidgets.QHBoxLayout()
+        self.soil_class_layout.setObjectName("soil_class_layout")
+        self.soil_class_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.soil_class_label.setObjectName("soil_class_label")
+        self.soil_class_layout.addWidget(self.soil_class_label)
+        self.input_scroll_layout.addLayout(self.soil_class_layout)
+        self.soil_class_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.soil_class_comboBox.setObjectName("comboBox")
+        self.soil_class_comboBox.addItems(["A", "B", "C", "D", "E"])
+        self.soil_class_layout.addWidget(self.soil_class_comboBox)
+
+        # Limit state design
+        self.limit_state_layout = QtWidgets.QHBoxLayout()
+        self.limit_state_layout.setObjectName("limit_state_layout")
+        self.limit_state_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.limit_state_label.setObjectName("limit_state_label")
+        self.limit_state_layout.addWidget(self.limit_state_label)
+        self.input_scroll_layout.addLayout(self.limit_state_layout)
+        self.limit_state_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.limit_state_comboBox.setObjectName("comboBox")
+        self.limit_state_comboBox.addItems(["SLO", "SLD", "SLV", "SLC"])
+        self.limit_state_layout.addWidget(self.limit_state_comboBox)
+
+        # Line 1
+        self.line_1 = QtWidgets.QFrame(self.input_scroll_widget)
+        self.line_1.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_1.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_1.setObjectName("line_1")
+        self.input_scroll_layout.addWidget(self.line_1)
 
         # Storey number
         self.storey_number_layout = QtWidgets.QHBoxLayout()
@@ -101,12 +197,12 @@ class Ui_MainWindow(object):
         self.input_scroll_area.setWidget(self.input_scroll_widget)
         self.input_box_layout.addWidget(self.input_scroll_area)
 
-        # Line
-        self.line = QtWidgets.QFrame(self.input_scroll_widget)
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.input_scroll_layout.addWidget(self.line)
+        # Line 2
+        self.line_2 = QtWidgets.QFrame(self.input_scroll_widget)
+        self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.input_scroll_layout.addWidget(self.line_2)
 
         # dp
         self.dp_layout = QtWidgets.QHBoxLayout()
@@ -162,6 +258,7 @@ class Ui_MainWindow(object):
         self.span_length_layout.addWidget(self.span_length_label)
         self.span_length_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
         self.span_length_SpinBox.setObjectName("span_length_SpinBox")
+        self.span_length_SpinBox.setMaximum(99)
         self.span_length_layout.addWidget(self.span_length_SpinBox)
         self.input_scroll_layout.addLayout(self.span_length_layout)
 
@@ -175,6 +272,7 @@ class Ui_MainWindow(object):
             self.input_scroll_widget
         )
         self.interfloor_height_SpinBox.setObjectName("interfloor_height_SpinBox")
+        self.interfloor_height_SpinBox.setMaximum(99)
         self.interfloor_height_layout.addWidget(self.interfloor_height_SpinBox)
         self.input_scroll_layout.addLayout(self.interfloor_height_layout)
 
@@ -236,8 +334,23 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
         self.input_box.setTitle(_translate("MainWindow", "Input Values"))
+        self.file_zonation_button.setText(
+            _translate("MainWindow", "Seismic Zonation Values")
+        )
         self.file_x_button.setText(_translate("MainWindow", "X Pushover"))
         self.file_y_button.setText(_translate("MainWindow", "Y Pushover"))
+        self.damping_coeff_label.setText(
+            _translate("MainWindow", "Damping coefficient [%]")
+        )
+        self.nominal_age_label.setText(_translate("MainWindow", "Nominal life [years]"))
+        self.functional_class_label.setText(
+            _translate("MainWindow", "Functional class")
+        )
+        self.topographic_factor_label.setText(
+            _translate("MainWindow", "Topographic factor")
+        )
+        self.soil_class_label.setText(_translate("MainWindow", "Soil class"))
+        self.limit_state_label.setText(_translate("MainWindow", "Limit State Design"))
         self.dp_label.setText(_translate("MainWindow", "dp [m]"))
         self.u_DB_label.setText(_translate("MainWindow", "\u03BC_DB"))
         self.k_DB_label.setText(_translate("MainWindow", "\u03BA_DB"))
@@ -250,6 +363,12 @@ class Ui_MainWindow(object):
         self.send_button.setText(_translate("MainWindow", "Send"))
         self.ok_button.setText(_translate("MainWindow", "Ok"))
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
+
+    def open_zonation(self):
+        path = QtWidgets.QFileDialog.getOpenFileName()
+        if path != ("", ""):
+            print(path[0])
+        self.path_zonation = path[0]
 
     def open_x(self):
         path = QtWidgets.QFileDialog.getOpenFileName()
@@ -282,10 +401,17 @@ class Ui_MainWindow(object):
             storey_masses,
             eigenvalues,
             brace_number,
+            self.path_zonation,
             self.path_x,
             self.path_y,
             self.span_length_SpinBox.value(),
             self.interfloor_height_SpinBox.value(),
+            self.nominal_age_SpinBox.value(),
+            self.functional_class_comboBox.currentText(),
+            self.topographic_factor_comboBox.currentText(),
+            self.soil_class_comboBox.currentText(),
+            self.limit_state_comboBox.currentText(),
+            self.damping_coeff_SpinBox.value(),
         )
 
         self.output_field(output)
@@ -305,8 +431,7 @@ class Ui_MainWindow(object):
             mass_key = k
             eigenvalue_key = k
             brace_number_key = k
-            mass_value = QtWidgets.QDoubleSpinBox()
-            mass_value.setDecimals(3)
+            mass_value = QtWidgets.QSpinBox()
             mass_value.setMaximum(10000)
             self.mass_dict[mass_key] = mass_value
             eigenvalue_value = QtWidgets.QDoubleSpinBox()
@@ -366,8 +491,15 @@ class Ui_MainWindow(object):
         # has to reload the program in order to get new values
         self.file_x_button.setEnabled(False)
         self.file_y_button.setEnabled(False)
+        self.file_zonation_button.setEnabled(False)
         self.ok_button.setEnabled(False)
 
+        self.damping_coeff_SpinBox.setEnabled(False)
+        self.nominal_age_SpinBox.setEnabled(False)
+        self.functional_class_comboBox.setEnabled(False)
+        self.topographic_factor_comboBox.setEnabled(False)
+        self.soil_class_comboBox.setEnabled(False)
+        self.limit_state_comboBox.setEnabled(False)
         self.dp_SpinBox.setEnabled(False)
         self.u_DB_SpinBox.setEnabled(False)
         self.k_DB_SpinBox.setEnabled(False)

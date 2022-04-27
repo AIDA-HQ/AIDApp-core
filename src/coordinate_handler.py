@@ -18,7 +18,7 @@ class InputHandler:
     @staticmethod
     def generate_zonation_array(coordinate_file):
         """
-        This function takes a file containing 3 coloumns of numbers, each 
+        This function takes a file containing 3 coloumns of numbers, each
         separated by a space from the following one and generate 3 arrays.
         Converts the commas to a dots too.
         """
