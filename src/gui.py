@@ -351,10 +351,10 @@ class Ui_MainWindow(object):
         )
         self.soil_class_label.setText(_translate("MainWindow", "Soil class"))
         self.limit_state_label.setText(_translate("MainWindow", "Limit State Design"))
-        self.dp_label.setText(_translate("MainWindow", "dp [m]"))
-        self.u_DB_label.setText(_translate("MainWindow", "\u03BC_DB"))
-        self.k_DB_label.setText(_translate("MainWindow", "\u03BA_DB"))
-        self.kf_label.setText(_translate("MainWindow", "\u03BA(F)"))
+        self.dp_label.setText(_translate("MainWindow", "d<sub>p</sub> [m]"))
+        self.u_DB_label.setText(_translate("MainWindow", "\u03BC<sub>DB</sub>"))
+        self.k_DB_label.setText(_translate("MainWindow", "\u03BA<sub>DB</sub>"))
+        self.kf_label.setText(_translate("MainWindow", "\u03BA<sub>(F)</sub>"))
         self.span_length_label.setText(_translate("MainWindow", "Span Length [m]"))
         self.interfloor_height_label.setText(
             _translate("MainWindow", "Inter-floor Height [m]")
@@ -473,17 +473,17 @@ class Ui_MainWindow(object):
         methods = Gui_Methods()
         methods.add_output_line(i_string, self.outputLayout)
 
-        methods.add_output_line("\nkc,i,s array:", self.outputLayout)
+        methods.add_output_line("\nkc,<sub>i,<sub>s</sub></sub> array:", self.outputLayout)
         n = 1
         for element in kc_n_s_array:
-            label = "kc" + str(n) + "," + "(s)" + " = " + str(element) + " kN"
+            label = "kc" + "<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
             methods.add_output_line(label, self.outputLayout)
             n = n + 1
 
-        methods.add_output_line("\nFc,i,s array:", self.outputLayout)
+        methods.add_output_line("\nFc,<sub>i,<sub>s</sub></sub> array:", self.outputLayout)
         n = 1
         for element in Fc_n_s_array:
-            label = "Fc," + str(n) + "," + "(s)" + " = " + str(element) + " kN"
+            label = "Fc," +"<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
             methods.add_output_line(label, self.outputLayout)
             n = n + 1
 
