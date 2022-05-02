@@ -176,3 +176,4 @@ fabric.properties
 test.py
 .vscode/
 .DS_Store
+*.db
