@@ -186,9 +186,7 @@ class AIDApp:
                     xi_eff_F_DB = values.get_xi_eff_F_DB(
                         self.Vp_kN, xi_DB, Vp_DB, xiFrame
                     )
-                    sa_ms2 = values.convert_to_ms2(
-                        values.get_Sa(input_coord.y_adrs_input, xi_eff_F_DB)
-                    )
+                    sa_ms2 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
                     sd_meters = values.get_Sd(sa_ms2_0, sd_meters_0, sa_ms2)
 
                     adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
@@ -203,7 +201,7 @@ class AIDApp:
                         coord.y_kn_eff(sd_meters, kn_eff),
                     )
                     xi_n_eff = values.get_xi_n_eff(
-                        self.dp, adrs_spectrum, kn_eff_curve, xi_eff_F_DB
+                        self.dp, adrs_spectrum, kn_eff_curve
                     )
                     Vp_DB = values.get_Vp_DB(
                         xi_n_eff, self.Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration

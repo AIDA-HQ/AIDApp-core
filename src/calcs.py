@@ -188,12 +188,12 @@ class Values:
         xi_n_eff_0 = 10 * (de / dp) ** 2 - 10
         return xi_n_eff_0  # [%]
 
-    def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve, xi_eff_F_DB):
+    def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve):
         """
         Calculate iterated values of xi_n_eff
         """
         de = self.get_de(adrs_spectrum, k1_eff_curve)
-        xi_n_eff = (10 + xi_eff_F_DB) * (de / dp) ** 2 - 10
+        xi_n_eff = 10 * ((de / dp) ** 2) - 10
         return xi_n_eff  # [%]
 
     @staticmethod
