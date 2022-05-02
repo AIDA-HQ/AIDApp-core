@@ -1,8 +1,5 @@
 from numpy import absolute, array, linspace, polyfit, column_stack
 from shapely.geometry.linestring import LineString
-from input_coordinates import Input
-
-input_coord = Input()
 
 
 class Coords:

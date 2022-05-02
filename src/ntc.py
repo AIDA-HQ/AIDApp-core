@@ -448,6 +448,6 @@ class Ntc(object):
         self.SDe_coords_movement = []
 
         for s, g in zip(self.t_acceleration_coords, self.Se_coords):
-            coord = (g * 9.806 * (s / (2 * pi)) ** 2) 
+            coord = g * 9.806 * (s / (2 * pi)) ** 2
             self.SDe_coords_movement.append(coord)
         return array(self.SDe_coords_movement)

@@ -42,7 +42,9 @@ class AIDApp:
         self.eigenvalues = arg_eigenvalues
         self.path_x = handlr.generate_pushover_array(arg_path_x)
         self.path_y = handlr.generate_pushover_array(arg_path_y)
-        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(arg_path_zonation)
+        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(
+            arg_path_zonation
+        )
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
         self.brace_number = arg_brace_number
@@ -145,7 +147,7 @@ class AIDApp:
                 self.tc_input,
                 self.damping_coeff,
             )
-            sd_meters_0 = (ntc.get_movement_curve_SDe())
+            sd_meters_0 = ntc.get_movement_curve_SDe()
             sa_ms2_0 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
             adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
             k_eff = self.Vp_ms2 / self.dp
@@ -200,9 +202,7 @@ class AIDApp:
                         sd_meters,
                         coord.y_kn_eff(sd_meters, kn_eff),
                     )
-                    xi_n_eff = values.get_xi_n_eff(
-                        self.dp, adrs_spectrum, kn_eff_curve
-                    )
+                    xi_n_eff = values.get_xi_n_eff(self.dp, adrs_spectrum, kn_eff_curve)
                     Vp_DB = values.get_Vp_DB(
                         xi_n_eff, self.Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration
                     )
