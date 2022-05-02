@@ -8,16 +8,6 @@ from matplotlib.figure import Figure
 aidapp = AIDApp()
 
 
-class Gui_Methods:
-    def add_output_line(self, string, layout):
-        label = QtWidgets.QLabel()
-        label.setText(str(string))
-        label.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse
-        )
-        layout.addRow(label)
-
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -291,20 +281,12 @@ class Ui_MainWindow(object):
         self.output_box.setObjectName("output_box")
         self.output_box_layout = QtWidgets.QVBoxLayout(self.output_box)
         self.output_box_layout.setObjectName("output_box_layout")
-        self.output_scroll_area = QtWidgets.QScrollArea(self.output_box)
-        self.output_scroll_area.setWidgetResizable(True)
-        self.output_scroll_area.setObjectName("output_scroll_area")
         self.output_scroll_widget = QtWidgets.QWidget()
         self.output_scroll_widget.setGeometry(QtCore.QRect(0, 0, 385, 475))
         self.output_scroll_widget.setObjectName("output_scroll_widget")
-        self.output_scroll_layout = QtWidgets.QVBoxLayout(self.output_scroll_widget)
-        self.output_scroll_layout.setObjectName("output_scroll_layout")
 
         self.output_layout = QtWidgets.QFormLayout()
         self.output_layout.setObjectName("output_layout")
-        self.output_scroll_layout.addLayout(self.output_layout)
-        self.output_scroll_area.setWidget(self.output_scroll_widget)
-        self.output_box_layout.addWidget(self.output_scroll_area)
         self.horizontalLayout.addWidget(self.output_box)
 
         # Graph Box
@@ -467,24 +449,25 @@ class Ui_MainWindow(object):
             sd_meters_0,
             sa_ms2_0,
         ) = output_values
-        i_string = f"Iteration #{i}"
-        self.outputLayout = QtWidgets.QFormLayout()
-
-        methods = Gui_Methods()
-        methods.add_output_line(i_string, self.outputLayout)
-
-        methods.add_output_line("\nkc,<sub>i,<sub>s</sub></sub> array:", self.outputLayout)
+        output_textbrowser = QtWidgets.QTextBrowser()
+        output_textbrowser.setAcceptRichText(True)
+        output_textbrowser.setAutoFillBackground(True)
+        
+        output_textbrowser.append(f"Iteration #{i}")
+        output_textbrowser.append("\n")
+        output_textbrowser.append("kc,<sub>i,<sub>s</sub></sub> array:")
         n = 1
         for element in kc_n_s_array:
             label = "kc" + "<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
-            methods.add_output_line(label, self.outputLayout)
+            output_textbrowser.append(label)
             n = n + 1
 
-        methods.add_output_line("\nFc,<sub>i,<sub>s</sub></sub> array:", self.outputLayout)
         n = 1
+        output_textbrowser.append("\n")
+        output_textbrowser.append("Fc,<sub>i,<sub>s</sub></sub> array:")
         for element in Fc_n_s_array:
-            label = "Fc," +"<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
-            methods.add_output_line(label, self.outputLayout)
+            label =  "Fc," +"<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
+            output_textbrowser.append(label)
             n = n + 1
 
         # Disable the buttons and SpinBoxes: as of now to user
@@ -545,7 +528,7 @@ class Ui_MainWindow(object):
         self.graphLayout.addWidget(self.canvas)
 
         # Display output values
-        self.output_scroll_layout.addLayout(self.outputLayout)
+        self.output_box_layout.addWidget(output_textbrowser)
 
     def plot_final(
         self,
