@@ -1,5 +1,5 @@
 from numpy import loadtxt
-
+from qtpy import QtWidgets
 
 class InputHandler:
     @staticmethod
@@ -33,3 +33,22 @@ class InputHandler:
             unpack=True,
         )
         return zonation_array
+
+class ExportHandler:
+    @staticmethod
+    def generate_output_file(kc_n_s_array_arg, Fc_n_s_array_arg):
+        """
+        This function takes two arrays and generates a file containing
+        the values of the kc and Fc for each story.
+        """
+        name_dialog, _ = QtWidgets.QFileDialog.getSaveFileName(caption='Save File', filter="Text Files(*.txt)")
+
+        kc_n_s_array = "kc,i,s array: \n"
+        for element in kc_n_s_array_arg:
+            kc_n_s_array += str(element) + "\n"
+        Fc_n_s_array = "Fc,i,s array: \n"
+        for element in Fc_n_s_array_arg:
+            Fc_n_s_array += str(element) + "\n"
+        if name_dialog:
+            with open(name_dialog, 'w') as f:
+                f.write(kc_n_s_array + "\n" + Fc_n_s_array)

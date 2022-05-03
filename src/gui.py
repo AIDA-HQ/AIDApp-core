@@ -4,8 +4,10 @@ from main import AIDApp
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from file_handler import ExportHandler
 
 aidapp = AIDApp()
+export = ExportHandler()
 
 
 class Ui_MainWindow(object):
@@ -47,7 +49,7 @@ class Ui_MainWindow(object):
         self.file_zonation_button = QtWidgets.QPushButton(self.input_box)
         self.file_zonation_button.setEnabled(True)
         self.file_zonation_button.setAutoDefault(False)
-        self.file_zonation_button.setObjectName("file_x_button")
+        self.file_zonation_button.setObjectName("file_zonation_button")
         self.file_upload_layout.addWidget(self.file_zonation_button)
         self.file_zonation_button.clicked.connect(self.open_zonation)
 
@@ -438,8 +440,8 @@ class Ui_MainWindow(object):
 
     def output_field(self, output_values):
         (
-            kc_n_s_array,
-            Fc_n_s_array,
+            self.kc_n_s_array,
+            self.Fc_n_s_array,
             i,
             x_bilinear,
             y_bilinear_ms2,
@@ -457,7 +459,7 @@ class Ui_MainWindow(object):
         output_textbrowser.append("\n")
         output_textbrowser.append("kc,<sub>i,<sub>s</sub></sub> array:")
         n = 1
-        for element in kc_n_s_array:
+        for element in self.kc_n_s_array:
             label = "kc" + "<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
             output_textbrowser.append(label)
             n = n + 1
@@ -465,7 +467,7 @@ class Ui_MainWindow(object):
         n = 1
         output_textbrowser.append("\n")
         output_textbrowser.append("Fc,<sub>i,<sub>s</sub></sub> array:")
-        for element in Fc_n_s_array:
+        for element in self.Fc_n_s_array:
             label =  "Fc," +"<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
             output_textbrowser.append(label)
             n = n + 1
@@ -491,7 +493,13 @@ class Ui_MainWindow(object):
         self.interfloor_height_SpinBox.setEnabled(False)
         self.storey_number_SpinBox.setEnabled(False)
 
-        self.graphLayout = QtWidgets.QFormLayout()
+        # File Export button
+        self.file_export_button = QtWidgets.QPushButton(self.output_box)
+        self.file_export_button.setText("Export Output Values")
+        self.file_export_button.setEnabled(True)
+        self.file_export_button.setAutoDefault(False)
+        self.file_export_button.setObjectName("file_export_button")
+        self.file_export_button.clicked.connect(self.trigger_generate_output_file)
 
         self.plot_final(
             x_bilinear,
@@ -504,6 +512,8 @@ class Ui_MainWindow(object):
             sa_ms2_0,
         )
 
+        # Graph
+        self.graphLayout = QtWidgets.QFormLayout()
         self.graph_box = QtWidgets.QGroupBox(self.main_scroll_widget)
         self.graph_box.setObjectName("graph_box")
         self.graph_box.setTitle("Graph")
@@ -527,8 +537,12 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.graph_box)
         self.graphLayout.addWidget(self.canvas)
 
-        # Display output values
+        # Display output values & Export button
         self.output_box_layout.addWidget(output_textbrowser)
+        self.output_box_layout.addWidget(self.file_export_button)
+
+    def trigger_generate_output_file(self):
+        export.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
 
     def plot_final(
         self,

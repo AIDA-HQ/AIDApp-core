@@ -2,7 +2,7 @@ from numpy import array
 
 from calcs import Area, Values
 from coordinates import Coords
-from coordinate_handler import InputHandler
+from file_handler import InputHandler
 from ntc import Ntc
 
 area = Area()
@@ -42,13 +42,10 @@ class AIDApp:
         self.eigenvalues = arg_eigenvalues
         self.path_x = handlr.generate_pushover_array(arg_path_x)
         self.path_y = handlr.generate_pushover_array(arg_path_y)
-        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(
-            arg_path_zonation
-        )
+        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(arg_path_zonation)
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
         self.brace_number = arg_brace_number
-
         self.nominal_age = arg_nominal_age
         self.functional_class = arg_functional_class
         self.topographic_factor = arg_topographic_factor
