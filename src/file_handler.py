@@ -33,6 +33,40 @@ class InputHandler:
             unpack=True,
         )
         return zonation_array
+    
+    @staticmethod
+    def generate_storey_data(storey_input_data_file):
+        """
+        This function takes a file containing a coloumns of numbers, 
+        divided in 3 groups, each group separated by a comment from 
+        the preceding one and generate 3 lists of floats.
+        Converts the commas to a dots too.
+        """
+        mass_line = "#### Storey Masses ####"
+        eigenvalues_line = "#### Storey Eigenvalues ####"
+        upwinds_line = "#### Storey Upwinds ####"
+        dict = {}
+
+        with open(storey_input_data_file, 'r') as f:
+            values = [line.strip() for line in f.readlines()]  # Strip \n and \t from text
+            values = list(filter(None, values))
+            values =[element.replace(",", ".") for element in values]
+
+            for i, line in enumerate(values):  # enumerate will count and keep track of the lines
+                if line == mass_line:
+                    dict[mass_line] = i
+                elif line == eigenvalues_line:
+                    dict[eigenvalues_line] = i
+                elif line == upwinds_line:
+                    dict[upwinds_line] = i
+
+            masses = [float(element) for element in (values[dict[mass_line]+1:dict[eigenvalues_line]])]
+            eigenvalues = [float(element) for element in (values[dict[eigenvalues_line]+1:dict[upwinds_line]])]
+            upwinds = [float(element) for element in (values[dict[upwinds_line]+1:])]
+
+            return masses, eigenvalues, upwinds
+
+
 
 class ExportHandler:
     @staticmethod

@@ -4,9 +4,10 @@ from main import AIDApp
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from file_handler import ExportHandler
+from file_handler import InputHandler, ExportHandler
 
 aidapp = AIDApp()
+input = InputHandler()
 export = ExportHandler()
 
 
@@ -169,23 +170,46 @@ class Ui_MainWindow(object):
         self.storey_number_layout.setObjectName("storey_number_layout")
         self.storey_number_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.storey_number_label.setObjectName("storey_number_label")
+        self.storey_number_label.setDisabled(True)
         self.storey_number_layout.addWidget(self.storey_number_label)
         self.storey_number_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
         self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
+        self.storey_number_SpinBox.setDisabled(True)
         self.storey_number_layout.addWidget(self.storey_number_SpinBox)
 
         # Send button
         self.send_button = QtWidgets.QPushButton(self.input_scroll_widget)
         self.send_button.setAutoDefault(False)
+        self.send_button.setDisabled(True)
         self.send_button.setDefault(False)
         self.send_button.setObjectName("send_button")
         self.storey_number_layout.addWidget(self.send_button)
-        self.input_scroll_layout.addLayout(self.storey_number_layout)
         self.send_button.clicked.connect(self.count_storey_boxes)
 
+        # Upload storey data
+        self.file_storey_data_button = QtWidgets.QPushButton(self.input_scroll_widget)
+        self.file_storey_data_button.setAutoDefault(False)
+        self.file_storey_data_button.setDefault(False)
+        self.file_storey_data_button.setObjectName("file_storey_data_button")
+        self.input_scroll_layout.addWidget(self.file_storey_data_button)
+        self.file_storey_data_button.clicked.connect(self.open_storey_data)
+
+        # Manual storey input radio button
+        self.manual_input_checkBox = QtWidgets.QCheckBox(self.input_box)
+        self.manual_input_checkBox.setObjectName("manual_input_checkBox")
+        self.manual_input_checkBox.toggled.connect(self.send_button.setEnabled)
+        self.manual_input_checkBox.toggled.connect(self.storey_number_SpinBox.setEnabled)
+        self.manual_input_checkBox.toggled.connect(self.storey_number_label.setEnabled)
+        self.manual_input_checkBox.toggled.connect(self.file_storey_data_button.setDisabled)
+        self.input_scroll_layout.addWidget(self.manual_input_checkBox)
+
+        # Add Storey number layout
+        self.input_scroll_layout.addLayout(self.storey_number_layout)
         self.storey_layout = QtWidgets.QFormLayout()
         self.storey_layout.setObjectName("storey_layout")
         self.input_scroll_layout.addLayout(self.storey_layout)
+
+        # Update UI
         self.input_scroll_area.setWidget(self.input_scroll_widget)
         self.input_box_layout.addWidget(self.input_scroll_area)
 
@@ -311,6 +335,10 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
+        self.mass_dict = {}
+        self.eigenvalue_dict = {}
+        self.brace_number_dict = {}
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -343,8 +371,10 @@ class Ui_MainWindow(object):
         self.interfloor_height_label.setText(
             _translate("MainWindow", "Inter-floor Height [m]")
         )
+        self.manual_input_checkBox.setText(_translate("MainWindow", "Manual Input"))
         self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
         self.send_button.setText(_translate("MainWindow", "Send"))
+        self.file_storey_data_button.setText(_translate("MainWindow", "Upload Storey Data"))
         self.ok_button.setText(_translate("MainWindow", "Ok"))
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
@@ -366,16 +396,25 @@ class Ui_MainWindow(object):
             print(path[0])
         self.path_y = path[0]
 
+    def open_storey_data(self):
+        path = QtWidgets.QFileDialog.getOpenFileName()
+        if path != ("", ""):
+            print(path[0])
+        self.path_storey_data = path[0]
+
     def getInfo(self):
         storey_masses = []
-        for element in self.mass_dict.values():
-            storey_masses.append(element.value())
-        eigenvalues = []
-        for element in self.eigenvalue_dict.values():
-            eigenvalues.append(element.value())
-        brace_number = []
-        for element in self.brace_number_dict.values():
-            brace_number.append(element.value())
+        if self.mass_dict is True:
+            for element in self.mass_dict.values():
+                storey_masses.append(element.value())
+            eigenvalues = []
+            for element in self.eigenvalue_dict.values():
+                eigenvalues.append(element.value())
+            brace_number = []
+            for element in self.brace_number_dict.values():
+                brace_number.append(element.value())
+        else: 
+            storey_masses, eigenvalues, brace_number = input.generate_storey_data(self.path_storey_data)
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBox.value(),
@@ -401,14 +440,11 @@ class Ui_MainWindow(object):
         self.output_field(output)
 
     def count_storey_boxes(self):
-        self.send_button.setEnabled(False)
+        self.send_button.setDisabled(True)
+        self.storey_number_SpinBox.setDisabled(True)
         self.show_storey_boxes(self.storey_number_SpinBox.value())
 
     def show_storey_boxes(self, i):
-        self.mass_dict = {}
-        self.eigenvalue_dict = {}
-        self.brace_number_dict = {}
-
         k = 1
         while k < (i + 1):
             # dynamically create key
@@ -478,7 +514,6 @@ class Ui_MainWindow(object):
         self.file_y_button.setEnabled(False)
         self.file_zonation_button.setEnabled(False)
         self.ok_button.setEnabled(False)
-
         self.damping_coeff_SpinBox.setEnabled(False)
         self.nominal_age_SpinBox.setEnabled(False)
         self.functional_class_comboBox.setEnabled(False)
@@ -491,7 +526,9 @@ class Ui_MainWindow(object):
         self.kf_SpinBox.setEnabled(False)
         self.span_length_SpinBox.setEnabled(False)
         self.interfloor_height_SpinBox.setEnabled(False)
-        self.storey_number_SpinBox.setEnabled(False)
+        self.file_storey_data_button.setEnabled(False)
+        self.manual_input_checkBox.setEnabled(False)
+
 
         # File Export button
         self.file_export_button = QtWidgets.QPushButton(self.output_box)
