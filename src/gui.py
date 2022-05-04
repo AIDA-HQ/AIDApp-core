@@ -11,6 +11,38 @@ input = InputHandler()
 export = ExportHandler()
 
 
+class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
+    def __init__(self, *args):
+        super(HumbleSpinBox, self).__init__(*args)
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+
+    def focusInEvent(self, event):
+        self.setFocusPolicy(QtCore.Qt.WheelFocus)
+        super(HumbleSpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        super(HumbleSpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        event.ignore()
+
+class HumbleComboBox(QtWidgets.QComboBox):
+    def __init__(self, *args):
+        super(HumbleComboBox, self).__init__(*args)
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+
+    def focusInEvent(self, event):
+        self.setFocusPolicy(QtCore.Qt.WheelFocus)
+        super(HumbleComboBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        super(HumbleComboBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        event.ignore()
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -89,7 +121,7 @@ class Ui_MainWindow(object):
         self.damping_coeff_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.damping_coeff_label.setObjectName("damping_coeff_label")
         self.damping_coeff_layout.addWidget(self.damping_coeff_label)
-        self.damping_coeff_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.damping_coeff_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.damping_coeff_SpinBox.setMaximum(0)
         self.damping_coeff_SpinBox.setMaximum(100)
         self.damping_coeff_SpinBox.setObjectName("damping_coeff_SpinBox")
@@ -102,10 +134,9 @@ class Ui_MainWindow(object):
         self.nominal_age_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.nominal_age_label.setObjectName("nominal_age_label")
         self.nominal_age_layout.addWidget(self.nominal_age_label)
-        self.nominal_age_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.nominal_age_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.nominal_age_SpinBox.setMaximum(0)
         self.nominal_age_SpinBox.setMaximum(9999)
-
         self.nominal_age_SpinBox.setObjectName("nominal_age_SpinBox")
         self.nominal_age_layout.addWidget(self.nominal_age_SpinBox)
         self.input_scroll_layout.addLayout(self.nominal_age_layout)
@@ -117,7 +148,7 @@ class Ui_MainWindow(object):
         self.functional_class_label.setObjectName("functional_class_label")
         self.functional_class_layout.addWidget(self.functional_class_label)
         self.input_scroll_layout.addLayout(self.functional_class_layout)
-        self.functional_class_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.functional_class_comboBox = HumbleComboBox(self.input_scroll_widget)
         self.functional_class_comboBox.setObjectName("comboBox")
         self.functional_class_comboBox.addItems(["I", "II", "III", "IV"])
         self.functional_class_layout.addWidget(self.functional_class_comboBox)
@@ -129,7 +160,7 @@ class Ui_MainWindow(object):
         self.topographic_factor_label.setObjectName("topographic_factor_label")
         self.topographic_factor_layout.addWidget(self.topographic_factor_label)
         self.input_scroll_layout.addLayout(self.topographic_factor_layout)
-        self.topographic_factor_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.topographic_factor_comboBox = HumbleComboBox(self.input_scroll_widget)
         self.topographic_factor_comboBox.setObjectName("comboBox")
         self.topographic_factor_comboBox.addItems(["T1", "T2", "T3", "T4"])
         self.topographic_factor_layout.addWidget(self.topographic_factor_comboBox)
@@ -141,7 +172,8 @@ class Ui_MainWindow(object):
         self.soil_class_label.setObjectName("soil_class_label")
         self.soil_class_layout.addWidget(self.soil_class_label)
         self.input_scroll_layout.addLayout(self.soil_class_layout)
-        self.soil_class_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.soil_class_comboBox = HumbleComboBox(self.input_scroll_widget)
+        self.soil_class_comboBox.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.soil_class_comboBox.setObjectName("comboBox")
         self.soil_class_comboBox.addItems(["A", "B", "C", "D", "E"])
         self.soil_class_layout.addWidget(self.soil_class_comboBox)
@@ -153,7 +185,7 @@ class Ui_MainWindow(object):
         self.limit_state_label.setObjectName("limit_state_label")
         self.limit_state_layout.addWidget(self.limit_state_label)
         self.input_scroll_layout.addLayout(self.limit_state_layout)
-        self.limit_state_comboBox = QtWidgets.QComboBox(self.input_scroll_widget)
+        self.limit_state_comboBox = HumbleComboBox(self.input_scroll_widget)
         self.limit_state_comboBox.setObjectName("comboBox")
         self.limit_state_comboBox.addItems(["SLO", "SLD", "SLV", "SLC"])
         self.limit_state_layout.addWidget(self.limit_state_comboBox)
@@ -172,7 +204,7 @@ class Ui_MainWindow(object):
         self.storey_number_label.setObjectName("storey_number_label")
         self.storey_number_label.setDisabled(True)
         self.storey_number_layout.addWidget(self.storey_number_label)
-        self.storey_number_SpinBox = QtWidgets.QSpinBox(self.input_scroll_widget)
+        self.storey_number_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
         self.storey_number_SpinBox.setDisabled(True)
         self.storey_number_layout.addWidget(self.storey_number_SpinBox)
@@ -226,7 +258,7 @@ class Ui_MainWindow(object):
         self.dp_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.dp_label.setObjectName("dp_label")
         self.dp_layout.addWidget(self.dp_label)
-        self.dp_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.dp_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.dp_SpinBox.setDecimals(10)
         self.dp_SpinBox.setMaximum(99.0)
         self.dp_SpinBox.setObjectName("dp_SpinBox")
@@ -239,7 +271,7 @@ class Ui_MainWindow(object):
         self.u_DB_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.u_DB_label.setObjectName("u_DB_label")
         self.u_DB_layout.addWidget(self.u_DB_label)
-        self.u_DB_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.u_DB_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.u_DB_SpinBox.setObjectName("u_DB_SpinBox")
         self.u_DB_layout.addWidget(self.u_DB_SpinBox)
         self.input_scroll_layout.addLayout(self.u_DB_layout)
@@ -250,7 +282,7 @@ class Ui_MainWindow(object):
         self.k_DB_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.k_DB_label.setObjectName("k_DB_label")
         self.k_DB_layout.addWidget(self.k_DB_label)
-        self.k_DB_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.k_DB_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.k_DB_SpinBox.setObjectName("k_DB_SpinBox")
         self.k_DB_layout.addWidget(self.k_DB_SpinBox)
         self.input_scroll_layout.addLayout(self.k_DB_layout)
@@ -261,7 +293,7 @@ class Ui_MainWindow(object):
         self.kf_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.kf_label.setObjectName("kf_label")
         self.kf_layout.addWidget(self.kf_label)
-        self.kf_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.kf_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.kf_SpinBox.setObjectName("kf_SpinBox")
         self.kf_layout.addWidget(self.kf_SpinBox)
         self.input_scroll_layout.addLayout(self.kf_layout)
@@ -272,7 +304,7 @@ class Ui_MainWindow(object):
         self.span_length_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.span_length_label.setObjectName("span_length_label")
         self.span_length_layout.addWidget(self.span_length_label)
-        self.span_length_SpinBox = QtWidgets.QDoubleSpinBox(self.input_scroll_widget)
+        self.span_length_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.span_length_SpinBox.setObjectName("span_length_SpinBox")
         self.span_length_SpinBox.setMaximum(99)
         self.span_length_layout.addWidget(self.span_length_SpinBox)
@@ -284,9 +316,7 @@ class Ui_MainWindow(object):
         self.interfloor_height_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.interfloor_height_label.setObjectName("interfloor_height_label")
         self.interfloor_height_layout.addWidget(self.interfloor_height_label)
-        self.interfloor_height_SpinBox = QtWidgets.QDoubleSpinBox(
-            self.input_scroll_widget
-        )
+        self.interfloor_height_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.interfloor_height_SpinBox.setObjectName("interfloor_height_SpinBox")
         self.interfloor_height_SpinBox.setMaximum(99)
         self.interfloor_height_layout.addWidget(self.interfloor_height_SpinBox)
@@ -451,13 +481,13 @@ class Ui_MainWindow(object):
             mass_key = k
             eigenvalue_key = k
             brace_number_key = k
-            mass_value = QtWidgets.QSpinBox()
+            mass_value = HumbleSpinBox()
             mass_value.setMaximum(10000)
             self.mass_dict[mass_key] = mass_value
-            eigenvalue_value = QtWidgets.QDoubleSpinBox()
+            eigenvalue_value = HumbleSpinBox()
             eigenvalue_value.setDecimals(10)
             self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
-            brace_number_value = QtWidgets.QDoubleSpinBox()
+            brace_number_value = HumbleSpinBox()
             brace_number_value.setDecimals(0)
             self.brace_number_dict[brace_number_key] = brace_number_value
 
