@@ -122,21 +122,21 @@ class Ui_MainWindow(object):
         self.damping_coeff_label.setObjectName("damping_coeff_label")
         self.damping_coeff_layout.addWidget(self.damping_coeff_label)
         self.damping_coeff_SpinBox = HumbleSpinBox(self.input_scroll_widget)
-        self.damping_coeff_SpinBox.setMaximum(0)
         self.damping_coeff_SpinBox.setMaximum(100)
+        self.damping_coeff_SpinBox.setDecimals(0)
         self.damping_coeff_SpinBox.setObjectName("damping_coeff_SpinBox")
         self.damping_coeff_layout.addWidget(self.damping_coeff_SpinBox)
         self.input_scroll_layout.addLayout(self.damping_coeff_layout)
 
-        # Nominal age
+        # Nominal life
         self.nominal_age_layout = QtWidgets.QHBoxLayout()
         self.nominal_age_layout.setObjectName("nominal_age_layout")
         self.nominal_age_label = QtWidgets.QLabel(self.input_scroll_widget)
         self.nominal_age_label.setObjectName("nominal_age_label")
         self.nominal_age_layout.addWidget(self.nominal_age_label)
         self.nominal_age_SpinBox = HumbleSpinBox(self.input_scroll_widget)
-        self.nominal_age_SpinBox.setMaximum(0)
         self.nominal_age_SpinBox.setMaximum(9999)
+        self.nominal_age_SpinBox.setDecimals(0)
         self.nominal_age_SpinBox.setObjectName("nominal_age_SpinBox")
         self.nominal_age_layout.addWidget(self.nominal_age_SpinBox)
         self.input_scroll_layout.addLayout(self.nominal_age_layout)
@@ -206,6 +206,7 @@ class Ui_MainWindow(object):
         self.storey_number_layout.addWidget(self.storey_number_label)
         self.storey_number_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
+        self.storey_number_SpinBox.setDecimals(0)
         self.storey_number_SpinBox.setDisabled(True)
         self.storey_number_layout.addWidget(self.storey_number_SpinBox)
 
@@ -261,6 +262,7 @@ class Ui_MainWindow(object):
         self.dp_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.dp_SpinBox.setDecimals(10)
         self.dp_SpinBox.setMaximum(99.0)
+        self.dp_SpinBox.setSingleStep(0.0000000001)
         self.dp_SpinBox.setObjectName("dp_SpinBox")
         self.dp_layout.addWidget(self.dp_SpinBox)
         self.input_scroll_layout.addLayout(self.dp_layout)
@@ -272,6 +274,7 @@ class Ui_MainWindow(object):
         self.u_DB_label.setObjectName("u_DB_label")
         self.u_DB_layout.addWidget(self.u_DB_label)
         self.u_DB_SpinBox = HumbleSpinBox(self.input_scroll_widget)
+        self.u_DB_SpinBox.setSingleStep(0.01)
         self.u_DB_SpinBox.setObjectName("u_DB_SpinBox")
         self.u_DB_layout.addWidget(self.u_DB_SpinBox)
         self.input_scroll_layout.addLayout(self.u_DB_layout)
@@ -283,6 +286,7 @@ class Ui_MainWindow(object):
         self.k_DB_label.setObjectName("k_DB_label")
         self.k_DB_layout.addWidget(self.k_DB_label)
         self.k_DB_SpinBox = HumbleSpinBox(self.input_scroll_widget)
+        self.k_DB_SpinBox.setSingleStep(0.01)
         self.k_DB_SpinBox.setObjectName("k_DB_SpinBox")
         self.k_DB_layout.addWidget(self.k_DB_SpinBox)
         self.input_scroll_layout.addLayout(self.k_DB_layout)
@@ -294,6 +298,7 @@ class Ui_MainWindow(object):
         self.kf_label.setObjectName("kf_label")
         self.kf_layout.addWidget(self.kf_label)
         self.kf_SpinBox = HumbleSpinBox(self.input_scroll_widget)
+        self.kf_SpinBox.setSingleStep(0.01)
         self.kf_SpinBox.setObjectName("kf_SpinBox")
         self.kf_layout.addWidget(self.kf_SpinBox)
         self.input_scroll_layout.addLayout(self.kf_layout)
@@ -307,6 +312,7 @@ class Ui_MainWindow(object):
         self.span_length_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.span_length_SpinBox.setObjectName("span_length_SpinBox")
         self.span_length_SpinBox.setMaximum(99)
+        self.span_length_SpinBox.setSingleStep(0.01)
         self.span_length_layout.addWidget(self.span_length_SpinBox)
         self.input_scroll_layout.addLayout(self.span_length_layout)
 
@@ -319,6 +325,7 @@ class Ui_MainWindow(object):
         self.interfloor_height_SpinBox = HumbleSpinBox(self.input_scroll_widget)
         self.interfloor_height_SpinBox.setObjectName("interfloor_height_SpinBox")
         self.interfloor_height_SpinBox.setMaximum(99)
+        self.interfloor_height_SpinBox.setSingleStep(0.01)
         self.interfloor_height_layout.addWidget(self.interfloor_height_SpinBox)
         self.input_scroll_layout.addLayout(self.interfloor_height_layout)
 
@@ -483,9 +490,11 @@ class Ui_MainWindow(object):
             brace_number_key = k
             mass_value = HumbleSpinBox()
             mass_value.setMaximum(10000)
+            mass_value.setDecimals(0)
             self.mass_dict[mass_key] = mass_value
             eigenvalue_value = HumbleSpinBox()
             eigenvalue_value.setDecimals(10)
+            eigenvalue_value.setSingleStep(0.0000000001)
             self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
             brace_number_value = HumbleSpinBox()
             brace_number_value.setDecimals(0)
