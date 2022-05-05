@@ -65,8 +65,8 @@ class Ui_MainWindow(object):
 
         # Input Box
         self.input_box = QtWidgets.QGroupBox(self.main_scroll_widget)
-        self.input_box.setMinimumSize(QtCore.QSize(365, 500))
-        self.input_box.setMaximumSize(QtCore.QSize(365, 1000))
+        self.input_box.setMinimumSize(QtCore.QSize(325, 500))
+        self.input_box.setMaximumSize(QtCore.QSize(380, 1000))
         self.input_box.setAutoFillBackground(False)
         self.input_box.setFlat(False)
         self.input_box.setCheckable(False)
