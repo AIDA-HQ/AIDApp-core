@@ -197,6 +197,18 @@ class Ui_MainWindow(object):
         self.line_1.setObjectName("line_1")
         self.input_scroll_layout.addWidget(self.line_1)
 
+        # kf
+        self.kf_layout = QtWidgets.QHBoxLayout()
+        self.kf_layout.setObjectName("kf_layout")
+        self.kf_label = QtWidgets.QLabel(self.input_scroll_widget)
+        self.kf_label.setObjectName("kf_label")
+        self.kf_layout.addWidget(self.kf_label)
+        self.kf_SpinBox = HumbleSpinBox(self.input_scroll_widget)
+        self.kf_SpinBox.setSingleStep(0.01)
+        self.kf_SpinBox.setObjectName("kf_SpinBox")
+        self.kf_layout.addWidget(self.kf_SpinBox)
+        self.input_scroll_layout.addLayout(self.kf_layout)
+
         # Storey number
         self.storey_number_layout = QtWidgets.QHBoxLayout()
         self.storey_number_layout.setObjectName("storey_number_layout")
@@ -290,18 +302,6 @@ class Ui_MainWindow(object):
         self.k_DB_SpinBox.setObjectName("k_DB_SpinBox")
         self.k_DB_layout.addWidget(self.k_DB_SpinBox)
         self.input_scroll_layout.addLayout(self.k_DB_layout)
-
-        # kf
-        self.kf_layout = QtWidgets.QHBoxLayout()
-        self.kf_layout.setObjectName("kf_layout")
-        self.kf_label = QtWidgets.QLabel(self.input_scroll_widget)
-        self.kf_label.setObjectName("kf_label")
-        self.kf_layout.addWidget(self.kf_label)
-        self.kf_SpinBox = HumbleSpinBox(self.input_scroll_widget)
-        self.kf_SpinBox.setSingleStep(0.01)
-        self.kf_SpinBox.setObjectName("kf_SpinBox")
-        self.kf_layout.addWidget(self.kf_SpinBox)
-        self.input_scroll_layout.addLayout(self.kf_layout)
 
         # Span length
         self.span_length_layout = QtWidgets.QHBoxLayout()
