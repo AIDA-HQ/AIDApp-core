@@ -95,8 +95,9 @@ class Values:
     def get_de(adrs_spectrum, kn_eff_curve):
         """X coord of Kn_eff intercepting ADRS spectrum"""
         intersection_adrs_kn = adrs_spectrum.intersection(kn_eff_curve)
-        de = float(intersection_adrs_kn.x)  # [m]
-        return de
+        de_x = float(intersection_adrs_kn.x)  # [m]
+        de_y = float(intersection_adrs_kn.y)  # [m]
+        return de_x, de_y
 
     #
     # ADRS methods
@@ -147,15 +148,15 @@ class Values:
 
     def get_xi_n_eff_0(self, dp, adrs_spectrum, k1_eff):
         """Calculate first ever value of xi_n_eff"""
-        de = self.get_de(adrs_spectrum, k1_eff)
+        de_x, _ = self.get_de(adrs_spectrum, k1_eff)
 
-        xi_n_eff_0 = 10 * (de / dp) ** 2 - 10
+        xi_n_eff_0 = 10 * (de_x / dp) ** 2 - 10
         return xi_n_eff_0  # [%]
 
     def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve):
         """Calculate iterated values of xi_n_eff"""
-        de = self.get_de(adrs_spectrum, k1_eff_curve)
-        xi_n_eff = 10 * ((de / dp) ** 2) - 10
+        de_x, _ = self.get_de(adrs_spectrum, k1_eff_curve)
+        xi_n_eff = 10 * ((de_x / dp) ** 2) - 10
         return xi_n_eff  # [%]
 
     @staticmethod
