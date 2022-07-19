@@ -42,7 +42,9 @@ class AIDApp:
         self.eigenvalues = arg_eigenvalues
         self.path_x = handlr.generate_pushover_array(arg_path_x)
         self.path_y = handlr.generate_pushover_array(arg_path_y)
-        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(arg_path_zonation)
+        self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(
+            arg_path_zonation
+        )
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
         self.brace_number = arg_brace_number

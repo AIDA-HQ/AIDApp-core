@@ -1,6 +1,7 @@
 from numpy import loadtxt
 from qtpy import QtWidgets
 
+
 class InputHandler:
     @staticmethod
     def generate_pushover_array(coordinate_file):
@@ -33,12 +34,12 @@ class InputHandler:
             unpack=True,
         )
         return zonation_array
-    
+
     @staticmethod
     def generate_storey_data(storey_input_data_file):
         """
-        This function takes a file containing a coloumns of numbers, 
-        divided in 3 groups, each group separated by a comment from 
+        This function takes a file containing a coloumns of numbers,
+        divided in 3 groups, each group separated by a comment from
         the preceding one and generate 3 lists of floats.
         Converts the commas to a dots too.
         """
@@ -47,12 +48,16 @@ class InputHandler:
         upwinds_line = "#### Storey Upwinds ####"
         dict = {}
 
-        with open(storey_input_data_file, 'r') as f:
-            values = [line.strip() for line in f.readlines()]  # Strip \n and \t from text
+        with open(storey_input_data_file, "r") as f:
+            values = [
+                line.strip() for line in f.readlines()
+            ]  # Strip \n and \t from text
             values = list(filter(None, values))
-            values =[element.replace(",", ".") for element in values]
+            values = [element.replace(",", ".") for element in values]
 
-            for i, line in enumerate(values):  # enumerate will count and keep track of the lines
+            for i, line in enumerate(
+                values
+            ):  # enumerate will count and keep track of the lines
                 if line == mass_line:
                     dict[mass_line] = i
                 elif line == eigenvalues_line:
@@ -60,12 +65,17 @@ class InputHandler:
                 elif line == upwinds_line:
                     dict[upwinds_line] = i
 
-            masses = [float(element) for element in (values[dict[mass_line]+1:dict[eigenvalues_line]])]
-            eigenvalues = [float(element) for element in (values[dict[eigenvalues_line]+1:dict[upwinds_line]])]
-            upwinds = [float(element) for element in (values[dict[upwinds_line]+1:])]
+            masses = [
+                float(element)
+                for element in (values[dict[mass_line] + 1 : dict[eigenvalues_line]])
+            ]
+            eigenvalues = [
+                float(element)
+                for element in (values[dict[eigenvalues_line] + 1 : dict[upwinds_line]])
+            ]
+            upwinds = [float(element) for element in (values[dict[upwinds_line] + 1 :])]
 
             return masses, eigenvalues, upwinds
-
 
 
 class ExportHandler:
@@ -75,7 +85,9 @@ class ExportHandler:
         This function takes two arrays and generates a file containing
         the values of the kc and Fc for each story.
         """
-        name_dialog, _ = QtWidgets.QFileDialog.getSaveFileName(caption='Save File', filter="Text Files(*.txt)")
+        name_dialog, _ = QtWidgets.QFileDialog.getSaveFileName(
+            caption="Save File", filter="Text Files(*.txt)"
+        )
 
         kc_n_s_array = "kc,i,s array: \n"
         for element in kc_n_s_array_arg:
@@ -84,5 +96,5 @@ class ExportHandler:
         for element in Fc_n_s_array_arg:
             Fc_n_s_array += str(element) + "\n"
         if name_dialog:
-            with open(name_dialog, 'w') as f:
+            with open(name_dialog, "w") as f:
                 f.write(kc_n_s_array + "\n" + Fc_n_s_array)

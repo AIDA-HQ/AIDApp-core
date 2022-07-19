@@ -27,6 +27,7 @@ class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
     def wheelEvent(self, event):
         event.ignore()
 
+
 class HumbleComboBox(QtWidgets.QComboBox):
     def __init__(self, *args):
         super(HumbleComboBox, self).__init__(*args)
@@ -42,6 +43,7 @@ class HumbleComboBox(QtWidgets.QComboBox):
 
     def wheelEvent(self, event):
         event.ignore()
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -243,9 +245,13 @@ class Ui_MainWindow(object):
         self.manual_input_checkBox = QtWidgets.QCheckBox(self.input_box)
         self.manual_input_checkBox.setObjectName("manual_input_checkBox")
         self.manual_input_checkBox.toggled.connect(self.send_button.setEnabled)
-        self.manual_input_checkBox.toggled.connect(self.storey_number_SpinBox.setEnabled)
+        self.manual_input_checkBox.toggled.connect(
+            self.storey_number_SpinBox.setEnabled
+        )
         self.manual_input_checkBox.toggled.connect(self.storey_number_label.setEnabled)
-        self.manual_input_checkBox.toggled.connect(self.file_storey_data_button.setDisabled)
+        self.manual_input_checkBox.toggled.connect(
+            self.file_storey_data_button.setDisabled
+        )
         self.input_scroll_layout.addWidget(self.manual_input_checkBox)
 
         # Add Storey number layout
@@ -411,7 +417,9 @@ class Ui_MainWindow(object):
         self.manual_input_checkBox.setText(_translate("MainWindow", "Manual Input"))
         self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
         self.send_button.setText(_translate("MainWindow", "Send"))
-        self.file_storey_data_button.setText(_translate("MainWindow", "Upload Storey Data"))
+        self.file_storey_data_button.setText(
+            _translate("MainWindow", "Upload Storey Data")
+        )
         self.ok_button.setText(_translate("MainWindow", "Ok"))
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
@@ -450,8 +458,10 @@ class Ui_MainWindow(object):
             brace_number = []
             for element in self.brace_number_dict.values():
                 brace_number.append(element.value())
-        else: 
-            storey_masses, eigenvalues, brace_number = input.generate_storey_data(self.path_storey_data)
+        else:
+            storey_masses, eigenvalues, brace_number = input.generate_storey_data(
+                self.path_storey_data
+            )
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBox.value(),
@@ -529,13 +539,22 @@ class Ui_MainWindow(object):
         output_textbrowser = QtWidgets.QTextBrowser()
         output_textbrowser.setAcceptRichText(True)
         output_textbrowser.setAutoFillBackground(True)
-        
+
         output_textbrowser.append(f"Iteration #{i}")
         output_textbrowser.append("\n")
         output_textbrowser.append("kc,<sub>i,<sub>s</sub></sub> array:")
         n = 1
         for element in self.kc_n_s_array:
-            label = "kc" + "<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
+            label = (
+                "kc"
+                + "<sub>"
+                + str(n)
+                + ","
+                + "<sub>s</sub></sub>"
+                + " = "
+                + str(element)
+                + " kN"
+            )
             output_textbrowser.append(label)
             n = n + 1
 
@@ -543,7 +562,16 @@ class Ui_MainWindow(object):
         output_textbrowser.append("\n")
         output_textbrowser.append("Fc,<sub>i,<sub>s</sub></sub> array:")
         for element in self.Fc_n_s_array:
-            label =  "Fc," +"<sub>" + str(n) + "," + "<sub>s</sub></sub>" + " = " + str(element) + " kN"
+            label = (
+                "Fc,"
+                + "<sub>"
+                + str(n)
+                + ","
+                + "<sub>s</sub></sub>"
+                + " = "
+                + str(element)
+                + " kN"
+            )
             output_textbrowser.append(label)
             n = n + 1
 
@@ -567,7 +595,6 @@ class Ui_MainWindow(object):
         self.interfloor_height_SpinBox.setEnabled(False)
         self.file_storey_data_button.setEnabled(False)
         self.manual_input_checkBox.setEnabled(False)
-
 
         # File Export button
         self.file_export_button = QtWidgets.QPushButton(self.output_box)
@@ -660,8 +687,10 @@ if __name__ == "__main__":
     # using PyInstaller, if so, close the splash when the it's finished
     # loading.
     import os, importlib
-    if '_PYIBoot_SPLASH' in os.environ and importlib.util.find_spec("pyi_splash"):
+
+    if "_PYIBoot_SPLASH" in os.environ and importlib.util.find_spec("pyi_splash"):
         import pyi_splash
+
         pyi_splash.close()
 
     app = QtWidgets.QApplication(argv)
