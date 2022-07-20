@@ -688,7 +688,8 @@ if __name__ == "__main__":
     # Check if the program is being packaged with a splash screen
     # using PyInstaller, if so, close the splash when the it's finished
     # loading.
-    import os, importlib
+    import os
+    import importlib
 
     if "_PYIBoot_SPLASH" in os.environ and importlib.util.find_spec("pyi_splash"):
         import pyi_splash
