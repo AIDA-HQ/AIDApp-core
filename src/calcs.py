@@ -19,22 +19,16 @@ coord = Coords()
 class Values:
     @staticmethod
     def convert_to_meters(coord_mm):
-        """
-        Convert the input array values to m
-        """
+        """Convert the input array values to m"""
         return array([element / 1000 for element in coord_mm])  # [m]
 
     @staticmethod
     def convert_to_ms2(coord_g):
-        """
-        Convert the input array values to m/s^2
-        """
+        """Convert the input array values to m/s^2"""
         return array([element * 9.81 for element in coord_g])  # [m/s^2]
 
     def get_gamma(self, storey_masses, eigenvalues):
-        """
-        Return gamma
-        """
+        """Return gamma"""
         self.m_matrix = diagflat(
             storey_masses
         )  # Storey masses displayed in a diagonal matrix
@@ -49,53 +43,37 @@ class Values:
         return self.gamma
 
     def get_m_matrix(self):
-        """
-        return m_matrix
-        """
+        """return m_matrix"""
         return self.m_matrix
 
     def get_m_tot(self):
-        """
-        return m_tot
-        """
+        """return m_tot"""
         return self.m_tot
 
     def get_Phi(self):
-        """
-        return Phi
-        """
+        """return Phi"""
         return self.Phi
 
     def get_MPhi(self):
-        """
-        return MPhi
-        """
+        """return MPhi"""
         return self.MPhi
 
     def get_sum_MPhi(self):
-        """
-        Return the sum of all the values in MPhi array
-        """
+        """Return the sum of all the values in MPhi array"""
         self.sum_MPhi = sum(self.MPhi)
         return self.sum_MPhi
 
     def get_PhiTMTau(self):
-        """
-        Return PhiTMTau
-        """
+        """Return PhiTMTau"""
         return self.PhiTMTau
 
     def get_PhiTMPhi(self):
-        """
-        Returns PhiTMPhi
-        """
+        """Returns PhiTMPhi"""
         return self.PhiTMPhi
 
     @staticmethod
     def get_K1(x_p_sdof, y_p_sdof):
-        """
-        Calculate the slope of first 7 values of SDOF Pushover Curve
-        """
+        """Calculate the slope of first 7 values of SDOF Pushover Curve"""
         a = array(x_p_sdof[2:10])
         b = array(y_p_sdof[2:10])
         ssam, ssabm, _, _ssbm = cov(a, b, bias=1).flat
@@ -104,24 +82,18 @@ class Values:
         return slope  # Slope
 
     def get_Vy_kN(self, K1, dy):
-        """
-        Returns the value of Vy(F) in kN.
-        """
+        """Returns the value of Vy(F) in kN."""
         self.Vy_F_kN = K1 * dy  # kN
         return self.Vy_F_kN
 
     def get_me(self):
-        """
-        Get the mass of the storeys
-        """
+        """Get the mass of the storeys"""
         self.me = self.m_tot / self.gamma
         return self.me
 
     @staticmethod
     def get_de(adrs_spectrum, kn_eff_curve):
-        """
-        X coord of Kn_eff intercepting ADRS spectrum
-        """
+        """X coord of Kn_eff intercepting ADRS spectrum"""
         intersection_adrs_kn = adrs_spectrum.intersection(kn_eff_curve)
         de = float(intersection_adrs_kn.x)  # [m]
         return de
@@ -131,16 +103,12 @@ class Values:
     #
 
     def get_Vy_F_ms2(self, Vy_F_kN):
-        """
-        Return the value of Vy(F) in m/s^2
-        """
+        """Return the value of Vy(F) in m/s^2"""
         Vy_F_ms2 = Vy_F_kN / self.me  # [m/s^2]
         return Vy_F_ms2
 
     def get_Vy_F_DB(self, Vp_DB):
-        """
-        Return the value of Vy(F + DB)
-        """
+        """Return the value of Vy(F + DB)"""
         Vy_F_DB = self.Vy_F_kN / self.me + Vp_DB / self.me
         return Vy_F_DB  # [m/s^2]
 
@@ -159,9 +127,7 @@ class Values:
         return kn_eff
 
     def get_xiFrame(self, Kf, dp, dy, Vy_kN, Vp_ms2):
-        """
-        Calculate the first value of xiFrame
-        """
+        """Calculate the first value of xiFrame"""
         dyF = dy  # [m]
         Vy_F_ms2 = self.get_Vy_F_ms2(Vy_kN)
         VpF_ms2 = Vp_ms2  # [m/s^2]
@@ -180,18 +146,14 @@ class Values:
         return xi_eff_F_DB  # [%]
 
     def get_xi_n_eff_0(self, dp, adrs_spectrum, k1_eff):
-        """
-        Calculate first ever value of xi_n_eff
-        """
+        """Calculate first ever value of xi_n_eff"""
         de = self.get_de(adrs_spectrum, k1_eff)
 
         xi_n_eff_0 = 10 * (de / dp) ** 2 - 10
         return xi_n_eff_0  # [%]
 
     def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve):
-        """
-        Calculate iterated values of xi_n_eff
-        """
+        """Calculate iterated values of xi_n_eff"""
         de = self.get_de(adrs_spectrum, k1_eff_curve)
         xi_n_eff = 10 * ((de / dp) ** 2) - 10
         return xi_n_eff  # [%]
@@ -210,17 +172,13 @@ class Values:
 
     @staticmethod
     def get_T(sa_ms2_0, sd_meters_0):
-        """
-        Calculate the value of T period
-        """
+        """Calculate the value of T period"""
         return array(
             [2 * pi * (sd / sa) ** 0.5 for sd, sa in zip(sd_meters_0, sa_ms2_0)]
         )  # [s]
 
     def get_Sd(self, sa_ms2_0, sd_meters_0, sa_ms2):
-        """
-        Calculate the value of Sd after the iteration 0.
-        """
+        """Calculate the value of Sd after the iteration 0."""
         # sa_ms2_0 is the initial array of Sa, the one input by the user
         # sa_ms2 is the array calculated by the program
         t_array = self.get_T(sa_ms2_0, sd_meters_0)
@@ -253,9 +211,7 @@ class Values:
 
     @staticmethod
     def get_Vp_DB(xi_n_eff, Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration):
-        """
-        Return the value of Vp_DB [kN] which will be iterated various times
-        """
+        """Return the value of Vp_DB [kN] which will be iterated various times"""
         # Vp_DB_prev_iteration: previos value of Vp_DB
         Vp_DB = (xi_n_eff * (Vp_kN + Vp_DB_prev_iteration) - xiFrame * Vp_kN) / xi_DB
         return Vp_DB  # [kN]
@@ -267,33 +223,25 @@ class Values:
 
     @staticmethod
     def get_check(xi_eff, xi_n_eff):
-        """
-        Get the perecentage difference between xi_eff(F+DB)/xiFrame and xi_n_eff
-        """
+        """Get the perecentage difference between xi_eff(F+DB)/xiFrame and xi_n_eff"""
         check = (absolute(xi_n_eff - xi_eff) / xi_eff) * 100
         return check  # [%]
 
     @staticmethod
     def get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration):
-        """
-        Get the perecentage difference between Vp_DB and Vp_DB_prev_iteration
-        """
+        """Get the perecentage difference between Vp_DB and Vp_DB_prev_iteration"""
         check_Vp_DB = (absolute(Vp_DB - Vp_DB_prev_iteration) / Vp_DB) * 100
         return check_Vp_DB
 
     # Upwinds methods
 
     def get_Vy_DB_final(self, Vp_DB):
-        """
-        Calculate the value of Vy(DB)
-        """
+        """Calculate the value of Vy(DB)"""
         self.Vy_DB_final = Vp_DB * self.gamma
         return self.Vy_DB_final
 
     def get_Fy_n_DB_array(self):
-        """
-        Calculate the values of Fy(DB)
-        """
+        """Calculate the values of Fy(DB)"""
         self.Fy_n_DB_array = []
         for element in self.MPhi:
             Fy_n_DB = (self.Vy_DB_final * element) / self.get_sum_MPhi()
@@ -301,24 +249,18 @@ class Values:
         return self.Fy_n_DB_array
 
     def get_dy_DB_final(self, mu_DB, dp_DB):
-        """
-        Calculate the value of dy(DB)
-        """
+        """Calculate the value of dy(DB)"""
         dy_db = self.get_dy_DB(mu_DB, dp_DB)
         self.dy_DB_final = dy_db * self.gamma
         return self.dy_DB_final
 
     def get_Vy_n_DB_array(self):
-        """
-        Calculate the values of Vy(DB)
-        """
+        """Calculate the values of Vy(DB)"""
         self.Vy_DB_array = (cumsum(self.Fy_n_DB_array[::-1]))[::-1]
         return self.Vy_DB_array
 
     def get_dy_n_array(self, eigenvalues):
-        """
-        Calculate the values of dy,n
-        """
+        """Calculate the values of dy,n"""
         self.dy_n_array = []
         self.dy_n_array = [eigenvalues[0] * self.dy_DB_final] + (
             [(y - x) * self.dy_DB_final for x, y in zip(eigenvalues, eigenvalues[1:])]
@@ -326,41 +268,31 @@ class Values:
         return self.dy_n_array
 
     def get_K_storey_n_array(self):
-        """
-        Calculate the values of K_storey,n
-        """
+        """Calculate the values of K_storey,n"""
         K_storey_n_array = self.Vy_DB_array / self.dy_n_array
         return K_storey_n_array
 
     # Frame data
     @staticmethod
     def get_upwind_lenght(span_length, interfloor_height):
-        """
-        Calculate the lenght of the upwind
-        """
+        """Calculate the lenght of the upwind"""
         upwind_lenght = hypot(span_length, interfloor_height)
         return upwind_lenght
 
     @staticmethod
     def get_slope(span_length, interfloor_height):
-        """
-        Calculate the slope of the upwind
-        """
+        """Calculate the slope of the upwind"""
         slope = arctan(interfloor_height / span_length)
         return slope
 
     @staticmethod
     def cos_alpha(span_length, upwind_lenght):
-        """
-        Calculate the cos(alpha) of the upwind
-        """
+        """Calculate the cos(alpha) of the upwind"""
         cos_alpha = span_length / upwind_lenght
         return cos_alpha
 
     def get_K_n_DB_array(self, span_length, interfloor_height):
-        """
-        Calculate the values of K_n(DB)
-        """
+        """Calculate the values of K_n(DB)"""
         upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
         self.K_n_DB_array = self.Vy_DB_array / (
             self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght) ** 2)
@@ -368,9 +300,7 @@ class Values:
         return self.K_n_DB_array
 
     def get_Ny_n_DB_array(self, span_length, interfloor_height):
-        """
-        Calculate the values of Ny(DB)
-        """
+        """Calculate the values of Ny(DB)"""
         Ny_n_DB_array = []
         upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
         for element in self.Vy_DB_array:
@@ -379,9 +309,7 @@ class Values:
         return Ny_n_DB_array
 
     def get_kc_n_s_array(self, brace_number):
-        """
-        Calculate the values of the brace rigidity for each floor (kc_n_s)
-        """
+        """Calculate the values of the brace rigidity for each floor (kc_n_s)"""
         kc_n_s_array = []
         k = 0
         for element in self.K_n_DB_array:
@@ -391,9 +319,7 @@ class Values:
         return kc_n_s_array
 
     def get_Fc_n_s_array(self, brace_number, span_length, interfloor_height):
-        """
-        Calculate the values of the brace force for each floor (Fc_n_s)
-        """
+        """Calculate the values of the brace force for each floor (Fc_n_s)"""
         Fc_n_s_array = []
         k = 0
         for element in self.get_Ny_n_DB_array(span_length, interfloor_height):
