@@ -1,5 +1,15 @@
-from numpy import absolute, arctan, array, cumsum, diagflat, matmul, pi, sqrt, trapz
-from scipy.stats import linregress
+from numpy import (
+    absolute,
+    arctan,
+    array,
+    cov,
+    cumsum,
+    diagflat,
+    matmul,
+    pi,
+    sqrt,
+    trapz,
+)
 
 from coordinates import Coords
 
@@ -88,8 +98,9 @@ class Values:
         """
         a = array(x_p_sdof[2:10])
         b = array(y_p_sdof[2:10])
+        ssam, ssabm, _, _ssbm = cov(a, b, bias=1).flat
+        slope = ssabm / ssam
 
-        slope, _intercept, _r, _p, _se = linregress(a, b)  # kN
         return slope  # Slope
 
     def get_Vy_kN(self, K1, dy):
@@ -177,12 +188,12 @@ class Values:
         xi_n_eff_0 = 10 * (de / dp) ** 2 - 10
         return xi_n_eff_0  # [%]
 
-    def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve, xi_eff_F_DB):
+    def get_xi_n_eff(self, dp, adrs_spectrum, k1_eff_curve):
         """
         Calculate iterated values of xi_n_eff
         """
         de = self.get_de(adrs_spectrum, k1_eff_curve)
-        xi_n_eff = (10 + xi_eff_F_DB) * (de / dp) ** 2 - 10
+        xi_n_eff = 10 * ((de / dp) ** 2) - 10
         return xi_n_eff  # [%]
 
     @staticmethod
