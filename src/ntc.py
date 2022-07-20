@@ -118,8 +118,7 @@ class Ntc(object):
         tR_975 = 975
         tR_2475 = 2475
         t_R = 30
-        zonation_value_dict = {}
-        zonation_value_dict[30] = v_30
+        zonation_value_dict = {30: v_30}
 
         while t_R < 50:
             v = 10 ** (
