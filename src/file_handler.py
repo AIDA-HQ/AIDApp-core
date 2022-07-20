@@ -23,7 +23,6 @@ class InputHandler:
         separated by a space from the following one and generate 3 arrays.
         Converts the commas to a dots too.
         """
-
         zonation_array = loadtxt(
             fname=coordinate_file,
             converters={
