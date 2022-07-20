@@ -333,21 +333,24 @@ class Values:
         return K_storey_n_array
 
     ## Frame data
-    def get_upwind_lenght(self, span_length, interfloor_height):
+    @staticmethod
+    def get_upwind_lenght(span_length, interfloor_height):
         """
         Calculate the lenght of the upwind
         """
         upwind_lenght = sqrt(span_length**2 + interfloor_height**2)
         return upwind_lenght
 
-    def get_slope(self, span_length, interfloor_height):
+    @staticmethod
+    def get_slope(span_length, interfloor_height):
         """
         Calculate the slope of the upwind
         """
         slope = arctan(interfloor_height / span_length)
         return slope
 
-    def cos_alpha(self, span_length, upwind_lenght):
+    @staticmethod
+    def cos_alpha(span_length, upwind_lenght):
         """
         Calculate the cos(alpha) of the upwind
         """

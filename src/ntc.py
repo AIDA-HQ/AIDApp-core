@@ -206,7 +206,8 @@ class Ntc(object):
 
         return zonation_value_dict
 
-    def get_zonation_value_array(self, zonation_value_dict):
+    @staticmethod
+    def get_zonation_value_array(zonation_value_dict):
         """
         Returns an array with the seismic zonation parameters as values.
         """
