@@ -7,7 +7,7 @@ from numpy import (
     diagflat,
     matmul,
     pi,
-    sqrt,
+    hypot,
     trapz,
 )
 
@@ -338,7 +338,7 @@ class Values:
         """
         Calculate the lenght of the upwind
         """
-        upwind_lenght = sqrt(span_length**2 + interfloor_height**2)
+        upwind_lenght = hypot(span_length, interfloor_height)
         return upwind_lenght
 
     @staticmethod
