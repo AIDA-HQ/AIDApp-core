@@ -24,7 +24,8 @@ class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         super(HumbleSpinBox, self).focusOutEvent(event)
 
-    def wheelEvent(self, event):
+    @staticmethod
+    def wheelEvent(event):
         event.ignore()
 
 
@@ -41,7 +42,8 @@ class HumbleComboBox(QtWidgets.QComboBox):
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         super(HumbleComboBox, self).focusOutEvent(event)
 
-    def wheelEvent(self, event):
+    @staticmethod
+    def wheelEvent(event):
         event.ignore()
 
 
