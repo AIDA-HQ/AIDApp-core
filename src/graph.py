@@ -1,6 +1,6 @@
 class Graph:
+    @staticmethod
     def plot_final(
-        self,
         x_bilinear,
         y_bilinear_ms2,
         sd_meters,
@@ -18,7 +18,6 @@ class Graph:
         Function to plot the final graph, meant to be displayed when
         all the curves are calculated in the final iteration.
         """
-
         # Setup the figure
         figure.clear()
         ax = figure.add_subplot(111)
