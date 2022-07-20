@@ -3,6 +3,8 @@ from qtpy import QtCore, QtWidgets
 from main import AIDApp
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+
 from matplotlib.figure import Figure
 from file_handler import InputHandler, ExportHandler
 
@@ -537,8 +539,11 @@ class Ui_MainWindow:
             sd_meters,
             sa_ms2,
             kn_eff_list,
-            sd_meters_0,
-            sa_ms2_0,
+            y_bilinear_ms2_0,
+            kn_eff_list_0,
+            de_0,
+            de_n,
+            dp,
         ) = output_values
         output_textbrowser = QtWidgets.QTextBrowser()
         output_textbrowser.setAcceptRichText(True)
@@ -608,80 +613,71 @@ class Ui_MainWindow:
         self.file_export_button.setObjectName("file_export_button")
         self.file_export_button.clicked.connect(self.trigger_generate_output_file)
 
-        self.plot_final(
-            x_bilinear,
-            y_bilinear_ms2,
-            sd_meters,
-            sa_ms2,
-            kn_eff_list,
-            i,
-            sd_meters_0,
-            sa_ms2_0,
-        )
-
         # Graph
-        self.graphLayout = QtWidgets.QFormLayout()
-        self.graph_box = QtWidgets.QGroupBox(self.main_scroll_widget)
-        self.graph_box.setObjectName("graph_box")
-        self.graph_box.setTitle("Graph")
+        def plot_graph():
+            """Plot the graph of the response spectrum"""
+            from graph import Graph
 
-        self.graph_box_layout = QtWidgets.QVBoxLayout(self.graph_box)
-        self.graph_box_layout.setObjectName("graph_box_layout")
-        self.graph_scroll_area = QtWidgets.QScrollArea(self.graph_box)
-        self.graph_scroll_area.setWidgetResizable(True)
-        self.graph_scroll_area.setObjectName("graph_scroll_area")
-        self.graph_scroll_widget = QtWidgets.QWidget()
-        self.graph_scroll_widget.setObjectName("graph_scroll_widget")
-        self.graph_scroll_layout = QtWidgets.QHBoxLayout(self.graph_scroll_widget)
-        self.graph_scroll_layout.setObjectName("graph_scroll_layout")
+            gr = Graph()
+            gr.plot_final(
+                x_bilinear,
+                y_bilinear_ms2,
+                sd_meters,
+                sa_ms2,
+                kn_eff_list,
+                self.figure,
+                self.canvas,
+                y_bilinear_ms2_0,
+                kn_eff_list_0,
+                de_0,
+                de_n,
+                dp,
+            )
 
-        self.graph_layout = QtWidgets.QFormLayout()
-        self.graph_layout.setObjectName("graph_layout")
-        self.graph_box.setMinimumSize(QtCore.QSize(500, 500))
-        self.graph_scroll_layout.addLayout(self.graphLayout)
-        self.graph_scroll_area.setWidget(self.graph_scroll_widget)
-        self.graph_box_layout.addWidget(self.graph_scroll_area)
-        self.verticalLayout.addWidget(self.graph_box)
-        self.graphLayout.addWidget(self.canvas)
+            self.graphLayout = QtWidgets.QFormLayout()
+            self.graph_box = QtWidgets.QGroupBox(self.main_scroll_widget)
+            self.graph_box.setObjectName("graph_box")
+            self.graph_box.setTitle("Graph")
+
+            self.graph_box_layout = QtWidgets.QVBoxLayout(self.graph_box)
+            self.graph_box_layout.setObjectName("graph_box_layout")
+            self.graph_scroll_area = QtWidgets.QScrollArea(self.graph_box)
+            self.graph_scroll_area.setWidgetResizable(True)
+            self.graph_scroll_area.setObjectName("graph_scroll_area")
+            self.graph_scroll_widget = QtWidgets.QWidget()
+            self.graph_scroll_widget.setObjectName("graph_scroll_widget")
+            self.graph_scroll_layout = QtWidgets.QHBoxLayout(self.graph_scroll_widget)
+            self.graph_scroll_layout.setObjectName("graph_scroll_layout")
+
+            self.graph_layout = QtWidgets.QFormLayout()
+            self.graph_layout.setObjectName("graph_layout")
+            self.graph_box.setMinimumSize(QtCore.QSize(500, 700))
+            self.graph_scroll_layout.addLayout(self.graphLayout)
+            self.graph_scroll_area.setWidget(self.graph_scroll_widget)
+            self.graph_box_layout.addWidget(self.graph_scroll_area)
+
+            self.graph_scroll_layout.addWidget(self.canvas)
+            self.toolbar = NavigationToolbar(self.canvas, self.graph_scroll_area)
+            self.graph_box_layout.addWidget(self.toolbar)
+
+            self.verticalLayout.addWidget(self.graph_box)
+            self.show_graph_button.setEnabled(False)
+
+        # Show graph button
+        self.show_graph_button = QtWidgets.QPushButton(self.output_box)
+        self.show_graph_button.setText("Show graph")
+        self.show_graph_button.setEnabled(True)
+        self.show_graph_button.setAutoDefault(False)
+        self.show_graph_button.setObjectName("show_graph_button")
+        self.show_graph_button.clicked.connect(plot_graph)
 
         # Display output values & Export button
         self.output_box_layout.addWidget(output_textbrowser)
+        self.output_box_layout.addWidget(self.show_graph_button)
         self.output_box_layout.addWidget(self.file_export_button)
 
     def trigger_generate_output_file(self):
         export_handler.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
-
-    def plot_final(
-        self,
-        x_bilinear,
-        y_bilinear_ms2,
-        sd_meters,
-        sa_ms2,
-        kn_eff_list,
-        i,
-        sd_meters_0,
-        sa_ms2_0,
-    ):
-        """
-        Function to plot the final graph, meant to be displayed when
-        all the curves are calculated in the final iteration.
-        """
-        self.figure.clear()
-        ax = self.figure.add_subplot(111)
-
-        ax.plot(sd_meters, sa_ms2, color="#002260", label="xi=5%")
-        ax.plot(x_bilinear, y_bilinear_ms2, color="#FF0000", label="Bare Frame")
-        ax.plot(
-            sd_meters,
-            kn_eff_list,
-            color="#00B050",
-            label=("K" + str(i) + "eff"),
-        )
-        ax.plot(sd_meters_0, sa_ms2_0, color="#FFC000", label="Sa(5%)")
-
-        ax.set_xlabel("Sd [m]", fontsize="large")
-        ax.set_ylabel("Sa [m/s^2]", fontsize="large")
-        self.canvas.draw()
 
 
 if __name__ == "__main__":

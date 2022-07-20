@@ -146,14 +146,14 @@ class AIDApp:
                 self.tc_input,
                 self.damping_coeff,
             )
-            sd_meters_0 = ntc.get_movement_curve_SDe()
+            sd_meters = ntc.get_movement_curve_SDe()
             sa_ms2_0 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
-            adrs_spectrum = coord.interpolate_curve(sd_meters_0, sa_ms2_0)
+            adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2_0)
             k_eff = self.Vp_ms2 / self.dp
 
             k1_eff_curve = coord.interpolate_curve(
-                sd_meters_0,
-                coord.y_kn_eff(sd_meters_0, k_eff),
+                sd_meters,
+                coord.y_kn_eff(sd_meters, k_eff),
             )
 
             # Sui generis first iteration
@@ -168,12 +168,17 @@ class AIDApp:
             check = values.get_check(xiFrame, xi_n_eff)
             Vp_DB = Vp_DB_prev_iteration
 
+            Vy_F_DB_0 = values.get_Vy_F_ms2(Vy_kN)
+            Vp_F = self.Vp_kN / self.me
+            kn_eff_list_0 = coord.y_kn_eff(sd_meters, k_eff)
+            y_bilinear_ms2_0 = array([0, Vy_F_DB_0, Vp_F])
+            de_0 = values.get_de(adrs_spectrum, k1_eff_curve)
+
             # Recursive function to calculate what's needed
             def get_calcs_recursive(
                 Vp_DB,
                 check,
                 i,
-                sd_meters,
                 sa_ms2,
                 Vy_F_DB,
                 Vp_F_DB,
@@ -188,9 +193,6 @@ class AIDApp:
                         self.Vp_kN, xi_DB, Vp_DB, xiFrame
                     )
                     sa_ms2 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
-                    sd_meters = values.get_Sd(sa_ms2_0, sd_meters_0, sa_ms2)
-
-                    adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2)
 
                     Vp_DB_prev_iteration = Vp_DB
 
@@ -205,6 +207,7 @@ class AIDApp:
                     Vp_DB = values.get_Vp_DB(
                         xi_n_eff, self.Vp_kN, xiFrame, xi_DB, Vp_DB_prev_iteration
                     )
+                    self.de_n = values.get_de(adrs_spectrum, kn_eff_curve)
 
                     check = values.get_check(xi_eff_F_DB, xi_n_eff)
                     check_Vp_DB = values.get_check_Vp_DB(Vp_DB, Vp_DB_prev_iteration)
@@ -213,7 +216,6 @@ class AIDApp:
                         Vp_DB,
                         check,
                         i,
-                        sd_meters,
                         sa_ms2,
                         Vy_F_DB,
                         Vp_F_DB,
@@ -246,12 +248,15 @@ class AIDApp:
                         sd_meters,
                         sa_ms2,
                         kn_eff_list,
-                        sd_meters_0,
-                        sa_ms2_0,
+                        y_bilinear_ms2_0,
+                        kn_eff_list_0,
+                        de_0,
+                        self.de_n,
+                        self.dp,
                     ]
 
             return get_calcs_recursive(
-                Vp_DB, check, 1, None, None, None, None, None, None, None, None
+                Vp_DB, check, 1, None, None, None, None, None, None, None
             )
         dy = dy + 0.00001
 
