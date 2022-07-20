@@ -1,7 +1,7 @@
 from numpy import arange, around, array, log, log10, pi
 
 
-class Ntc(object):
+class Ntc:
     def __init__(
         self,
         limit_state,
