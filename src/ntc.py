@@ -1,4 +1,4 @@
-from numpy import arange, around, array, log, log10, pi, round
+from numpy import arange, around, array, log, log10, pi
 
 
 class Ntc(object):
@@ -99,14 +99,14 @@ class Ntc(object):
                 self.t_R = self.get_T_R_SLC()
                 return self.t_R
 
-    def get_zonation_value_dict(self, tuple):
+    def get_zonation_value_dict(self, v_tuple):
         """
         Returns a dictionary with the t_R [years] as keys
         and the seismic zonationparameters as values.
         """
         self.get_return_times()
 
-        v_30, v_50, v_72, v_101, v_140, v_201, v_475, v_975, v_2475 = tuple
+        v_30, v_50, v_72, v_101, v_140, v_201, v_475, v_975, v_2475 = v_tuple
 
         tR_30 = 30
         tR_50 = 50

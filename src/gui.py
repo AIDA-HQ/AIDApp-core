@@ -7,8 +7,8 @@ from matplotlib.figure import Figure
 from file_handler import InputHandler, ExportHandler
 
 aidapp = AIDApp()
-input = InputHandler()
-export = ExportHandler()
+input_handler = InputHandler()
+export_handler = ExportHandler()
 
 
 class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
@@ -461,7 +461,7 @@ class Ui_MainWindow(object):
             for element in self.brace_number_dict.values():
                 brace_number.append(element.value())
         else:
-            storey_masses, eigenvalues, brace_number = input.generate_storey_data(
+            storey_masses, eigenvalues, brace_number = input_handler.generate_storey_data(
                 self.path_storey_data
             )
         # Feed the values to the main program
@@ -647,7 +647,7 @@ class Ui_MainWindow(object):
         self.output_box_layout.addWidget(self.file_export_button)
 
     def trigger_generate_output_file(self):
-        export.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
+        export_handler.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
 
     def plot_final(
         self,
