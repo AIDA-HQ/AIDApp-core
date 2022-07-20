@@ -47,7 +47,7 @@ class HumbleComboBox(QtWidgets.QComboBox):
         event.ignore()
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow:
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
