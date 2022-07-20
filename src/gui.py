@@ -615,6 +615,7 @@ class Ui_MainWindow:
 
         # Graph
         def plot_graph():
+            """Plot the graph of the response spectrum"""
             from graph import Graph
 
             gr = Graph()
