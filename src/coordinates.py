@@ -40,9 +40,7 @@ class Coords:
 
     @staticmethod
     def find_nearest_coordinate_index(curve_coordinates, coord):
-        """
-        Find the index of the minimum/lowest element from the array.
-        """
+        """Find the index of the minimum/lowest element from the array."""
         difference_array_x = absolute(curve_coordinates - coord)
         index = difference_array_x.argmin()
         return index
