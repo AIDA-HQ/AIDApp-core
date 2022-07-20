@@ -332,7 +332,7 @@ class Values:
         K_storey_n_array = self.Vy_DB_array / self.dy_n_array
         return K_storey_n_array
 
-    ## Frame data
+    # Frame data
     @staticmethod
     def get_upwind_lenght(span_length, interfloor_height):
         """
@@ -416,24 +416,28 @@ class Area:
             x_p_sdof,
             intersection_bilinear1_psdof_coords[-1][0],
             intersection_bilinear2_psdof_coords[0][0],
-        )  # List of all the X coordinates between the two intersections with the bilinear curve. A1
+        )  # List of all the X coordinates between the 
+           # two intersections with the bilinear curve. A1
 
         list_fitting_1_y_pushover = coord.find_range_pushover(
             y_p_sdof,
             intersection_bilinear1_psdof_coords[-1][1],
             intersection_bilinear2_psdof_coords[0][1],
-        )  # List of all the Y coordinates between the two intersections with the bilinear curve. A1
+        )  # List of all the Y coordinates between the 
+           # two intersections with the bilinear curve. A1
 
         fitting_list_2_x_pushover = coord.find_range_pushover(
             x_p_sdof,
             intersection_bilinear2_psdof_coords[0][0],
             intersection_bilinear2_psdof_coords[-1][0],
-        )  # List of all the X coordinates between the two intersections with the bilinear curve. A2
+        )  # List of all the X coordinates between the 
+           # two intersections with the bilinear curve. A2
         fitting_list_2_y_pushover = coord.find_range_pushover(
             y_p_sdof,
             intersection_bilinear2_psdof_coords[0][1],
             intersection_bilinear2_psdof_coords[-1][1],
-        )  # List of all the Y coordinates between the two intersections with the bilinear curve. A2
+        )  # List of all the Y coordinates between the 
+           # two intersections with the bilinear curve. A2
         return (
             fitting_list_1_x_pushover,
             list_fitting_1_y_pushover,

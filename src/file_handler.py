@@ -67,13 +67,19 @@ class InputHandler:
 
             masses = [
                 float(element)
-                for element in (values[value_dict[mass_line] + 1 : value_dict[eigenvalues_line]])
+                for element in (
+                    values[value_dict[mass_line] + 1 : value_dict[eigenvalues_line]]
+                )
             ]
             eigenvalues = [
                 float(element)
-                for element in (values[value_dict[eigenvalues_line] + 1 : value_dict[upwinds_line]])
+                for element in (
+                    values[value_dict[eigenvalues_line] + 1 : value_dict[upwinds_line]]
+                )
             ]
-            upwinds = [float(element) for element in (values[value_dict[upwinds_line] + 1 :])]
+            upwinds = [
+                float(element) for element in (values[value_dict[upwinds_line] + 1 :])
+            ]
 
             return masses, eigenvalues, upwinds
 

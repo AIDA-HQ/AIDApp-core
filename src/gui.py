@@ -461,9 +461,11 @@ class Ui_MainWindow(object):
             for element in self.brace_number_dict.values():
                 brace_number.append(element.value())
         else:
-            storey_masses, eigenvalues, brace_number = input_handler.generate_storey_data(
-                self.path_storey_data
-            )
+            (
+                storey_masses,
+                eigenvalues,
+                brace_number,
+            ) = input_handler.generate_storey_data(self.path_storey_data)
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBox.value(),
