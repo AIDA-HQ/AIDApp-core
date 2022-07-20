@@ -7,8 +7,8 @@ from matplotlib.figure import Figure
 from file_handler import InputHandler, ExportHandler
 
 aidapp = AIDApp()
-input = InputHandler()
-export = ExportHandler()
+input_handler = InputHandler()
+export_handler = ExportHandler()
 
 
 class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
@@ -47,7 +47,7 @@ class HumbleComboBox(QtWidgets.QComboBox):
         event.ignore()
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow:
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -461,9 +461,11 @@ class Ui_MainWindow(object):
             for element in self.brace_number_dict.values():
                 brace_number.append(element.value())
         else:
-            storey_masses, eigenvalues, brace_number = input.generate_storey_data(
-                self.path_storey_data
-            )
+            (
+                storey_masses,
+                eigenvalues,
+                brace_number,
+            ) = input_handler.generate_storey_data(self.path_storey_data)
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBox.value(),
@@ -647,7 +649,7 @@ class Ui_MainWindow(object):
         self.output_box_layout.addWidget(self.file_export_button)
 
     def trigger_generate_output_file(self):
-        export.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
+        export_handler.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
 
     def plot_final(
         self,
@@ -688,7 +690,8 @@ if __name__ == "__main__":
     # Check if the program is being packaged with a splash screen
     # using PyInstaller, if so, close the splash when the it's finished
     # loading.
-    import os, importlib
+    import os
+    import importlib
 
     if "_PYIBoot_SPLASH" in os.environ and importlib.util.find_spec("pyi_splash"):
         import pyi_splash

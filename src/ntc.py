@@ -1,7 +1,7 @@
-from numpy import arange, around, array, log, log10, pi, round
+from numpy import arange, around, array, log, log10, pi
 
 
-class Ntc(object):
+class Ntc:
     def __init__(
         self,
         limit_state,
@@ -33,9 +33,7 @@ class Ntc(object):
                 self.C_U = 2
 
     def get_V_R(self):
-        """
-        Calculate the value of Vr of a building
-        """
+        """Calculate the value of Vr of a building"""
         if (self.V_N * self.C_U) >= 35:
             self.V_R = self.V_N * self.C_U
             return self.V_R
@@ -99,14 +97,14 @@ class Ntc(object):
                 self.t_R = self.get_T_R_SLC()
                 return self.t_R
 
-    def get_zonation_value_dict(self, tuple):
+    def get_zonation_value_dict(self, v_tuple):
         """
         Returns a dictionary with the t_R [years] as keys
         and the seismic zonationparameters as values.
         """
         self.get_return_times()
 
-        v_30, v_50, v_72, v_101, v_140, v_201, v_475, v_975, v_2475 = tuple
+        v_30, v_50, v_72, v_101, v_140, v_201, v_475, v_975, v_2475 = v_tuple
 
         tR_30 = 30
         tR_50 = 50
@@ -208,9 +206,7 @@ class Ntc(object):
 
     @staticmethod
     def get_zonation_value_array(zonation_value_dict):
-        """
-        Returns an array with the seismic zonation parameters as values.
-        """
+        """Returns an array with the seismic zonation parameters as values."""
         zonation_array = []
         for key in zonation_value_dict:
             zonation_array.append(zonation_value_dict[key])
@@ -218,14 +214,14 @@ class Ntc(object):
 
     def get_basic_seismic_danger_value(self, zonation_value_dict):
         """
-        Checks if t_R is a zonation_value_dict key and returns the corresponding value.
+        Checks if t_R is a zonation_value_dict key
+        and returns the corresponding value.
         """
         if self.t_R in zonation_value_dict:
             return zonation_value_dict[self.t_R]
         return None
 
     def get_values(self):
-
         ag_dict = self.get_zonation_value_dict(self.ag_input)
         self.ag_value = self.get_basic_seismic_danger_value(ag_dict)
         fo_dict = self.get_zonation_value_dict(self.fo_input)
@@ -234,9 +230,7 @@ class Ntc(object):
         self.tc_value = self.get_basic_seismic_danger_value(tc_dict)
 
     def get_ss_calc(self):
-        """
-        Returns the ss_calc value.
-        """
+        """Returns the ss_calc value."""
         self.get_values()
         match self.soil_class:
             case "A":
@@ -350,9 +344,7 @@ class Ntc(object):
                 return self.c_c
 
     def get_t_c(self):
-        """
-        t_C is T_C* from the basic seismic danger table.
-        """
+        """t_C is T_C* from the basic seismic danger table."""
         self.get_c_c()
         self.t_c = self.tc_value * self.c_c
         return self.t_c

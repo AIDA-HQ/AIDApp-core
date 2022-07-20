@@ -23,7 +23,6 @@ class InputHandler:
         separated by a space from the following one and generate 3 arrays.
         Converts the commas to a dots too.
         """
-
         zonation_array = loadtxt(
             fname=coordinate_file,
             converters={
@@ -46,7 +45,7 @@ class InputHandler:
         mass_line = "#### Storey Masses ####"
         eigenvalues_line = "#### Storey Eigenvalues ####"
         upwinds_line = "#### Storey Upwinds ####"
-        dict = {}
+        value_dict = {}
 
         with open(storey_input_data_file, "r") as f:
             values = [
@@ -59,21 +58,27 @@ class InputHandler:
                 values
             ):  # enumerate will count and keep track of the lines
                 if line == mass_line:
-                    dict[mass_line] = i
+                    value_dict[mass_line] = i
                 elif line == eigenvalues_line:
-                    dict[eigenvalues_line] = i
+                    value_dict[eigenvalues_line] = i
                 elif line == upwinds_line:
-                    dict[upwinds_line] = i
+                    value_dict[upwinds_line] = i
 
             masses = [
                 float(element)
-                for element in (values[dict[mass_line] + 1 : dict[eigenvalues_line]])
+                for element in (
+                    values[value_dict[mass_line] + 1 : value_dict[eigenvalues_line]]
+                )
             ]
             eigenvalues = [
                 float(element)
-                for element in (values[dict[eigenvalues_line] + 1 : dict[upwinds_line]])
+                for element in (
+                    values[value_dict[eigenvalues_line] + 1 : value_dict[upwinds_line]]
+                )
             ]
-            upwinds = [float(element) for element in (values[dict[upwinds_line] + 1 :])]
+            upwinds = [
+                float(element) for element in (values[value_dict[upwinds_line] + 1 :])
+            ]
 
             return masses, eigenvalues, upwinds
 
