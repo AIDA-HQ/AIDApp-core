@@ -213,13 +213,15 @@ class Ntc:
         return array(zonation_array)
 
     def get_basic_seismic_danger_value(self, zonation_value_dict):
-        """Checks if t_R is a zonation_value_dict key and returns the corresponding value."""
+        """
+        Checks if t_R is a zonation_value_dict key
+        and returns the corresponding value.
+        """
         if self.t_R in zonation_value_dict:
             return zonation_value_dict[self.t_R]
         return None
 
     def get_values(self):
-
         ag_dict = self.get_zonation_value_dict(self.ag_input)
         self.ag_value = self.get_basic_seismic_danger_value(ag_dict)
         fo_dict = self.get_zonation_value_dict(self.fo_input)
