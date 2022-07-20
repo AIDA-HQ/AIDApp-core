@@ -39,9 +39,8 @@ class Ntc(object):
         if (self.V_N * self.C_U) >= 35:
             self.V_R = self.V_N * self.C_U
             return self.V_R
-        else:
-            self.V_R = 35
-            return self.V_R
+        self.V_R = 35
+        return self.V_R
 
     def get_T_R_SLO(self):
         if (-self.V_R) / log(1 - 0.81) <= 30:
@@ -223,8 +222,7 @@ class Ntc(object):
         """
         if self.t_R in zonation_value_dict:
             return zonation_value_dict[self.t_R]
-        else:
-            return None
+        return None
 
     def get_values(self):
 
