@@ -6,14 +6,12 @@ class InputHandler:
     @staticmethod
     def generate_pushover_array(coordinate_file):
         """
-        This function takes a file containing coordinates separated
+        This function takes a string containing coordinates separated
         one from the other by a newline and returns a numpy array.
         """
-        pushover_array = loadtxt(
-            fname=coordinate_file,
-            delimiter="\n",
-            converters={0: lambda s: float(s.decode("UTF-8").replace(",", "."))},
-        )
+        # Strip \n and \t from text
+        data = filter(None, coordinate_file.splitlines())
+        pushover_array = [float(element.replace(",", ".")) for element in data]
         return pushover_array
 
     @staticmethod

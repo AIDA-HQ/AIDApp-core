@@ -95,20 +95,39 @@ class Ui_MainWindow:
         # Pushover coord buttons
         self.file_pushover_layout = QtWidgets.QHBoxLayout()
         self.file_pushover_layout.setObjectName("file_pushover_layout")
-        self.file_x_button = QtWidgets.QPushButton(self.input_box)
-        self.file_x_button.setEnabled(True)
-        self.file_x_button.setAutoDefault(False)
-        self.file_x_button.setObjectName("file_x_button")
-        self.file_pushover_layout.addWidget(self.file_x_button)
-        self.file_y_button = QtWidgets.QPushButton(self.input_box)
-        self.file_y_button.setEnabled(True)
-        self.file_y_button.setAutoDefault(False)
-        self.file_y_button.setObjectName("file_y_button")
-        self.file_pushover_layout.addWidget(self.file_y_button)
-        self.file_x_button.clicked.connect(self.open_x)
-        self.file_y_button.clicked.connect(self.open_y)
-        self.file_upload_layout.addLayout(self.file_pushover_layout)
 
+        # X Coordinates
+        self.x_p_coord_layout = QtWidgets.QVBoxLayout()
+        self.x_label = QtWidgets.QLabel(self.input_box)
+        self.x_label.setObjectName("x_label")
+        self.x_label.setAlignment(QtCore.Qt.AlignHCenter)
+
+        self.x_p_coord_layout.addWidget(self.x_label)
+        self.x_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.x_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
+        )
+        self.x_textBox.setMaximumSize(QtCore.QSize(16777215, 110))
+        self.x_p_coord_layout.addWidget(self.x_textBox)
+
+        # Y Coordinates
+        self.y_p_coord_layout = QtWidgets.QVBoxLayout()
+        self.y_label = QtWidgets.QLabel(self.input_box)
+        self.y_label.setObjectName("y_label")
+        self.y_label.setAlignment(QtCore.Qt.AlignHCenter)
+
+        self.y_p_coord_layout.addWidget(self.y_label)
+        self.y_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.y_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
+        )
+        self.y_textBox.setMaximumSize(QtCore.QSize(16777215, 110))
+        self.y_p_coord_layout.addWidget(self.y_textBox)
+
+        # Add Layout
+        self.file_upload_layout.addLayout(self.file_pushover_layout)
+        self.file_pushover_layout.addLayout(self.x_p_coord_layout)
+        self.file_pushover_layout.addLayout(self.y_p_coord_layout)
         self.input_box_layout.addLayout(self.file_upload_layout)
 
         # Input value area
@@ -396,8 +415,14 @@ class Ui_MainWindow:
         self.file_zonation_button.setText(
             _translate("MainWindow", "Seismic Zonation Values")
         )
-        self.file_x_button.setText(_translate("MainWindow", "X Pushover"))
-        self.file_y_button.setText(_translate("MainWindow", "Y Pushover"))
+        self.x_label.setText(_translate("MainWindow", "X Pushover"))
+        self.x_textBox.setPlaceholderText(
+            _translate("MainWindow", "Enter X Coordinates")
+        )
+        self.y_label.setText(_translate("MainWindow", "Y Pushover"))
+        self.y_textBox.setPlaceholderText(
+            _translate("MainWindow", "Enter Y Coordinates")
+        )
         self.damping_coeff_label.setText(
             _translate("MainWindow", "Damping coefficient [%]")
         )
@@ -433,18 +458,6 @@ class Ui_MainWindow:
             print(path[0])
         self.path_zonation = path[0]
 
-    def open_x(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_x = path[0]
-
-    def open_y(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_y = path[0]
-
     def open_storey_data(self):
         path = QtWidgets.QFileDialog.getOpenFileName()
         if path != ("", ""):
@@ -453,6 +466,9 @@ class Ui_MainWindow:
 
     def getInfo(self):
         storey_masses = []
+        self.pushover_x = self.x_textBox.toPlainText()
+        self.pushover_y = self.y_textBox.toPlainText()
+
         if self.mass_dict is True:
             for element in self.mass_dict.values():
                 storey_masses.append(element.value())
@@ -468,6 +484,7 @@ class Ui_MainWindow:
                 eigenvalues,
                 brace_number,
             ) = input_handler.generate_storey_data(self.path_storey_data)
+
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBox.value(),
@@ -478,8 +495,8 @@ class Ui_MainWindow:
             eigenvalues,
             brace_number,
             self.path_zonation,
-            self.path_x,
-            self.path_y,
+            self.pushover_x,
+            self.pushover_y,
             self.span_length_SpinBox.value(),
             self.interfloor_height_SpinBox.value(),
             self.nominal_age_SpinBox.value(),
@@ -586,8 +603,6 @@ class Ui_MainWindow:
 
         # Disable the buttons and SpinBoxes: as of now to user
         # has to reload the program in order to get new values
-        self.file_x_button.setEnabled(False)
-        self.file_y_button.setEnabled(False)
         self.file_zonation_button.setEnabled(False)
         self.ok_button.setEnabled(False)
         self.damping_coeff_SpinBox.setEnabled(False)
