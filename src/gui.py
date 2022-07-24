@@ -52,7 +52,7 @@ class HumbleComboBox(QtWidgets.QComboBox):
 class Ui_MainWindow:
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(850, 700)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -107,7 +107,7 @@ class Ui_MainWindow:
         self.x_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
-        self.x_textBox.setMaximumSize(QtCore.QSize(16777215, 110))
+        self.x_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
         self.x_p_coord_layout.addWidget(self.x_textBox)
 
         # Y Coordinates
@@ -121,7 +121,7 @@ class Ui_MainWindow:
         self.y_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
-        self.y_textBox.setMaximumSize(QtCore.QSize(16777215, 110))
+        self.y_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
         self.y_p_coord_layout.addWidget(self.y_textBox)
 
         # Add Layout
