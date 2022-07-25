@@ -421,11 +421,11 @@ class Ui_MainWindow:
         )
         self.x_label.setText(_translate("MainWindow", "X Pushover"))
         self.x_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter X Coordinates")
+            _translate("MainWindow", "Enter pushover X coordinates")
         )
         self.y_label.setText(_translate("MainWindow", "Y Pushover"))
         self.y_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter Y Coordinates")
+            _translate("MainWindow", "Enter pushover Y coordinates")
         )
         self.damping_coeff_label.setText(
             _translate("MainWindow", "Damping coefficient [%]")
@@ -474,12 +474,12 @@ class Ui_MainWindow:
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
         )
 
-        self.storey_mass_textBox.setPlaceholderText(("Enter masses of each storey"))
+        self.storey_mass_textBox.setPlaceholderText(("Enter the masses of each storey"))
         self.storey_eigenvalues_textBox.setPlaceholderText(
-            ("Enter eigenvalues for each storey")
+            ("Enter the eigenvalues for each storey")
         )
         self.storey_upwinds_textBox.setPlaceholderText(
-            ("Enter the amount of Upwinds for each storey")
+            ("Enter the amount of upwinds for each storey")
         )
 
         self.storey_data_1row_layout.addWidget(self.storey_mass_textBox)
