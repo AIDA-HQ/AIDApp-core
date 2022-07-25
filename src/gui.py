@@ -85,11 +85,15 @@ class Ui_MainWindow:
         self.file_upload_layout.setObjectName("file_upload_layout")
 
         # Zonation Box
+        self.zonation_data_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_data_label.setObjectName("zonation_data_label")
+        self.file_upload_layout.addWidget(self.zonation_data_label)
+
         self.zonation_data_textBox = QtWidgets.QPlainTextEdit(self.input_box)
         self.zonation_data_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
         )
-        self.zonation_data_textBox.setMinimumHeight(130)
+        self.zonation_data_textBox.setMinimumHeight(110)
         self.zonation_data_textBox.setMaximumHeight(160)
         self.file_upload_layout.addWidget(self.zonation_data_textBox)
 
@@ -416,6 +420,7 @@ class Ui_MainWindow:
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
         self.input_box.setTitle(_translate("MainWindow", "Input Values"))
+        self.zonation_data_label.setText(_translate("MainWindow", "Zonation Data"))
         self.zonation_data_textBox.setPlaceholderText(
             _translate("MainWindow", "Enter seismic zonation values")
         )
