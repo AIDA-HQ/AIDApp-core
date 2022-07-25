@@ -84,13 +84,14 @@ class Ui_MainWindow:
         self.file_upload_layout = QtWidgets.QVBoxLayout()
         self.file_upload_layout.setObjectName("file_upload_layout")
 
-        # Zonation button
-        self.file_zonation_button = QtWidgets.QPushButton(self.input_box)
-        self.file_zonation_button.setEnabled(True)
-        self.file_zonation_button.setAutoDefault(False)
-        self.file_zonation_button.setObjectName("file_zonation_button")
-        self.file_upload_layout.addWidget(self.file_zonation_button)
-        self.file_zonation_button.clicked.connect(self.open_zonation)
+        # Zonation Box
+        self.zonation_data_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.zonation_data_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
+        self.zonation_data_textBox.setMinimumHeight(130)
+        self.zonation_data_textBox.setMaximumHeight(160)
+        self.file_upload_layout.addWidget(self.zonation_data_textBox)
 
         # Pushover coord buttons
         self.file_pushover_layout = QtWidgets.QHBoxLayout()
@@ -415,8 +416,8 @@ class Ui_MainWindow:
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
         self.input_box.setTitle(_translate("MainWindow", "Input Values"))
-        self.file_zonation_button.setText(
-            _translate("MainWindow", "Seismic Zonation Values")
+        self.zonation_data_textBox.setPlaceholderText(
+            _translate("MainWindow", "Enter seismic zonation values")
         )
         self.x_label.setText(_translate("MainWindow", "X Pushover"))
         self.x_textBox.setPlaceholderText(
@@ -453,12 +454,6 @@ class Ui_MainWindow:
         self.ok_button.setText(_translate("MainWindow", "Ok"))
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
-    def open_zonation(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_zonation = path[0]
-
     def show_storey_data_boxes(self):
         """Show the boxes to input data masses, eigenvalues, and brace numbers"""
         # Storey mass
@@ -479,9 +474,7 @@ class Ui_MainWindow:
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
         )
 
-        self.storey_mass_textBox.setPlaceholderText(
-            ("Enter masses of each storey")
-        )
+        self.storey_mass_textBox.setPlaceholderText(("Enter masses of each storey"))
         self.storey_eigenvalues_textBox.setPlaceholderText(
             ("Enter eigenvalues for each storey")
         )
@@ -498,6 +491,7 @@ class Ui_MainWindow:
         storey_masses = []
         self.pushover_x = self.x_textBox.toPlainText()
         self.pushover_y = self.y_textBox.toPlainText()
+        self.zonation_data = self.zonation_data_textBox.toPlainText()
 
         if self.mass_dict is True:
             for element in self.mass_dict.values():
@@ -528,7 +522,7 @@ class Ui_MainWindow:
             storey_masses,
             eigenvalues,
             brace_number,
-            self.path_zonation,
+            self.zonation_data,
             self.pushover_x,
             self.pushover_y,
             self.span_length_SpinBox.value(),
@@ -637,7 +631,6 @@ class Ui_MainWindow:
 
         # Disable the buttons and SpinBoxes: as of now to user
         # has to reload the program in order to get new values
-        self.file_zonation_button.setEnabled(False)
         self.ok_button.setEnabled(False)
         self.damping_coeff_SpinBox.setEnabled(False)
         self.nominal_age_SpinBox.setEnabled(False)

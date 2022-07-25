@@ -1,4 +1,4 @@
-from numpy import loadtxt, float_
+from numpy import array, reshape, transpose
 from qtpy import QtWidgets
 
 
@@ -15,22 +15,17 @@ class InputHandler:
         return pushover_array
 
     @staticmethod
-    def generate_zonation_array(coordinate_file):
+    def generate_zonation_array(zonation_data):
         """
-        This function takes a file containing 3 coloumns of numbers, each
+        This function takes a string containing 3 coloumns of numbers, each
         separated by a space from the following one and generate 3 arrays.
-        Converts the commas to a dots too.
+        Converts the commas to dots too.
         """
-        zonation_array = loadtxt(
-            fname=coordinate_file,
-            converters={
-                0: lambda s: float(s.decode("UTF-8").replace(",", ".")),
-                1: lambda s: float(s.decode("UTF-8").replace(",", ".")),
-                2: lambda s: float(s.decode("UTF-8").replace(",", ".")),
-            },
-            unpack=True,
-        )
-        return zonation_array
+        # Strip \n and \t from text
+        filtered_data = filter(None, zonation_data.splitlines())
+        data = [element.replace(",", ".").split() for element in filtered_data]
+        zonation_array = [float(item) for sublist in data for item in sublist]
+        return transpose(reshape(array(zonation_array), (9, 3)))
 
     @staticmethod
     def generate_storey_data(storey_input_data):
@@ -39,11 +34,10 @@ class InputHandler:
         of numbers to generate a lists of floats.
         Converts the commas to dots too.
         """
-        data = storey_input_data.splitlines()
         # Strip \n and \t from text
-        data = filter(None, data)
-        data = [element.replace(",", ".") for element in data]
-        return list(float_(data))
+        data = filter(None, storey_input_data.splitlines())
+        storey_data = [float(element.replace(",", ".")) for element in data]
+        return storey_data
 
 
 class ExportHandler:
