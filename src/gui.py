@@ -257,12 +257,17 @@ class Ui_MainWindow:
         self.send_button.clicked.connect(self.count_storey_boxes)
 
         # Upload storey data
-        self.file_storey_data_button = QtWidgets.QPushButton(self.input_scroll_widget)
-        self.file_storey_data_button.setAutoDefault(False)
-        self.file_storey_data_button.setDefault(False)
-        self.file_storey_data_button.setObjectName("file_storey_data_button")
-        self.input_scroll_layout.addWidget(self.file_storey_data_button)
-        self.file_storey_data_button.clicked.connect(self.open_storey_data)
+        self.storey_data_1row_layout = QtWidgets.QHBoxLayout()
+        self.input_scroll_layout.addLayout(self.storey_data_1row_layout)
+        self.storey_data_2row_layout = QtWidgets.QHBoxLayout()
+        self.input_scroll_layout.addLayout(self.storey_data_2row_layout)
+
+        self.storey_data_button = QtWidgets.QPushButton(self.input_scroll_widget)
+        self.storey_data_button.setAutoDefault(False)
+        self.storey_data_button.setDefault(False)
+        self.storey_data_button.setObjectName("storey_data_button")
+        self.storey_data_1row_layout.addWidget(self.storey_data_button)
+        self.storey_data_button.clicked.connect(self.show_storey_data_boxes)
 
         # Manual storey input radio button
         self.manual_input_checkBox = QtWidgets.QCheckBox(self.input_box)
@@ -272,9 +277,7 @@ class Ui_MainWindow:
             self.storey_number_SpinBox.setEnabled
         )
         self.manual_input_checkBox.toggled.connect(self.storey_number_label.setEnabled)
-        self.manual_input_checkBox.toggled.connect(
-            self.file_storey_data_button.setDisabled
-        )
+        self.manual_input_checkBox.toggled.connect(self.storey_data_button.setDisabled)
         self.input_scroll_layout.addWidget(self.manual_input_checkBox)
 
         # Add Storey number layout
@@ -446,9 +449,7 @@ class Ui_MainWindow:
         self.manual_input_checkBox.setText(_translate("MainWindow", "Manual Input"))
         self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
         self.send_button.setText(_translate("MainWindow", "Send"))
-        self.file_storey_data_button.setText(
-            _translate("MainWindow", "Upload Storey Data")
-        )
+        self.storey_data_button.setText(_translate("MainWindow", "Show Storey Data"))
         self.ok_button.setText(_translate("MainWindow", "Ok"))
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
@@ -458,11 +459,40 @@ class Ui_MainWindow:
             print(path[0])
         self.path_zonation = path[0]
 
-    def open_storey_data(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_storey_data = path[0]
+    def show_storey_data_boxes(self):
+        """Show the boxes to input data masses, eigenvalues, and brace numbers"""
+        # Storey mass
+        self.storey_mass_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_mass_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
+
+        # Storey eigenvalues
+        self.storey_eigenvalues_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_eigenvalues_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
+
+        # Storey upwinds
+        self.storey_upwinds_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_upwinds_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
+
+        self.storey_mass_textBox.setPlaceholderText(
+            ("Enter masses of each storey")
+        )
+        self.storey_eigenvalues_textBox.setPlaceholderText(
+            ("Enter eigenvalues for each storey")
+        )
+        self.storey_upwinds_textBox.setPlaceholderText(
+            ("Enter the amount of Upwinds for each storey")
+        )
+
+        self.storey_data_1row_layout.addWidget(self.storey_mass_textBox)
+        self.storey_data_2row_layout.addWidget(self.storey_eigenvalues_textBox)
+        self.storey_data_2row_layout.addWidget(self.storey_upwinds_textBox)
+        self.storey_data_button.setDisabled(True)
 
     def getInfo(self):
         storey_masses = []
@@ -479,11 +509,15 @@ class Ui_MainWindow:
             for element in self.brace_number_dict.values():
                 brace_number.append(element.value())
         else:
-            (
-                storey_masses,
-                eigenvalues,
-                brace_number,
-            ) = input_handler.generate_storey_data(self.path_storey_data)
+            storey_masses = input_handler.generate_storey_data(
+                self.storey_mass_textBox.toPlainText()
+            )
+            eigenvalues = input_handler.generate_storey_data(
+                self.storey_eigenvalues_textBox.toPlainText()
+            )
+            brace_number = input_handler.generate_storey_data(
+                self.storey_upwinds_textBox.toPlainText()
+            )
 
         # Feed the values to the main program
         output = aidapp.main(
@@ -617,7 +651,7 @@ class Ui_MainWindow:
         self.kf_SpinBox.setEnabled(False)
         self.span_length_SpinBox.setEnabled(False)
         self.interfloor_height_SpinBox.setEnabled(False)
-        self.file_storey_data_button.setEnabled(False)
+        self.storey_data_button.setEnabled(False)
         self.manual_input_checkBox.setEnabled(False)
 
         # File Export button
