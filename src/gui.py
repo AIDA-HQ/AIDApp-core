@@ -103,31 +103,31 @@ class Ui_MainWindow:
 
         # X Coordinates
         self.x_p_coord_layout = QtWidgets.QVBoxLayout()
-        self.x_label = QtWidgets.QLabel(self.input_box)
-        self.x_label.setObjectName("x_label")
-        self.x_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.x_p_label = QtWidgets.QLabel(self.input_box)
+        self.x_p_label.setObjectName("x_p_label")
+        self.x_p_label.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.x_p_coord_layout.addWidget(self.x_label)
-        self.x_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.x_textBox.setSizePolicy(
+        self.x_p_coord_layout.addWidget(self.x_p_label)
+        self.x_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.x_p_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
-        self.x_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.x_p_coord_layout.addWidget(self.x_textBox)
+        self.x_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.x_p_coord_layout.addWidget(self.x_p_textBox)
 
         # Y Coordinates
         self.y_p_coord_layout = QtWidgets.QVBoxLayout()
-        self.y_label = QtWidgets.QLabel(self.input_box)
-        self.y_label.setObjectName("y_label")
-        self.y_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.y_p_label = QtWidgets.QLabel(self.input_box)
+        self.y_p_label.setObjectName("y_p_label")
+        self.y_p_label.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.y_p_coord_layout.addWidget(self.y_label)
-        self.y_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.y_textBox.setSizePolicy(
+        self.y_p_coord_layout.addWidget(self.y_p_label)
+        self.y_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.y_p_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
-        self.y_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.y_p_coord_layout.addWidget(self.y_textBox)
+        self.y_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.y_p_coord_layout.addWidget(self.y_p_textBox)
 
         # Add Layout
         self.file_upload_layout.addLayout(self.file_pushover_layout)
@@ -424,12 +424,12 @@ class Ui_MainWindow:
         self.zonation_data_textBox.setPlaceholderText(
             _translate("MainWindow", "Enter seismic zonation values")
         )
-        self.x_label.setText(_translate("MainWindow", "X Pushover"))
-        self.x_textBox.setPlaceholderText(
+        self.x_p_label.setText(_translate("MainWindow", "X Pushover"))
+        self.x_p_textBox.setPlaceholderText(
             _translate("MainWindow", "Enter pushover X coordinates")
         )
-        self.y_label.setText(_translate("MainWindow", "Y Pushover"))
-        self.y_textBox.setPlaceholderText(
+        self.y_p_label.setText(_translate("MainWindow", "Y Pushover"))
+        self.y_p_textBox.setPlaceholderText(
             _translate("MainWindow", "Enter pushover Y coordinates")
         )
         self.damping_coeff_label.setText(
@@ -494,8 +494,8 @@ class Ui_MainWindow:
 
     def getInfo(self):
         storey_masses = []
-        self.pushover_x = self.x_textBox.toPlainText()
-        self.pushover_y = self.y_textBox.toPlainText()
+        self.pushover_x = self.x_p_textBox.toPlainText()
+        self.pushover_y = self.y_p_textBox.toPlainText()
         self.zonation_data = self.zonation_data_textBox.toPlainText()
 
         if self.mass_dict is True:
