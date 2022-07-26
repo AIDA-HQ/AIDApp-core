@@ -22,8 +22,8 @@ class AIDApp:
         arg_eigenvalues,
         arg_brace_number,
         arg_path_zonation,
-        arg_path_x,
-        arg_path_y,
+        arg_pushover_x,
+        arg_pushover_y,
         arg_span_length,
         arg_interfloor_height,
         arg_nominal_age,
@@ -40,8 +40,8 @@ class AIDApp:
         self.Kf = arg_Kf
         self.storey_masses = arg_storey_masses
         self.eigenvalues = arg_eigenvalues
-        self.path_x = handlr.generate_pushover_array(arg_path_x)
-        self.path_y = handlr.generate_pushover_array(arg_path_y)
+        self.pushover_x = handlr.generate_pushover_array(arg_pushover_x)
+        self.pushover_y = handlr.generate_pushover_array(arg_pushover_y)
         self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(
             arg_path_zonation
         )
@@ -57,8 +57,8 @@ class AIDApp:
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
-        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path_y)
-        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path_x)
+        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
+        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.pushover_x)
         self.Vp_kN = self.y_p_sdof[
             coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)
         ]

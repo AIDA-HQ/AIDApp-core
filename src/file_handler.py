@@ -1,4 +1,4 @@
-from numpy import loadtxt
+from numpy import array, reshape, transpose
 from qtpy import QtWidgets
 
 
@@ -6,81 +6,38 @@ class InputHandler:
     @staticmethod
     def generate_pushover_array(coordinate_file):
         """
-        This function takes a file containing coordinates separated
+        This function takes a string containing coordinates separated
         one from the other by a newline and returns a numpy array.
         """
-        pushover_array = loadtxt(
-            fname=coordinate_file,
-            delimiter="\n",
-            converters={0: lambda s: float(s.decode("UTF-8").replace(",", "."))},
-        )
+        # Strip \n and \t from text
+        data = filter(None, coordinate_file.splitlines())
+        pushover_array = [float(element.replace(",", ".")) for element in data]
         return pushover_array
 
     @staticmethod
-    def generate_zonation_array(coordinate_file):
+    def generate_zonation_array(zonation_data):
         """
-        This function takes a file containing 3 coloumns of numbers, each
+        This function takes a string containing 3 coloumns of numbers, each
         separated by a space from the following one and generate 3 arrays.
-        Converts the commas to a dots too.
+        Converts the commas to dots too.
         """
-        zonation_array = loadtxt(
-            fname=coordinate_file,
-            converters={
-                0: lambda s: float(s.decode("UTF-8").replace(",", ".")),
-                1: lambda s: float(s.decode("UTF-8").replace(",", ".")),
-                2: lambda s: float(s.decode("UTF-8").replace(",", ".")),
-            },
-            unpack=True,
-        )
-        return zonation_array
+        # Strip \n and \t from text
+        filtered_data = filter(None, zonation_data.splitlines())
+        data = [element.replace(",", ".").split() for element in filtered_data]
+        zonation_array = [float(item) for sublist in data for item in sublist]
+        return transpose(reshape(array(zonation_array), (9, 3)))
 
     @staticmethod
-    def generate_storey_data(storey_input_data_file):
+    def generate_storey_data(storey_input_data):
         """
-        This function takes a file containing a coloumns of numbers,
-        divided in 3 groups, each group separated by a comment from
-        the preceding one and generate 3 lists of floats.
-        Converts the commas to a dots too.
+        This function takes a string containing a coloumn
+        of numbers to generate a lists of floats.
+        Converts the commas to dots too.
         """
-        mass_line = "#### Storey Masses ####"
-        eigenvalues_line = "#### Storey Eigenvalues ####"
-        upwinds_line = "#### Storey Upwinds ####"
-        value_dict = {}
-
-        with open(storey_input_data_file, "r") as f:
-            values = [
-                line.strip() for line in f.readlines()
-            ]  # Strip \n and \t from text
-            values = list(filter(None, values))
-            values = [element.replace(",", ".") for element in values]
-
-            for i, line in enumerate(
-                values
-            ):  # enumerate will count and keep track of the lines
-                if line == mass_line:
-                    value_dict[mass_line] = i
-                elif line == eigenvalues_line:
-                    value_dict[eigenvalues_line] = i
-                elif line == upwinds_line:
-                    value_dict[upwinds_line] = i
-
-            masses = [
-                float(element)
-                for element in (
-                    values[value_dict[mass_line] + 1 : value_dict[eigenvalues_line]]
-                )
-            ]
-            eigenvalues = [
-                float(element)
-                for element in (
-                    values[value_dict[eigenvalues_line] + 1 : value_dict[upwinds_line]]
-                )
-            ]
-            upwinds = [
-                float(element) for element in (values[value_dict[upwinds_line] + 1 :])
-            ]
-
-            return masses, eigenvalues, upwinds
+        # Strip \n and \t from text
+        data = filter(None, storey_input_data.splitlines())
+        storey_data = [float(element.replace(",", ".")) for element in data]
+        return storey_data
 
 
 class ExportHandler:
