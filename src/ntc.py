@@ -5,6 +5,7 @@ from numpy import arange, around, array, log, log10, pi
 
 class Ntc:
     """Class that holds what's needed to calculate the NTC spectrum."""
+
     def __init__(
         self,
         limit_state,
@@ -34,6 +35,27 @@ class Ntc:
                 self.C_U = 1.5
             case "IV":
                 self.C_U = 2
+
+        # Init the remaining self variables
+        self.V_R = None
+        self.t_R = None
+        self.ag_value = None
+        self.fo_value = None
+        self.tc_value = None
+        self.ss_calc = None
+        self.ss_min = None
+        self.ss_max = None
+        self.ss = None
+        self.st = None
+        self.s = None
+        self.c_c = None
+        self.t_b = None
+        self.t_c = None
+        self.t_d = None
+        self.t_acceleration_coords = None
+        self.Se_coords = None
+        self.SDe_coords_movement = None
+        self.eta = None
 
     def get_V_R(self):
         """Calculate the value of Reference Value of the building."""
