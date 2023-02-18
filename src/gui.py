@@ -850,7 +850,7 @@ class Ui_MainWindow:
 
 
 if __name__ == "__main__":
-    from sys import argv, exit
+    from sys import argv
 
     # Check if the program is being packaged with a splash screen
     # using PyInstaller, if so, close the splash when the it's finished
