@@ -37,25 +37,25 @@ class Ntc:
                 self.C_U = 2
 
         # Init the remaining self variables
-        self.V_R = None
-        self.t_R = None
-        self.ag_value = None
-        self.fo_value = None
-        self.tc_value = None
-        self.ss_calc = None
-        self.ss_min = None
-        self.ss_max = None
-        self.ss = None
-        self.st = None
-        self.s = None
-        self.c_c = None
-        self.t_b = None
-        self.t_c = None
-        self.t_d = None
-        self.t_acceleration_coords = None
-        self.Se_coords = None
-        self.SDe_coords_movement = None
-        self.eta = None
+        self.V_R = 0
+        self.t_R = 0
+        self.ag_value = 0
+        self.fo_value = 0
+        self.tc_value = 0
+        self.ss_calc = 0
+        self.ss_min = 0
+        self.ss_max = 0
+        self.ss = 0
+        self.st = 0
+        self.s = 0
+        self.c_c = 0
+        self.t_b = 0
+        self.t_c = 0
+        self.t_d = 0
+        self.t_acceleration_coords = 0
+        self.Se_coords = 0
+        self.SDe_coords_movement = 0
+        self.eta = 0
 
     def get_V_R(self):
         """Calculate the value of Reference Value of the building."""
