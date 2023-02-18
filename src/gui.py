@@ -850,7 +850,7 @@ class Ui_MainWindow:
 
 
 if __name__ == "__main__":
-    from sys import argv, exit
+    import sys
 
     # Check if the program is being packaged with a splash screen
     # using PyInstaller, if so, close the splash when the it's finished
@@ -863,10 +863,10 @@ if __name__ == "__main__":
 
         pyi_splash.close()
 
-    app = QtWidgets.QApplication(argv)
+    app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(Dialog)
     Dialog.show()
 
-    exit(app.exec_())
+    sys.exit(app.exec_())
