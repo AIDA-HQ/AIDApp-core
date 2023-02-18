@@ -15,6 +15,40 @@ handlr = InputHandler()
 
 class AIDApp:
     """Class to run the app backend."""
+
+    def __init__(self):
+        # Init all the self variables
+        self.dp = None
+        self.mu_DB = None
+        self.k_DB = None
+        self.Kf = None
+        self.storey_masses = None
+        self.eigenvalues = None
+        self.pushover_x = None
+        self.pushover_y = None
+        self.ag_input = None
+        self.fo_input = None
+        self.tc_input = None
+        self.span_length = None
+        self.interfloor_height = None
+        self.brace_number = None
+        self.nominal_age = None
+        self.functional_class = None
+        self.topographic_factor = None
+        self.soil_class = None
+        self.limit_state = None
+        self.damping_coeff = None
+        self.gamma = None
+        self.me = None
+        self.y_p_sdof = None
+        self.x_p_sdof = None
+        self.y_kn_eff = None
+        self.x_kn_eff = None
+        self.Vp_kN = None
+        self.Vp_ms2 = None
+        self.K1 = None
+        self.de_n = None
+
     def main(
         self,
         arg_dp,
