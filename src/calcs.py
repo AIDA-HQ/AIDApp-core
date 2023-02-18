@@ -21,6 +21,26 @@ coord = Coords()
 class Values:
     """Class containing all the main calculations for the program."""
 
+    def __init__(self):
+        # Init all the self variables
+        self.m_matrix = None
+        self.m_tot = None
+        self.Phi = None
+        self.MPhi = None
+        self.sum_MPhi = None
+        self.PhiTMTau = None
+        self.PhiTMPhi = None
+        self.gamma = None
+        self.Vy_F_kN = None
+        self.me = None
+        self.Vy_DB_final = None
+        self.Fy_n_DB_array = None
+        self.dy_DB_final = None
+        self.Vy_DB_array = None
+        self.dy_n_array = None
+        self.dy_n_array = None
+        self.K_n_DB_array = None
+
     @staticmethod
     def convert_to_meters(coord_mm):
         """Convert the input array values to m."""
@@ -346,6 +366,7 @@ class Values:
 
 class Area:
     """Class for the calculation to the areas under the curves."""
+
     @staticmethod
     def calculate_fitting_list(
         x_p_sdof,

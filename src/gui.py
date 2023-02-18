@@ -64,6 +64,107 @@ class HumbleComboBox(QtWidgets.QComboBox):
 class Ui_MainWindow:
     """Main GUI window."""
 
+    def __init__(self):
+        # Init all the self variables
+        self.centralwidget = None
+        self.main_scrollArea = None
+        self.main_scroll_widget = None
+        self.verticalLayout_8 = None
+        self.verticalLayout = None
+        self.horizontalLayout = None
+        self.input_box = None
+        self.input_box_layout = None
+        self.file_upload_layout = None
+        self.zonation_data_label = None
+        self.zonation_data_textBox = None
+        self.file_pushover_layout = None
+        self.x_p_coord_layout = None
+        self.x_p_label = None
+        self.x_p_textBox = None
+        self.y_p_coord_layout = None
+        self.y_p_label = None
+        self.y_p_textBox = None
+        self.input_scroll_area = None
+        self.input_scroll_widget = None
+        self.input_scroll_layout = None
+        self.damping_coeff_layout = None
+        self.damping_coeff_label = None
+        self.damping_coeff_SpinBox = None
+        self.nominal_age_layout = None
+        self.nominal_age_label = None
+        self.nominal_age_SpinBox = None
+        self.functional_class_layout = None
+        self.functional_class_label = None
+        self.functional_class_comboBox = None
+        self.topographic_factor_layout = None
+        self.topographic_factor_label = None
+        self.topographic_factor_comboBox = None
+        self.soil_class_layout = None
+        self.soil_class_label = None
+        self.soil_class_comboBox = None
+        self.limit_state_layout = None
+        self.limit_state_label = None
+        self.limit_state_comboBox = None
+        self.line_1 = None
+        self.kf_layout = None
+        self.kf_label = None
+        self.kf_SpinBox = None
+        self.storey_number_layout = None
+        self.storey_number_label = None
+        self.storey_number_SpinBox = None
+        self.send_button = None
+        self.storey_data_1row_layout = None
+        self.storey_data_2row_layout = None
+        self.storey_data_button = None
+        self.manual_input_checkBox = None
+        self.storey_layout = None
+        self.line_2 = None
+        self.dp_layout = None
+        self.dp_label = None
+        self.dp_SpinBox = None
+        self.u_DB_layout = None
+        self.u_DB_label = None
+        self.u_DB_SpinBox = None
+        self.k_DB_layout = None
+        self.k_DB_label = None
+        self.k_DB_SpinBox = None
+        self.span_length_layout = None
+        self.span_length_label = None
+        self.span_length_SpinBox = None
+        self.interfloor_height_layout = None
+        self.interfloor_height_label = None
+        self.interfloor_height_SpinBox = None
+        self.buttonBox = None
+        self.ok_button = None
+        self.output_box = None
+        self.output_box_layout = None
+        self.output_scroll_widget = None
+        self.output_layout = None
+        self.figure = None
+        self.canvas = None
+        self.menubar = None
+        self.mass_dict = None
+        self.eigenvalue_dict = None
+        self.brace_number_dict = None
+        self.storey_mass_textBox = None
+        self.storey_eigenvalues_textBox = None
+        self.storey_upwinds_textBox = None
+        self.pushover_x = None
+        self.pushover_y = None
+        self.zonation_data = None
+        self.kc_n_s_array = None
+        self.Fc_n_s_array = None
+        self.file_export_button = None
+        self.graphLayout = None
+        self.graph_box = None
+        self.graph_box_layout = None
+        self.graph_scroll_area = None
+        self.graph_scroll_widget = None
+        self.graph_scroll_layout = None
+        self.graph_layout = None
+        self.toolbar = None
+        self.show_graph_button = None
+
     def setupUi(self, MainWindow):
         """Setup the GUI."""
         MainWindow.setObjectName("MainWindow")
@@ -749,7 +850,7 @@ class Ui_MainWindow:
 
 
 if __name__ == "__main__":
-    from sys import argv, exit
+    import sys
 
     # Check if the program is being packaged with a splash screen
     # using PyInstaller, if so, close the splash when the it's finished
@@ -762,10 +863,10 @@ if __name__ == "__main__":
 
         pyi_splash.close()
 
-    app = QtWidgets.QApplication(argv)
+    app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(Dialog)
     Dialog.show()
 
-    exit(app.exec_())
+    sys.exit(app.exec_())
