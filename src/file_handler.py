@@ -1,8 +1,12 @@
+"""This module contains the functions that handle the input and output data."""
+
 from numpy import array, reshape, transpose
 from qtpy import QtWidgets
 
 
 class InputHandler:
+    """This class contains the functions that handle the input data."""
+
     @staticmethod
     def generate_pushover_array(coordinate_file):
         """
@@ -17,7 +21,7 @@ class InputHandler:
     @staticmethod
     def generate_zonation_array(zonation_data):
         """
-        This function takes a string containing 3 coloumns of numbers, each
+        This function takes a string containing 3 columns of numbers, each
         separated by a space from the following one and generate 3 arrays.
         Converts the commas to dots too.
         """
@@ -30,7 +34,7 @@ class InputHandler:
     @staticmethod
     def generate_storey_data(storey_input_data):
         """
-        This function takes a string containing a coloumn
+        This function takes a string containing a column
         of numbers to generate a lists of floats.
         Converts the commas to dots too.
         """
@@ -41,6 +45,8 @@ class InputHandler:
 
 
 class ExportHandler:
+    """This class contains the functions that handle the output data."""
+
     @staticmethod
     def generate_output_file(kc_n_s_array_arg, Fc_n_s_array_arg):
         """

@@ -1,4 +1,9 @@
+"""Graph of the final iteration."""
+
+
 class Graph:
+    """Class that holds all what's needed to plot the final graph."""
+
     @staticmethod
     def plot_final(
         x_bilinear,

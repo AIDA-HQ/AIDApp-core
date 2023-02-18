@@ -1,3 +1,5 @@
+"""GUI of AIDApp."""
+
 from qtpy import QtCore, QtWidgets
 
 from main import AIDApp
@@ -14,43 +16,56 @@ export_handler = ExportHandler()
 
 
 class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
+    """Class to make spinboxes not scrollable"""
+
     def __init__(self, *args):
         super(HumbleSpinBox, self).__init__(*args)
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
     def focusInEvent(self, event):
+        """Make the spinbox not scrollable when focused."""
         self.setFocusPolicy(QtCore.Qt.WheelFocus)
         super(HumbleSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
+        """Make the spinbox not scrollable when not focused."""
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         super(HumbleSpinBox, self).focusOutEvent(event)
 
     @staticmethod
     def wheelEvent(event):
+        """Ignore the wheel event."""
         event.ignore()
 
 
 class HumbleComboBox(QtWidgets.QComboBox):
+    """Class to make comboboxes not scrollable."""
+
     def __init__(self, *args):
         super(HumbleComboBox, self).__init__(*args)
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
     def focusInEvent(self, event):
+        """Make the combobox not scrollable when focused."""
         self.setFocusPolicy(QtCore.Qt.WheelFocus)
         super(HumbleComboBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
+        """Make the combobox not scrollable when not focused."""
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         super(HumbleComboBox, self).focusOutEvent(event)
 
     @staticmethod
     def wheelEvent(event):
+        """Ignore the wheel event."""
         event.ignore()
 
 
 class Ui_MainWindow:
+    """Main GUI window."""
+
     def setupUi(self, MainWindow):
+        """Setup the GUI."""
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(850, 700)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -417,6 +432,7 @@ class Ui_MainWindow:
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        """Set the text of the widgets"""
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
         self.input_box.setTitle(_translate("MainWindow", "Input Values"))
@@ -493,6 +509,7 @@ class Ui_MainWindow:
         self.storey_data_button.setDisabled(True)
 
     def getInfo(self):
+        """Get the input values from the widgets and send them to the main program."""
         storey_masses = []
         self.pushover_x = self.x_p_textBox.toPlainText()
         self.pushover_y = self.y_p_textBox.toPlainText()
@@ -543,11 +560,13 @@ class Ui_MainWindow:
         self.output_field(output)
 
     def count_storey_boxes(self):
+        """Count the number of storey boxes to be created."""
         self.send_button.setDisabled(True)
         self.storey_number_SpinBox.setDisabled(True)
         self.show_storey_boxes(self.storey_number_SpinBox.value())
 
     def show_storey_boxes(self, i):
+        """Create the storey boxes."""
         k = 1
         while k < (i + 1):
             # dynamically create key
@@ -580,6 +599,7 @@ class Ui_MainWindow:
             k += 1
 
     def output_field(self, output_values):
+        """Create and populate the output field."""
         (
             self.kc_n_s_array,
             self.Fc_n_s_array,
@@ -724,6 +744,7 @@ class Ui_MainWindow:
         self.output_box_layout.addWidget(self.file_export_button)
 
     def trigger_generate_output_file(self):
+        """Trigger the generate_output_file function"""
         export_handler.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
 
 
