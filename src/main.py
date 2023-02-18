@@ -71,7 +71,6 @@ class AIDApp:
         arg_damping_coeff,
     ):
         """Main function of the app."""
-
         self.dp = arg_dp
         self.mu_DB = arg_mu_DB
         self.k_DB = arg_k_DB
@@ -232,7 +231,6 @@ class AIDApp:
                 If the difference is more than 0.5 keep iterating,
                 otherwise return the values.
                 """
-
                 if check > 0.5:
                     i = i + 1
                     xi_eff_F_DB = values.get_xi_eff_F_DB(
