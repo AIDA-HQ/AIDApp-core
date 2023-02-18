@@ -271,35 +271,34 @@ class AIDApp:
 
                 # If the difference between ViP(DB) and V(i-1)P(DB) is less
                 # than 5% return the values
-                if check <= 0.5:
-                    kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
-                    y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
-                    values.get_Vy_DB_final(Vp_DB)
-                    values.get_Fy_n_DB_array()
-                    values.get_dy_DB_final(self.mu_DB, self.dp)
-                    values.get_Vy_n_DB_array().tolist()
-                    values.get_dy_n_array(self.eigenvalues)
-                    values.get_K_storey_n_array().tolist()
-                    values.get_K_n_DB_array(self.span_length, self.interfloor_height)
-                    kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
-                    Fc_n_s_array = values.get_Fc_n_s_array(
-                        self.brace_number, self.span_length, self.interfloor_height
-                    )
-                    return [
-                        kc_n_s_array,
-                        Fc_n_s_array,
-                        i,
-                        x_bilinear,
-                        y_bilinear_ms2,
-                        sd_meters,
-                        sa_ms2,
-                        kn_eff_list,
-                        y_bilinear_ms2_0,
-                        kn_eff_list_0,
-                        de_0,
-                        self.de_n,
-                        self.dp,
-                    ]
+                kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
+                y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
+                values.get_Vy_DB_final(Vp_DB)
+                values.get_Fy_n_DB_array()
+                values.get_dy_DB_final(self.mu_DB, self.dp)
+                values.get_Vy_n_DB_array().tolist()
+                values.get_dy_n_array(self.eigenvalues)
+                values.get_K_storey_n_array().tolist()
+                values.get_K_n_DB_array(self.span_length, self.interfloor_height)
+                kc_n_s_array = values.get_kc_n_s_array(self.brace_number)
+                Fc_n_s_array = values.get_Fc_n_s_array(
+                    self.brace_number, self.span_length, self.interfloor_height
+                )
+                return [
+                    kc_n_s_array,
+                    Fc_n_s_array,
+                    i,
+                    x_bilinear,
+                    y_bilinear_ms2,
+                    sd_meters,
+                    sa_ms2,
+                    kn_eff_list,
+                    y_bilinear_ms2_0,
+                    kn_eff_list_0,
+                    de_0,
+                    self.de_n,
+                    self.dp,
+                ]
 
             return get_calcs_recursive(
                 Vp_DB, check, 1, None, None, None, None, None, None, None
