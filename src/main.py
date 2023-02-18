@@ -1,3 +1,5 @@
+"""Main module of the AIDApp."""
+
 from numpy import array
 
 from calcs import Area, Values
@@ -12,6 +14,7 @@ handlr = InputHandler()
 
 
 class AIDApp:
+    """Class to run the app backend."""
     def main(
         self,
         arg_dp,
@@ -22,8 +25,8 @@ class AIDApp:
         arg_eigenvalues,
         arg_brace_number,
         arg_path_zonation,
-        arg_path_x,
-        arg_path_y,
+        arg_pushover_x,
+        arg_pushover_y,
         arg_span_length,
         arg_interfloor_height,
         arg_nominal_age,
@@ -33,6 +36,7 @@ class AIDApp:
         arg_limit_state,
         arg_damping_coeff,
     ):
+        """Main function of the app."""
 
         self.dp = arg_dp
         self.mu_DB = arg_mu_DB
@@ -40,8 +44,8 @@ class AIDApp:
         self.Kf = arg_Kf
         self.storey_masses = arg_storey_masses
         self.eigenvalues = arg_eigenvalues
-        self.path_x = handlr.generate_pushover_array(arg_path_x)
-        self.path_y = handlr.generate_pushover_array(arg_path_y)
+        self.pushover_x = handlr.generate_pushover_array(arg_pushover_x)
+        self.pushover_y = handlr.generate_pushover_array(arg_pushover_y)
         self.ag_input, self.fo_input, self.tc_input = handlr.generate_zonation_array(
             arg_path_zonation
         )
@@ -57,8 +61,8 @@ class AIDApp:
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.me = values.get_me()  # [ton]
-        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.path_y)
-        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.path_x)
+        self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
+        self.x_p_sdof = coord.x_p_sdof(self.gamma, self.pushover_x)
         self.Vp_kN = self.y_p_sdof[
             coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)
         ]
@@ -69,6 +73,10 @@ class AIDApp:
         return self.find_dy(0.0100)
 
     def find_dy(self, dy):
+        """
+        Find the dy value, by iterating over the function 'get_calcs_recursive' until
+        the difference between the areas is less than 0.0004.
+        """
         Vy_kN = values.get_Vy_kN(self.K1, dy)
 
         # X coordinates of the bilinear curve
@@ -174,7 +182,6 @@ class AIDApp:
             y_bilinear_ms2_0 = array([0, Vy_F_DB_0, Vp_F])
             de_0 = values.get_de(adrs_spectrum, k1_eff_curve)
 
-            # Recursive function to calculate what's needed
             def get_calcs_recursive(
                 Vp_DB,
                 check,
@@ -187,6 +194,11 @@ class AIDApp:
                 xi_n_eff,
                 check_Vp_DB,
             ):
+                """Recursive function to calculate what's needed.
+                If the difference is more than 0.5 keep iterating,
+                otherwise return the values.
+                """
+
                 if check > 0.5:
                     i = i + 1
                     xi_eff_F_DB = values.get_xi_eff_F_DB(
@@ -225,6 +237,8 @@ class AIDApp:
                         check_Vp_DB,
                     )
 
+                # If the difference between ViP(DB) and V(i-1)P(DB) is less
+                # than 5% return the values
                 if check <= 0.5:
                     kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
                     y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])

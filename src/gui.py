@@ -1,3 +1,5 @@
+"""GUI of AIDApp."""
+
 from qtpy import QtCore, QtWidgets
 
 from main import AIDApp
@@ -14,45 +16,58 @@ export_handler = ExportHandler()
 
 
 class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
+    """Class to make spinboxes not scrollable"""
+
     def __init__(self, *args):
         super(HumbleSpinBox, self).__init__(*args)
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
     def focusInEvent(self, event):
+        """Make the spinbox not scrollable when focused."""
         self.setFocusPolicy(QtCore.Qt.WheelFocus)
         super(HumbleSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
+        """Make the spinbox not scrollable when not focused."""
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         super(HumbleSpinBox, self).focusOutEvent(event)
 
     @staticmethod
     def wheelEvent(event):
+        """Ignore the wheel event."""
         event.ignore()
 
 
 class HumbleComboBox(QtWidgets.QComboBox):
+    """Class to make comboboxes not scrollable."""
+
     def __init__(self, *args):
         super(HumbleComboBox, self).__init__(*args)
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
     def focusInEvent(self, event):
+        """Make the combobox not scrollable when focused."""
         self.setFocusPolicy(QtCore.Qt.WheelFocus)
         super(HumbleComboBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
+        """Make the combobox not scrollable when not focused."""
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         super(HumbleComboBox, self).focusOutEvent(event)
 
     @staticmethod
     def wheelEvent(event):
+        """Ignore the wheel event."""
         event.ignore()
 
 
 class Ui_MainWindow:
+    """Main GUI window."""
+
     def setupUi(self, MainWindow):
+        """Setup the GUI."""
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(850, 700)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -84,31 +99,55 @@ class Ui_MainWindow:
         self.file_upload_layout = QtWidgets.QVBoxLayout()
         self.file_upload_layout.setObjectName("file_upload_layout")
 
-        # Zonation button
-        self.file_zonation_button = QtWidgets.QPushButton(self.input_box)
-        self.file_zonation_button.setEnabled(True)
-        self.file_zonation_button.setAutoDefault(False)
-        self.file_zonation_button.setObjectName("file_zonation_button")
-        self.file_upload_layout.addWidget(self.file_zonation_button)
-        self.file_zonation_button.clicked.connect(self.open_zonation)
+        # Zonation Box
+        self.zonation_data_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_data_label.setObjectName("zonation_data_label")
+        self.file_upload_layout.addWidget(self.zonation_data_label)
+
+        self.zonation_data_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.zonation_data_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
+        self.zonation_data_textBox.setMinimumHeight(110)
+        self.zonation_data_textBox.setMaximumHeight(160)
+        self.file_upload_layout.addWidget(self.zonation_data_textBox)
 
         # Pushover coord buttons
         self.file_pushover_layout = QtWidgets.QHBoxLayout()
         self.file_pushover_layout.setObjectName("file_pushover_layout")
-        self.file_x_button = QtWidgets.QPushButton(self.input_box)
-        self.file_x_button.setEnabled(True)
-        self.file_x_button.setAutoDefault(False)
-        self.file_x_button.setObjectName("file_x_button")
-        self.file_pushover_layout.addWidget(self.file_x_button)
-        self.file_y_button = QtWidgets.QPushButton(self.input_box)
-        self.file_y_button.setEnabled(True)
-        self.file_y_button.setAutoDefault(False)
-        self.file_y_button.setObjectName("file_y_button")
-        self.file_pushover_layout.addWidget(self.file_y_button)
-        self.file_x_button.clicked.connect(self.open_x)
-        self.file_y_button.clicked.connect(self.open_y)
-        self.file_upload_layout.addLayout(self.file_pushover_layout)
 
+        # X Coordinates
+        self.x_p_coord_layout = QtWidgets.QVBoxLayout()
+        self.x_p_label = QtWidgets.QLabel(self.input_box)
+        self.x_p_label.setObjectName("x_p_label")
+        self.x_p_label.setAlignment(QtCore.Qt.AlignHCenter)
+
+        self.x_p_coord_layout.addWidget(self.x_p_label)
+        self.x_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.x_p_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
+        )
+        self.x_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.x_p_coord_layout.addWidget(self.x_p_textBox)
+
+        # Y Coordinates
+        self.y_p_coord_layout = QtWidgets.QVBoxLayout()
+        self.y_p_label = QtWidgets.QLabel(self.input_box)
+        self.y_p_label.setObjectName("y_p_label")
+        self.y_p_label.setAlignment(QtCore.Qt.AlignHCenter)
+
+        self.y_p_coord_layout.addWidget(self.y_p_label)
+        self.y_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.y_p_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
+        )
+        self.y_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.y_p_coord_layout.addWidget(self.y_p_textBox)
+
+        # Add Layout
+        self.file_upload_layout.addLayout(self.file_pushover_layout)
+        self.file_pushover_layout.addLayout(self.x_p_coord_layout)
+        self.file_pushover_layout.addLayout(self.y_p_coord_layout)
         self.input_box_layout.addLayout(self.file_upload_layout)
 
         # Input value area
@@ -238,12 +277,17 @@ class Ui_MainWindow:
         self.send_button.clicked.connect(self.count_storey_boxes)
 
         # Upload storey data
-        self.file_storey_data_button = QtWidgets.QPushButton(self.input_scroll_widget)
-        self.file_storey_data_button.setAutoDefault(False)
-        self.file_storey_data_button.setDefault(False)
-        self.file_storey_data_button.setObjectName("file_storey_data_button")
-        self.input_scroll_layout.addWidget(self.file_storey_data_button)
-        self.file_storey_data_button.clicked.connect(self.open_storey_data)
+        self.storey_data_1row_layout = QtWidgets.QHBoxLayout()
+        self.input_scroll_layout.addLayout(self.storey_data_1row_layout)
+        self.storey_data_2row_layout = QtWidgets.QHBoxLayout()
+        self.input_scroll_layout.addLayout(self.storey_data_2row_layout)
+
+        self.storey_data_button = QtWidgets.QPushButton(self.input_scroll_widget)
+        self.storey_data_button.setAutoDefault(False)
+        self.storey_data_button.setDefault(False)
+        self.storey_data_button.setObjectName("storey_data_button")
+        self.storey_data_1row_layout.addWidget(self.storey_data_button)
+        self.storey_data_button.clicked.connect(self.show_storey_data_boxes)
 
         # Manual storey input radio button
         self.manual_input_checkBox = QtWidgets.QCheckBox(self.input_box)
@@ -253,9 +297,7 @@ class Ui_MainWindow:
             self.storey_number_SpinBox.setEnabled
         )
         self.manual_input_checkBox.toggled.connect(self.storey_number_label.setEnabled)
-        self.manual_input_checkBox.toggled.connect(
-            self.file_storey_data_button.setDisabled
-        )
+        self.manual_input_checkBox.toggled.connect(self.storey_data_button.setDisabled)
         self.input_scroll_layout.addWidget(self.manual_input_checkBox)
 
         # Add Storey number layout
@@ -390,14 +432,22 @@ class Ui_MainWindow:
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        """Set the text of the widgets"""
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
         self.input_box.setTitle(_translate("MainWindow", "Input Values"))
-        self.file_zonation_button.setText(
-            _translate("MainWindow", "Seismic Zonation Values")
+        self.zonation_data_label.setText(_translate("MainWindow", "Zonation Data"))
+        self.zonation_data_textBox.setPlaceholderText(
+            _translate("MainWindow", "Enter seismic zonation values")
         )
-        self.file_x_button.setText(_translate("MainWindow", "X Pushover"))
-        self.file_y_button.setText(_translate("MainWindow", "Y Pushover"))
+        self.x_p_label.setText(_translate("MainWindow", "X Pushover"))
+        self.x_p_textBox.setPlaceholderText(
+            _translate("MainWindow", "Enter pushover X coordinates")
+        )
+        self.y_p_label.setText(_translate("MainWindow", "Y Pushover"))
+        self.y_p_textBox.setPlaceholderText(
+            _translate("MainWindow", "Enter pushover Y coordinates")
+        )
         self.damping_coeff_label.setText(
             _translate("MainWindow", "Damping coefficient [%]")
         )
@@ -421,38 +471,50 @@ class Ui_MainWindow:
         self.manual_input_checkBox.setText(_translate("MainWindow", "Manual Input"))
         self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
         self.send_button.setText(_translate("MainWindow", "Send"))
-        self.file_storey_data_button.setText(
-            _translate("MainWindow", "Upload Storey Data")
-        )
+        self.storey_data_button.setText(_translate("MainWindow", "Show Storey Data"))
         self.ok_button.setText(_translate("MainWindow", "Ok"))
         self.output_box.setTitle(_translate("MainWindow", "Output Values"))
 
-    def open_zonation(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_zonation = path[0]
+    def show_storey_data_boxes(self):
+        """Show the boxes to input data masses, eigenvalues, and brace numbers"""
+        # Storey mass
+        self.storey_mass_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_mass_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
 
-    def open_x(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_x = path[0]
+        # Storey eigenvalues
+        self.storey_eigenvalues_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_eigenvalues_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
 
-    def open_y(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_y = path[0]
+        # Storey upwinds
+        self.storey_upwinds_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_upwinds_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
 
-    def open_storey_data(self):
-        path = QtWidgets.QFileDialog.getOpenFileName()
-        if path != ("", ""):
-            print(path[0])
-        self.path_storey_data = path[0]
+        self.storey_mass_textBox.setPlaceholderText(("Enter the masses of each storey"))
+        self.storey_eigenvalues_textBox.setPlaceholderText(
+            ("Enter the eigenvalues for each storey")
+        )
+        self.storey_upwinds_textBox.setPlaceholderText(
+            ("Enter the amount of upwinds for each storey")
+        )
+
+        self.storey_data_1row_layout.addWidget(self.storey_mass_textBox)
+        self.storey_data_2row_layout.addWidget(self.storey_eigenvalues_textBox)
+        self.storey_data_2row_layout.addWidget(self.storey_upwinds_textBox)
+        self.storey_data_button.setDisabled(True)
 
     def getInfo(self):
+        """Get the input values from the widgets and send them to the main program."""
         storey_masses = []
+        self.pushover_x = self.x_p_textBox.toPlainText()
+        self.pushover_y = self.y_p_textBox.toPlainText()
+        self.zonation_data = self.zonation_data_textBox.toPlainText()
+
         if self.mass_dict is True:
             for element in self.mass_dict.values():
                 storey_masses.append(element.value())
@@ -463,11 +525,16 @@ class Ui_MainWindow:
             for element in self.brace_number_dict.values():
                 brace_number.append(element.value())
         else:
-            (
-                storey_masses,
-                eigenvalues,
-                brace_number,
-            ) = input_handler.generate_storey_data(self.path_storey_data)
+            storey_masses = input_handler.generate_storey_data(
+                self.storey_mass_textBox.toPlainText()
+            )
+            eigenvalues = input_handler.generate_storey_data(
+                self.storey_eigenvalues_textBox.toPlainText()
+            )
+            brace_number = input_handler.generate_storey_data(
+                self.storey_upwinds_textBox.toPlainText()
+            )
+
         # Feed the values to the main program
         output = aidapp.main(
             self.dp_SpinBox.value(),
@@ -477,9 +544,9 @@ class Ui_MainWindow:
             storey_masses,
             eigenvalues,
             brace_number,
-            self.path_zonation,
-            self.path_x,
-            self.path_y,
+            self.zonation_data,
+            self.pushover_x,
+            self.pushover_y,
             self.span_length_SpinBox.value(),
             self.interfloor_height_SpinBox.value(),
             self.nominal_age_SpinBox.value(),
@@ -493,11 +560,13 @@ class Ui_MainWindow:
         self.output_field(output)
 
     def count_storey_boxes(self):
+        """Count the number of storey boxes to be created."""
         self.send_button.setDisabled(True)
         self.storey_number_SpinBox.setDisabled(True)
         self.show_storey_boxes(self.storey_number_SpinBox.value())
 
     def show_storey_boxes(self, i):
+        """Create the storey boxes."""
         k = 1
         while k < (i + 1):
             # dynamically create key
@@ -530,6 +599,7 @@ class Ui_MainWindow:
             k += 1
 
     def output_field(self, output_values):
+        """Create and populate the output field."""
         (
             self.kc_n_s_array,
             self.Fc_n_s_array,
@@ -586,9 +656,6 @@ class Ui_MainWindow:
 
         # Disable the buttons and SpinBoxes: as of now to user
         # has to reload the program in order to get new values
-        self.file_x_button.setEnabled(False)
-        self.file_y_button.setEnabled(False)
-        self.file_zonation_button.setEnabled(False)
         self.ok_button.setEnabled(False)
         self.damping_coeff_SpinBox.setEnabled(False)
         self.nominal_age_SpinBox.setEnabled(False)
@@ -602,7 +669,7 @@ class Ui_MainWindow:
         self.kf_SpinBox.setEnabled(False)
         self.span_length_SpinBox.setEnabled(False)
         self.interfloor_height_SpinBox.setEnabled(False)
-        self.file_storey_data_button.setEnabled(False)
+        self.storey_data_button.setEnabled(False)
         self.manual_input_checkBox.setEnabled(False)
 
         # File Export button
@@ -677,6 +744,7 @@ class Ui_MainWindow:
         self.output_box_layout.addWidget(self.file_export_button)
 
     def trigger_generate_output_file(self):
+        """Trigger the generate_output_file function"""
         export_handler.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
 
 

@@ -1,8 +1,11 @@
+"""Coordinates module."""
 from numpy import absolute, array, linspace, polyfit, column_stack
 from shapely.geometry.linestring import LineString
 
 
 class Coords:
+    """Class to calculate coordinates of the curves."""
+
     @staticmethod
     def y_kn_eff(sd_m, kn_eff):
         """
@@ -14,20 +17,24 @@ class Coords:
     # Generate SDOF pushover curve
     @staticmethod
     def x_p_sdof(gamma, x_p_mdof):
+        """Return the x coordinates of the SDOF pushover curve."""
         return array([element / gamma for element in x_p_mdof])
 
     @staticmethod
     def y_p_sdof(gamma, y_p_mdof):
+        """Return the y coordinates of the SDOF pushover curve."""
         return array([element / gamma for element in y_p_mdof])
 
     ##
 
     @staticmethod
     def x_bilinear_line(start_graph, end_graph):
+        """Return the x coordinates of the bilinear line."""
         return linspace(start_graph, end_graph, 1000)
 
     @staticmethod
     def find_intersections(curve_1, curve_2):
+        """Find the intersection points of two curves."""
         intersection = curve_1.intersection(curve_2)
         intersection_coords = []
         if intersection.geom_type == "Point":
@@ -76,10 +83,15 @@ class Coords:
 
     @staticmethod
     def interpolate_curve(x_coords, y_coords):
+        """Interpolate the curve."""
         curve = LineString(column_stack((x_coords, y_coords)))
         return curve
 
     def find_range_pushover(self, pushover_coord, line_1_coord, line_2_coord):
+        """
+        Method to list all the coordinates defined by
+        the two intersections with the bilinear curve.
+        """
         index_0 = self.find_nearest_coordinate_index(pushover_coord, line_1_coord)
         index_1 = self.find_nearest_coordinate_index(pushover_coord, line_2_coord)
         list_fitting = [pushover_coord[index_0 : index_1 + 1]]
@@ -93,6 +105,7 @@ class Coords:
         y_bilinear_coord_0,
         y_bilinear_coord_1,
     ):
+        """Generate the bilinear line."""
         x_bilinear_line = self.generate_line(
             x_p_sdof,
             x_bilinear_coord_0,
