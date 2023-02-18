@@ -3,7 +3,7 @@ name: Package application and create new release
 on:
   push:
     tags:
-      - "v*"
+      - "*"
 
 permissions:
   contents: write
@@ -13,23 +13,23 @@ jobs:
   package-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: olegtarasov/get-tag@v2.1
-      - name: Setup python 3.10.2
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v3.3.0
+      - uses: olegtarasov/get-tag@v2.1.2
+      - name: Setup python 3.10.10
+        uses: actions/setup-python@v4.5.0
         with:
-          python-version: 3.10.2
+          python-version: 3.10.10
       - name: Build package with PyInstaller
         shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pyinstaller==5.0.1
+          pip install pyinstaller==5.8.0
           pyinstaller --clean -y --dist ./dist -w --splash res/splash.png -i res/icon.icns -n AIDApp-$GIT_TAG_NAME-windows -F src/gui.py
           chown -R --reference=. ./dist
       - name: Release Windows Artifact
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.15
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
-          files: dist\AIDApp-*.exe
+          files: dist/AIDApp-*.exe
