@@ -1,8 +1,12 @@
+"""This module contains the functions that handle the input and output data."""
+
 from numpy import loadtxt
 from qtpy import QtWidgets
 
 
 class InputHandler:
+    """This class contains the functions that handle the input data."""
+
     @staticmethod
     def generate_pushover_array(coordinate_file):
         """
@@ -40,7 +44,7 @@ class InputHandler:
         This function takes a file containing a coloumns of numbers,
         divided in 3 groups, each group separated by a comment from
         the preceding one and generate 3 lists of floats.
-        Converts the commas to a dots too.
+        Converts the commas to dots too.
         """
         mass_line = "#### Storey Masses ####"
         eigenvalues_line = "#### Storey Eigenvalues ####"
@@ -84,6 +88,8 @@ class InputHandler:
 
 
 class ExportHandler:
+    """This class contains the functions that handle the output data."""
+
     @staticmethod
     def generate_output_file(kc_n_s_array_arg, Fc_n_s_array_arg):
         """

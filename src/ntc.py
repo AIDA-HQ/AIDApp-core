@@ -1,7 +1,10 @@
+"""NTC spectrum"""
+
 from numpy import arange, around, array, log, log10, pi
 
 
 class Ntc:
+    """Class that holds what's needed to calculate the NTC spectrum."""
     def __init__(
         self,
         limit_state,
@@ -33,7 +36,7 @@ class Ntc:
                 self.C_U = 2
 
     def get_V_R(self):
-        """Calculate the value of Vr of a building"""
+        """Calculate the value of Reference Value of the building."""
         if (self.V_N * self.C_U) >= 35:
             self.V_R = self.V_N * self.C_U
             return self.V_R
@@ -41,6 +44,7 @@ class Ntc:
         return self.V_R
 
     def get_T_R_SLO(self):
+        """Calculate the value of the "SLO" Return Time of the building."""
         if (-self.V_R) / log(1 - 0.81) <= 30:
             t_R_SLO = 30
         else:
@@ -51,6 +55,7 @@ class Ntc:
         return t_R_SLO
 
     def get_T_R_SLD(self):
+        """Calculate the value of the "SLD" Return Time of the building."""
         if (-self.V_R) / log(1 - 0.63) <= 30:
             t_R_SLD = 30
         else:
@@ -61,6 +66,7 @@ class Ntc:
         return t_R_SLD
 
     def get_T_R_SLV(self):
+        """Calculate the value of the "SLV" Return Time of the building."""
         if (-self.V_R) / log(1 - 0.10) <= 30:
             t_R_SLV = 30
         else:
@@ -71,6 +77,7 @@ class Ntc:
         return t_R_SLV
 
     def get_T_R_SLC(self):
+        """Calculate the value of the "SLC" Return Time of the building."""
         if (-self.V_R) / log(1 - 0.05) <= 30:
             t_R_SLC = 30
         else:
@@ -81,6 +88,7 @@ class Ntc:
         return t_R_SLC
 
     def get_return_times(self):
+        """Calculate all the return times of the building."""
         self.get_V_R()
 
         match self.limit_state:
@@ -222,6 +230,7 @@ class Ntc:
         return None
 
     def get_values(self):
+        """Returns the values of the basic seismic danger table."""
         ag_dict = self.get_zonation_value_dict(self.ag_input)
         self.ag_value = self.get_basic_seismic_danger_value(ag_dict)
         fo_dict = self.get_zonation_value_dict(self.fo_input)
@@ -250,6 +259,7 @@ class Ntc:
                 return self.ss_calc
 
     def get_ss_min(self):
+        """Returns the Ss,min value."""
         match self.soil_class:
             case "A":
                 self.ss_min = 1
@@ -268,6 +278,7 @@ class Ntc:
                 return self.ss_min
 
     def get_ss_max(self):
+        """Returns the Ss,max value."""
         match self.soil_class:
             case "A":
                 self.ss_max = 1
@@ -286,6 +297,7 @@ class Ntc:
                 return self.ss_max
 
     def get_ss(self):
+        """Returns the S_s value."""
         self.get_ss_calc()
         self.get_ss_min()
         self.get_ss_max()
@@ -298,6 +310,7 @@ class Ntc:
         return self.ss
 
     def get_st(self):
+        """Returns the S_t value."""
         match self.topographic_category:
             case "T1":
                 self.st = 1
@@ -313,6 +326,7 @@ class Ntc:
                 return self.st
 
     def get_s(self):
+        """Returns the S value."""
         self.get_ss_min()
         self.get_ss_max()
 
@@ -322,10 +336,12 @@ class Ntc:
         return self.s
 
     def get_eta(self):
+        """Returns the eta value."""
         self.eta = max([(10 / (5 + self.xi)) ** 0.5, 0.55])
         return self.eta
 
     def get_c_c(self):
+        """Returns the C_c value."""
         match self.soil_class:
             case "A":
                 self.c_c = 1
@@ -350,15 +366,18 @@ class Ntc:
         return self.t_c
 
     def get_t_b(self):
+        """Return the T_B value."""
         self.get_t_c()
         self.t_b = self.t_c / 3
         return self.t_b
 
     def get_t_d(self):
+        """Return the T_D value."""
         self.t_d = 4 * self.ag_value + 1.6
         return self.t_d
 
     def get_acceleration_curve_T(self):
+        """Returns the coordinates of the T acceleration curve."""
         self.get_s()
         self.get_t_b()
         self.get_t_c()
@@ -389,6 +408,7 @@ class Ntc:
         return self.t_acceleration_coords
 
     def get_acceleration_curve_Se(self):
+        """Returns the coordinates of the Se acceleration curve."""
         t_acceleration_coords = self.get_acceleration_curve_T()
         self.get_eta()
         self.Se_coords = []
@@ -433,6 +453,7 @@ class Ntc:
         return array(self.Se_coords)
 
     def get_movement_curve_SDe(self):
+        """Returns the coordinates of the SDe movement curve."""
         self.get_acceleration_curve_T()
         self.get_acceleration_curve_Se()
         self.SDe_coords_movement = []
