@@ -4,6 +4,8 @@ from qtpy import QtCore, QtWidgets
 
 from main import AIDApp
 
+import linguist_rc
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
@@ -164,6 +166,7 @@ class Ui_MainWindow:
         self.graph_layout = None
         self.toolbar = None
         self.show_graph_button = None
+        self.translation = None
 
     def setupUi(self, MainWindow):
         """Setup the GUI."""
@@ -529,55 +532,103 @@ class Ui_MainWindow:
         self.eigenvalue_dict = {}
         self.brace_number_dict = {}
 
+        self.change_lang()  # Set language
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def change_lang(self):
+        """Change the language of the application."""
+        self.translation = QtCore.QTranslator()
+        self.translation.load(":translations/aidapp_it")  # no suffix .qm
+        QtWidgets.QApplication.instance().installTranslator(self.translation)
+
     def retranslateUi(self, MainWindow):
-        """Set the text of the widgets"""
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
-        self.input_box.setTitle(_translate("MainWindow", "Input Values"))
-        self.zonation_data_label.setText(_translate("MainWindow", "Zonation Data"))
+        """Set the text of the widgets."""
+        MainWindow.setWindowTitle(
+            QtCore.QCoreApplication.translate("MainWindow", "AIDApp")
+        )
+        self.input_box.setTitle(
+            QtCore.QCoreApplication.translate("MainWindow", "Input Values")
+        )
+        self.zonation_data_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Zonation Data")
+        )
         self.zonation_data_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter seismic zonation values")
+            QtCore.QCoreApplication.translate(
+                "MainWindow", "Enter seismic zonation values"
+            )
         )
-        self.x_p_label.setText(_translate("MainWindow", "X Pushover"))
+        self.x_p_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "X Pushover")
+        )
         self.x_p_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter pushover X coordinates")
+            QtCore.QCoreApplication.translate(
+                "MainWindow", "Enter pushover X coordinates"
+            )
         )
-        self.y_p_label.setText(_translate("MainWindow", "Y Pushover"))
+        self.y_p_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Y Pushover")
+        )
         self.y_p_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter pushover Y coordinates")
+            QtCore.QCoreApplication.translate(
+                "MainWindow", "Enter pushover Y coordinates"
+            )
         )
         self.damping_coeff_label.setText(
-            _translate("MainWindow", "Damping coefficient [%]")
+            QtCore.QCoreApplication.translate("MainWindow", "Damping coefficient [%]")
         )
-        self.nominal_age_label.setText(_translate("MainWindow", "Nominal life [years]"))
+        self.nominal_age_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Nominal life [years]")
+        )
         self.functional_class_label.setText(
-            _translate("MainWindow", "Functional class")
+            QtCore.QCoreApplication.translate("MainWindow", "Functional class")
         )
         self.topographic_factor_label.setText(
-            _translate("MainWindow", "Topographic factor")
+            QtCore.QCoreApplication.translate("MainWindow", "Topographic factor")
         )
-        self.soil_class_label.setText(_translate("MainWindow", "Soil class"))
-        self.limit_state_label.setText(_translate("MainWindow", "Limit State Design"))
-        self.dp_label.setText(_translate("MainWindow", "d<sub>p</sub> [m]"))
-        self.u_DB_label.setText(_translate("MainWindow", "\u03BC<sub>DB</sub>"))
-        self.k_DB_label.setText(_translate("MainWindow", "\u03BA<sub>DB</sub>"))
-        self.kf_label.setText(_translate("MainWindow", "\u03BA<sub>(F)</sub>"))
-        self.span_length_label.setText(_translate("MainWindow", "Span Length [m]"))
+        self.soil_class_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Soil class")
+        )
+        self.limit_state_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Limit State Design")
+        )
+        self.dp_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "d<sub>p</sub> [m]")
+        )
+        self.u_DB_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "\u03BC<sub>DB</sub>")
+        )
+        self.k_DB_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "\u03BA<sub>DB</sub>")
+        )
+        self.kf_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "\u03BA<sub>(F)</sub>")
+        )
+        self.span_length_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Span Length [m]")
+        )
         self.interfloor_height_label.setText(
-            _translate("MainWindow", "Inter-floor Height [m]")
+            QtCore.QCoreApplication.translate("MainWindow", "Inter-floor Height [m]")
         )
-        self.manual_input_checkBox.setText(_translate("MainWindow", "Manual Input"))
-        self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
-        self.send_button.setText(_translate("MainWindow", "Send"))
-        self.storey_data_button.setText(_translate("MainWindow", "Show Storey Data"))
-        self.ok_button.setText(_translate("MainWindow", "Ok"))
-        self.output_box.setTitle(_translate("MainWindow", "Output Values"))
+        self.manual_input_checkBox.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Manual Input")
+        )
+        self.storey_number_label.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "# of storeys:")
+        )
+        self.send_button.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Send")
+        )
+        self.storey_data_button.setText(
+            QtCore.QCoreApplication.translate("MainWindow", "Show Storey Data")
+        )
+        self.ok_button.setText(QtCore.QCoreApplication.translate("MainWindow", "Ok"))
+        self.output_box.setTitle(
+            QtCore.QCoreApplication.translate("MainWindow", "Output Values")
+        )
 
     def show_storey_data_boxes(self):
-        """Show the boxes to input data masses, eigenvalues, and brace numbers"""
+        """Show the boxes to input data masses, eigenvalues, and brace numbers."""
         # Storey mass
         self.storey_mass_textBox = QtWidgets.QPlainTextEdit(self.input_box)
         self.storey_mass_textBox.setSizePolicy(
@@ -596,12 +647,20 @@ class Ui_MainWindow:
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
         )
 
-        self.storey_mass_textBox.setPlaceholderText(("Enter the masses of each storey"))
+        self.storey_mass_textBox.setPlaceholderText(
+            QtCore.QCoreApplication.translate(
+                "MainWindow", "Enter the mass of each storey"
+            )
+        )
         self.storey_eigenvalues_textBox.setPlaceholderText(
-            ("Enter the eigenvalues for each storey")
+            QtCore.QCoreApplication.translate(
+                "MainWindow", "Enter the eigenvalue of each storey"
+            )
         )
         self.storey_upwinds_textBox.setPlaceholderText(
-            ("Enter the amount of upwinds for each storey")
+            QtCore.QCoreApplication.translate(
+                "MainWindow", "Enter the amount of upwinds of each storey"
+            )
         )
 
         self.storey_data_1row_layout.addWidget(self.storey_mass_textBox)
