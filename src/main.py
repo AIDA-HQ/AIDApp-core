@@ -71,7 +71,6 @@ class AIDApp:
         arg_damping_coeff,
     ):
         """Main function of the app."""
-        self.dp = arg_dp
         self.mu_DB = arg_mu_DB
         self.k_DB = arg_k_DB
         self.Kf = arg_Kf
@@ -93,6 +92,7 @@ class AIDApp:
         self.damping_coeff = arg_damping_coeff
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
+        self.dp = arg_dp / self.gamma  # [m]
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
         self.x_p_sdof = coord.x_p_sdof(self.gamma, self.pushover_x)
@@ -175,7 +175,7 @@ class AIDApp:
 
         _a1, _a2, area_diff = areas_kN
 
-        if area_diff < 0.0004:
+        if area_diff < 0.001:
             ntc = Ntc(
                 self.limit_state,
                 self.nominal_age,
