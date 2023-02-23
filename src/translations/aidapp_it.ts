@@ -21,7 +21,7 @@
     <message>
         <location filename="../gui.py" line="556"/>
         <source>Enter seismic zonation values</source>
-        <translation>Inserisci i valori di zonazione sismica</translation>
+        <translation>Inserire i valori di zonazione sismica</translation>
     </message>
     <message>
         <location filename="../gui.py" line="561"/>
@@ -136,17 +136,17 @@
     <message>
         <location filename="../gui.py" line="650"/>
         <source>Enter the mass of each storey</source>
-        <translation>Inserisci la massa di ogni piano</translation>
+        <translation>Inserire la massa di ogni piano</translation>
     </message>
     <message>
         <location filename="../gui.py" line="655"/>
         <source>Enter the eigenvalue of each storey</source>
-        <translation>Inserisci l&apos;autovettore di ogni piano</translation>
+        <translation>Inserire i valori del primo autovettore</translation>
     </message>
     <message>
         <location filename="../gui.py" line="660"/>
         <source>Enter the amount of upwinds of each storey</source>
-        <translation>Inserisci il numero di controventi di ogni piano</translation>
+        <translation>Inserire il numero di controventi di ogni piano</translation>
     </message>
 </context>
 </TS>
