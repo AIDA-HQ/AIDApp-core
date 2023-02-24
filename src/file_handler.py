@@ -8,15 +8,15 @@ class InputHandler:
     """This class contains the functions that handle the input data."""
 
     @staticmethod
-    def generate_pushover_array(coordinate_file):
+    def generate_array(coordinate_file):
         """
-        This function takes a string containing coordinates separated
+        This function takes a string containing values separated
         one from the other by a newline and returns a numpy array.
         """
         # Strip \n and \t from text
         data = filter(None, coordinate_file.splitlines())
-        pushover_array = [float(element.replace(",", ".")) for element in data]
-        return pushover_array
+        data_array = [float(element.replace(",", ".")) for element in data]
+        return data_array
 
     @staticmethod
     def generate_zonation_array(zonation_data):

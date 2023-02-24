@@ -10,11 +10,14 @@ def retranslate_ui(self, main_window):
     self.input_box.setTitle(
         QtCore.QCoreApplication.translate("MainWindow", "Input Values")
     )
-    self.zonation_data_label.setText(
-        QtCore.QCoreApplication.translate("MainWindow", "Zonation Data")
+    self.zonation_ag_label.setText(
+        QtCore.QCoreApplication.translate("MainWindow", "a<sub>g</sub>")
     )
-    self.zonation_data_textBox.setPlaceholderText(
-        QtCore.QCoreApplication.translate("MainWindow", "Enter seismic zonation values")
+    self.zonation_fo_label.setText(
+        QtCore.QCoreApplication.translate("MainWindow", "F<sub>o</sub>")
+    )
+    self.zonation_tc_label.setText(
+        QtCore.QCoreApplication.translate("MainWindow", "T<sub>C</sub><sup>*</sup>")
     )
     self.x_p_label.setText(
         QtCore.QCoreApplication.translate("MainWindow", "X Pushover")
@@ -78,4 +81,52 @@ def retranslate_ui(self, main_window):
     self.ok_button.setText(QtCore.QCoreApplication.translate("MainWindow", "Ok"))
     self.output_box.setTitle(
         QtCore.QCoreApplication.translate("MainWindow", "Output Values")
+    )
+    self.zonation_ag_textBox.setPlaceholderText(
+        QtCore.QCoreApplication.translate(
+            "MainWindow",
+            (
+                "30\n"
+                + "50\n"
+                + "72\n"
+                + "101\n"
+                + "140\n"
+                + "201\n"
+                + "475\n"
+                + "975\n"
+                + "2475"
+            ),
+        )
+    )
+    self.zonation_fo_textBox.setPlaceholderText(
+        QtCore.QCoreApplication.translate(
+            "MainWindow",
+            (
+                "30\n"
+                + "50\n"
+                + "72\n"
+                + "101\n"
+                + "140\n"
+                + "201\n"
+                + "475\n"
+                + "975\n"
+                + "2475"
+            ),
+        )
+    )
+    self.zonation_tc_textBox.setPlaceholderText(
+        QtCore.QCoreApplication.translate(
+            "MainWindow",
+            (
+                "30\n"
+                + "50\n"
+                + "72\n"
+                + "101\n"
+                + "140\n"
+                + "201\n"
+                + "475\n"
+                + "975\n"
+                + "2475"
+            ),
+        )
     )
