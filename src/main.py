@@ -175,7 +175,7 @@ class AIDApp:
 
         _a1, _a2, area_diff = areas_kN
 
-        if area_diff < 0.001:
+        if area_diff <= 0.01:
             ntc = Ntc(
                 self.limit_state,
                 self.nominal_age,
