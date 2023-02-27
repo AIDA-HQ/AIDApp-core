@@ -79,8 +79,12 @@ class Ui_MainWindow:
         self.input_box = None
         self.input_box_layout = None
         self.file_upload_layout = None
-        self.zonation_data_label = None
-        self.zonation_data_textBox = None
+        self.zonation_ag_label = None
+        self.zonation_ag_textBox = None
+        self.zonation_fo_label = None
+        self.zonation_fo_textBox = None
+        self.zonation_tc_label = None
+        self.zonation_tc_textBox = None
         self.file_pushover_layout = None
         self.x_p_coord_layout = None
         self.x_p_label = None
@@ -188,7 +192,7 @@ class Ui_MainWindow:
 
         # Input Box
         self.input_box = QtWidgets.QGroupBox(self.main_scroll_widget)
-        self.input_box.setMinimumSize(QtCore.QSize(325, 500))
+        self.input_box.setMinimumSize(QtCore.QSize(360, 500))
         self.input_box.setMaximumSize(QtCore.QSize(380, 1000))
         self.input_box.setAutoFillBackground(False)
         self.input_box.setFlat(False)
@@ -202,17 +206,68 @@ class Ui_MainWindow:
         self.file_upload_layout.setObjectName("file_upload_layout")
 
         # Zonation Box
-        self.zonation_data_label = QtWidgets.QLabel(self.input_box)
-        self.zonation_data_label.setObjectName("zonation_data_label")
-        self.file_upload_layout.addWidget(self.zonation_data_label)
+        # External enclosure
+        zonation_external_layout = QtWidgets.QHBoxLayout()
 
-        self.zonation_data_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.zonation_data_textBox.setSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
-        )
-        self.zonation_data_textBox.setMinimumHeight(110)
-        self.zonation_data_textBox.setMaximumHeight(160)
-        self.file_upload_layout.addWidget(self.zonation_data_textBox)
+        # --
+        # ag - first box to the left
+        zonation_ag_vertical_layout = QtWidgets.QVBoxLayout()
+        zonation_ag_vertical_layout.setObjectName("zonation_ag_vertical_layout")
+        # label
+        self.zonation_ag_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_ag_label.setObjectName("zonation_ag_label")
+        self.zonation_ag_label.setMaximumHeight(20)
+        self.zonation_ag_label.setAlignment(QtCore.Qt.AlignHCenter)
+        zonation_ag_vertical_layout.addWidget(self.zonation_ag_label)
+        # text box
+        self.zonation_ag_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.zonation_ag_textBox.setObjectName("zonation_ag_textBox")
+        self.zonation_ag_textBox.setMinimumHeight(160)
+        self.zonation_ag_textBox.setMaximumHeight(160)
+        zonation_ag_vertical_layout.addWidget(self.zonation_ag_textBox)
+
+        # --
+        # fo - middle box
+
+        zonation_fo_vertical_layout = QtWidgets.QVBoxLayout()
+        zonation_fo_vertical_layout.setObjectName("zonation_fo_vertical_layout")
+        # label
+        self.zonation_fo_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_fo_label.setObjectName("zonation_fo_label")
+        self.zonation_fo_label.setMaximumHeight(20)
+        self.zonation_fo_label.setAlignment(QtCore.Qt.AlignHCenter)
+        zonation_fo_vertical_layout.addWidget(self.zonation_fo_label)
+        # text box
+        self.zonation_fo_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        # disable scrollbar
+        self.zonation_fo_textBox.setObjectName("zonation_fo_textBox")
+        self.zonation_fo_textBox.setMinimumHeight(160)
+        self.zonation_fo_textBox.setMaximumHeight(160)
+        zonation_fo_vertical_layout.addWidget(self.zonation_fo_textBox)
+
+        # --
+        # Tc - right box
+
+        zonation_tc_vertical_layout = QtWidgets.QVBoxLayout()
+        zonation_tc_vertical_layout.setObjectName("zonation_tc_vertical_layout")
+        # label
+        self.zonation_tc_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_tc_label.setObjectName("zonation_tc_label")
+        self.zonation_tc_label.setMaximumHeight(20)
+        self.zonation_tc_label.setAlignment(QtCore.Qt.AlignHCenter)
+        zonation_tc_vertical_layout.addWidget(self.zonation_tc_label)
+        # text box
+        self.zonation_tc_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.zonation_tc_textBox.setObjectName("zonation_tc_textBox")
+        self.zonation_tc_textBox.setMinimumHeight(160)
+        self.zonation_tc_textBox.setMaximumHeight(160)
+        zonation_tc_vertical_layout.addWidget(self.zonation_tc_textBox)
+
+        # Add the zonation external layout the file upload layout
+        zonation_external_layout.addLayout(zonation_ag_vertical_layout)
+        zonation_external_layout.addLayout(zonation_fo_vertical_layout)
+        zonation_external_layout.addLayout(zonation_tc_vertical_layout)
+        self.file_upload_layout.addLayout(zonation_external_layout)
 
         # Pushover coord buttons
         self.file_pushover_layout = QtWidgets.QHBoxLayout()
@@ -223,12 +278,14 @@ class Ui_MainWindow:
         self.x_p_label = QtWidgets.QLabel(self.input_box)
         self.x_p_label.setObjectName("x_p_label")
         self.x_p_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.x_p_label.setMaximumHeight(20)
 
         self.x_p_coord_layout.addWidget(self.x_p_label)
         self.x_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
         self.x_p_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
+        self.x_p_textBox.setMinimumHeight(75)
         self.x_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
         self.x_p_coord_layout.addWidget(self.x_p_textBox)
 
@@ -237,12 +294,14 @@ class Ui_MainWindow:
         self.y_p_label = QtWidgets.QLabel(self.input_box)
         self.y_p_label.setObjectName("y_p_label")
         self.y_p_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.y_p_label.setMaximumHeight(20)
 
         self.y_p_coord_layout.addWidget(self.y_p_label)
         self.y_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
         self.y_p_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
+        self.y_p_textBox.setMinimumHeight(75)
         self.y_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
         self.y_p_coord_layout.addWidget(self.y_p_textBox)
 
@@ -518,7 +577,10 @@ class Ui_MainWindow:
         storey_masses = []
         self.pushover_x = self.x_p_textBox.toPlainText()
         self.pushover_y = self.y_p_textBox.toPlainText()
-        self.zonation_data = self.zonation_data_textBox.toPlainText()
+        zonation_ag = self.zonation_ag_textBox.toPlainText()
+        zonation_fo = self.zonation_fo_textBox.toPlainText()
+        zonation_tc = self.zonation_tc_textBox.toPlainText()
+        zonation_data = [zonation_ag, zonation_fo, zonation_tc]
 
         storey_masses = input_handler.generate_storey_data(
             self.storey_mass_textBox.toPlainText()
@@ -539,7 +601,7 @@ class Ui_MainWindow:
             storey_masses,
             eigenvalues,
             brace_number,
-            self.zonation_data,
+            zonation_data,
             self.pushover_x,
             self.pushover_y,
             self.span_length_SpinBox.value(),
