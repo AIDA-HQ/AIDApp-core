@@ -4,6 +4,10 @@ from qtpy import QtCore, QtWidgets
 
 from main import AIDApp
 
+import linguist_rc
+
+import strings
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
@@ -75,8 +79,12 @@ class Ui_MainWindow:
         self.input_box = None
         self.input_box_layout = None
         self.file_upload_layout = None
-        self.zonation_data_label = None
-        self.zonation_data_textBox = None
+        self.zonation_ag_label = None
+        self.zonation_ag_textBox = None
+        self.zonation_fo_label = None
+        self.zonation_fo_textBox = None
+        self.zonation_tc_label = None
+        self.zonation_tc_textBox = None
         self.file_pushover_layout = None
         self.x_p_coord_layout = None
         self.x_p_label = None
@@ -111,12 +119,8 @@ class Ui_MainWindow:
         self.kf_SpinBox = None
         self.storey_number_layout = None
         self.storey_number_label = None
-        self.storey_number_SpinBox = None
-        self.send_button = None
         self.storey_data_1row_layout = None
         self.storey_data_2row_layout = None
-        self.storey_data_button = None
-        self.manual_input_checkBox = None
         self.storey_layout = None
         self.line_2 = None
         self.dp_layout = None
@@ -164,6 +168,7 @@ class Ui_MainWindow:
         self.graph_layout = None
         self.toolbar = None
         self.show_graph_button = None
+        self.translation = None
 
     def setupUi(self, MainWindow):
         """Setup the GUI."""
@@ -187,7 +192,7 @@ class Ui_MainWindow:
 
         # Input Box
         self.input_box = QtWidgets.QGroupBox(self.main_scroll_widget)
-        self.input_box.setMinimumSize(QtCore.QSize(325, 500))
+        self.input_box.setMinimumSize(QtCore.QSize(360, 500))
         self.input_box.setMaximumSize(QtCore.QSize(380, 1000))
         self.input_box.setAutoFillBackground(False)
         self.input_box.setFlat(False)
@@ -201,17 +206,68 @@ class Ui_MainWindow:
         self.file_upload_layout.setObjectName("file_upload_layout")
 
         # Zonation Box
-        self.zonation_data_label = QtWidgets.QLabel(self.input_box)
-        self.zonation_data_label.setObjectName("zonation_data_label")
-        self.file_upload_layout.addWidget(self.zonation_data_label)
+        # External enclosure
+        zonation_external_layout = QtWidgets.QHBoxLayout()
 
-        self.zonation_data_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.zonation_data_textBox.setSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
-        )
-        self.zonation_data_textBox.setMinimumHeight(110)
-        self.zonation_data_textBox.setMaximumHeight(160)
-        self.file_upload_layout.addWidget(self.zonation_data_textBox)
+        # --
+        # ag - first box to the left
+        zonation_ag_vertical_layout = QtWidgets.QVBoxLayout()
+        zonation_ag_vertical_layout.setObjectName("zonation_ag_vertical_layout")
+        # label
+        self.zonation_ag_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_ag_label.setObjectName("zonation_ag_label")
+        self.zonation_ag_label.setMaximumHeight(20)
+        self.zonation_ag_label.setAlignment(QtCore.Qt.AlignHCenter)
+        zonation_ag_vertical_layout.addWidget(self.zonation_ag_label)
+        # text box
+        self.zonation_ag_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.zonation_ag_textBox.setObjectName("zonation_ag_textBox")
+        self.zonation_ag_textBox.setMinimumHeight(160)
+        self.zonation_ag_textBox.setMaximumHeight(160)
+        zonation_ag_vertical_layout.addWidget(self.zonation_ag_textBox)
+
+        # --
+        # fo - middle box
+
+        zonation_fo_vertical_layout = QtWidgets.QVBoxLayout()
+        zonation_fo_vertical_layout.setObjectName("zonation_fo_vertical_layout")
+        # label
+        self.zonation_fo_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_fo_label.setObjectName("zonation_fo_label")
+        self.zonation_fo_label.setMaximumHeight(20)
+        self.zonation_fo_label.setAlignment(QtCore.Qt.AlignHCenter)
+        zonation_fo_vertical_layout.addWidget(self.zonation_fo_label)
+        # text box
+        self.zonation_fo_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        # disable scrollbar
+        self.zonation_fo_textBox.setObjectName("zonation_fo_textBox")
+        self.zonation_fo_textBox.setMinimumHeight(160)
+        self.zonation_fo_textBox.setMaximumHeight(160)
+        zonation_fo_vertical_layout.addWidget(self.zonation_fo_textBox)
+
+        # --
+        # Tc - right box
+
+        zonation_tc_vertical_layout = QtWidgets.QVBoxLayout()
+        zonation_tc_vertical_layout.setObjectName("zonation_tc_vertical_layout")
+        # label
+        self.zonation_tc_label = QtWidgets.QLabel(self.input_box)
+        self.zonation_tc_label.setObjectName("zonation_tc_label")
+        self.zonation_tc_label.setMaximumHeight(20)
+        self.zonation_tc_label.setAlignment(QtCore.Qt.AlignHCenter)
+        zonation_tc_vertical_layout.addWidget(self.zonation_tc_label)
+        # text box
+        self.zonation_tc_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.zonation_tc_textBox.setObjectName("zonation_tc_textBox")
+        self.zonation_tc_textBox.setMinimumHeight(160)
+        self.zonation_tc_textBox.setMaximumHeight(160)
+        zonation_tc_vertical_layout.addWidget(self.zonation_tc_textBox)
+
+        # Add the zonation external layout the file upload layout
+        zonation_external_layout.addLayout(zonation_ag_vertical_layout)
+        zonation_external_layout.addLayout(zonation_fo_vertical_layout)
+        zonation_external_layout.addLayout(zonation_tc_vertical_layout)
+        self.file_upload_layout.addLayout(zonation_external_layout)
 
         # Pushover coord buttons
         self.file_pushover_layout = QtWidgets.QHBoxLayout()
@@ -222,12 +278,14 @@ class Ui_MainWindow:
         self.x_p_label = QtWidgets.QLabel(self.input_box)
         self.x_p_label.setObjectName("x_p_label")
         self.x_p_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.x_p_label.setMaximumHeight(20)
 
         self.x_p_coord_layout.addWidget(self.x_p_label)
         self.x_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
         self.x_p_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
+        self.x_p_textBox.setMinimumHeight(75)
         self.x_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
         self.x_p_coord_layout.addWidget(self.x_p_textBox)
 
@@ -236,12 +294,14 @@ class Ui_MainWindow:
         self.y_p_label = QtWidgets.QLabel(self.input_box)
         self.y_p_label.setObjectName("y_p_label")
         self.y_p_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.y_p_label.setMaximumHeight(20)
 
         self.y_p_coord_layout.addWidget(self.y_p_label)
         self.y_p_textBox = QtWidgets.QPlainTextEdit(self.input_box)
         self.y_p_textBox.setSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed
         )
+        self.y_p_textBox.setMinimumHeight(75)
         self.y_p_textBox.setMaximumSize(QtCore.QSize(16777215, 100))
         self.y_p_coord_layout.addWidget(self.y_p_textBox)
 
@@ -353,29 +413,6 @@ class Ui_MainWindow:
         self.kf_SpinBox.setSingleStep(0.01)
         self.kf_SpinBox.setObjectName("kf_SpinBox")
         self.kf_layout.addWidget(self.kf_SpinBox)
-        self.input_scroll_layout.addLayout(self.kf_layout)
-
-        # Storey number
-        self.storey_number_layout = QtWidgets.QHBoxLayout()
-        self.storey_number_layout.setObjectName("storey_number_layout")
-        self.storey_number_label = QtWidgets.QLabel(self.input_scroll_widget)
-        self.storey_number_label.setObjectName("storey_number_label")
-        self.storey_number_label.setDisabled(True)
-        self.storey_number_layout.addWidget(self.storey_number_label)
-        self.storey_number_SpinBox = HumbleSpinBox(self.input_scroll_widget)
-        self.storey_number_SpinBox.setObjectName("storey_number_SpinBox")
-        self.storey_number_SpinBox.setDecimals(0)
-        self.storey_number_SpinBox.setDisabled(True)
-        self.storey_number_layout.addWidget(self.storey_number_SpinBox)
-
-        # Send button
-        self.send_button = QtWidgets.QPushButton(self.input_scroll_widget)
-        self.send_button.setAutoDefault(False)
-        self.send_button.setDisabled(True)
-        self.send_button.setDefault(False)
-        self.send_button.setObjectName("send_button")
-        self.storey_number_layout.addWidget(self.send_button)
-        self.send_button.clicked.connect(self.count_storey_boxes)
 
         # Upload storey data
         self.storey_data_1row_layout = QtWidgets.QHBoxLayout()
@@ -383,29 +420,29 @@ class Ui_MainWindow:
         self.storey_data_2row_layout = QtWidgets.QHBoxLayout()
         self.input_scroll_layout.addLayout(self.storey_data_2row_layout)
 
-        self.storey_data_button = QtWidgets.QPushButton(self.input_scroll_widget)
-        self.storey_data_button.setAutoDefault(False)
-        self.storey_data_button.setDefault(False)
-        self.storey_data_button.setObjectName("storey_data_button")
-        self.storey_data_1row_layout.addWidget(self.storey_data_button)
-        self.storey_data_button.clicked.connect(self.show_storey_data_boxes)
-
-        # Manual storey input radio button
-        self.manual_input_checkBox = QtWidgets.QCheckBox(self.input_box)
-        self.manual_input_checkBox.setObjectName("manual_input_checkBox")
-        self.manual_input_checkBox.toggled.connect(self.send_button.setEnabled)
-        self.manual_input_checkBox.toggled.connect(
-            self.storey_number_SpinBox.setEnabled
+        # Storey mass
+        self.storey_mass_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_mass_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
         )
-        self.manual_input_checkBox.toggled.connect(self.storey_number_label.setEnabled)
-        self.manual_input_checkBox.toggled.connect(self.storey_data_button.setDisabled)
-        self.input_scroll_layout.addWidget(self.manual_input_checkBox)
 
-        # Add Storey number layout
-        self.input_scroll_layout.addLayout(self.storey_number_layout)
-        self.storey_layout = QtWidgets.QFormLayout()
-        self.storey_layout.setObjectName("storey_layout")
-        self.input_scroll_layout.addLayout(self.storey_layout)
+        # Storey eigenvalues
+        self.storey_eigenvalues_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_eigenvalues_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
+
+        # Storey upwinds
+        self.storey_upwinds_textBox = QtWidgets.QPlainTextEdit(self.input_box)
+        self.storey_upwinds_textBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
+        )
+
+        self.storey_data_1row_layout.addLayout(self.kf_layout)
+        self.storey_data_1row_layout.addWidget(self.storey_mass_textBox)
+
+        self.storey_data_2row_layout.addWidget(self.storey_eigenvalues_textBox)
+        self.storey_data_2row_layout.addWidget(self.storey_upwinds_textBox)
 
         # Update UI
         self.input_scroll_area.setWidget(self.input_scroll_widget)
@@ -525,116 +562,35 @@ class Ui_MainWindow:
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
-        self.mass_dict = {}
-        self.eigenvalue_dict = {}
-        self.brace_number_dict = {}
-
-        self.retranslateUi(MainWindow)
+        self.change_lang()  # Set language
+        strings.retranslate_ui(self, MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
-        """Set the text of the widgets"""
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "AIDApp"))
-        self.input_box.setTitle(_translate("MainWindow", "Input Values"))
-        self.zonation_data_label.setText(_translate("MainWindow", "Zonation Data"))
-        self.zonation_data_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter seismic zonation values")
-        )
-        self.x_p_label.setText(_translate("MainWindow", "X Pushover"))
-        self.x_p_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter pushover X coordinates")
-        )
-        self.y_p_label.setText(_translate("MainWindow", "Y Pushover"))
-        self.y_p_textBox.setPlaceholderText(
-            _translate("MainWindow", "Enter pushover Y coordinates")
-        )
-        self.damping_coeff_label.setText(
-            _translate("MainWindow", "Damping coefficient [%]")
-        )
-        self.nominal_age_label.setText(_translate("MainWindow", "Nominal life [years]"))
-        self.functional_class_label.setText(
-            _translate("MainWindow", "Functional class")
-        )
-        self.topographic_factor_label.setText(
-            _translate("MainWindow", "Topographic factor")
-        )
-        self.soil_class_label.setText(_translate("MainWindow", "Soil class"))
-        self.limit_state_label.setText(_translate("MainWindow", "Limit State Design"))
-        self.dp_label.setText(_translate("MainWindow", "d<sub>p</sub> [m]"))
-        self.u_DB_label.setText(_translate("MainWindow", "\u03BC<sub>DB</sub>"))
-        self.k_DB_label.setText(_translate("MainWindow", "\u03BA<sub>DB</sub>"))
-        self.kf_label.setText(_translate("MainWindow", "\u03BA<sub>(F)</sub>"))
-        self.span_length_label.setText(_translate("MainWindow", "Span Length [m]"))
-        self.interfloor_height_label.setText(
-            _translate("MainWindow", "Inter-floor Height [m]")
-        )
-        self.manual_input_checkBox.setText(_translate("MainWindow", "Manual Input"))
-        self.storey_number_label.setText(_translate("MainWindow", "# of storeys:"))
-        self.send_button.setText(_translate("MainWindow", "Send"))
-        self.storey_data_button.setText(_translate("MainWindow", "Show Storey Data"))
-        self.ok_button.setText(_translate("MainWindow", "Ok"))
-        self.output_box.setTitle(_translate("MainWindow", "Output Values"))
-
-    def show_storey_data_boxes(self):
-        """Show the boxes to input data masses, eigenvalues, and brace numbers"""
-        # Storey mass
-        self.storey_mass_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.storey_mass_textBox.setSizePolicy(
-            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
-        )
-
-        # Storey eigenvalues
-        self.storey_eigenvalues_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.storey_eigenvalues_textBox.setSizePolicy(
-            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
-        )
-
-        # Storey upwinds
-        self.storey_upwinds_textBox = QtWidgets.QPlainTextEdit(self.input_box)
-        self.storey_upwinds_textBox.setSizePolicy(
-            QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred
-        )
-
-        self.storey_mass_textBox.setPlaceholderText(("Enter the masses of each storey"))
-        self.storey_eigenvalues_textBox.setPlaceholderText(
-            ("Enter the eigenvalues for each storey")
-        )
-        self.storey_upwinds_textBox.setPlaceholderText(
-            ("Enter the amount of upwinds for each storey")
-        )
-
-        self.storey_data_1row_layout.addWidget(self.storey_mass_textBox)
-        self.storey_data_2row_layout.addWidget(self.storey_eigenvalues_textBox)
-        self.storey_data_2row_layout.addWidget(self.storey_upwinds_textBox)
-        self.storey_data_button.setDisabled(True)
+    def change_lang(self):
+        """Change the language of the application."""
+        self.translation = QtCore.QTranslator()
+        self.translation.load(":translations/aidapp_it")  # no suffix .qm
+        QtWidgets.QApplication.instance().installTranslator(self.translation)
 
     def getInfo(self):
         """Get the input values from the widgets and send them to the main program."""
         storey_masses = []
         self.pushover_x = self.x_p_textBox.toPlainText()
         self.pushover_y = self.y_p_textBox.toPlainText()
-        self.zonation_data = self.zonation_data_textBox.toPlainText()
+        zonation_ag = self.zonation_ag_textBox.toPlainText()
+        zonation_fo = self.zonation_fo_textBox.toPlainText()
+        zonation_tc = self.zonation_tc_textBox.toPlainText()
+        zonation_data = [zonation_ag, zonation_fo, zonation_tc]
 
-        if self.mass_dict is True:
-            for element in self.mass_dict.values():
-                storey_masses.append(element.value())
-            eigenvalues = []
-            for element in self.eigenvalue_dict.values():
-                eigenvalues.append(element.value())
-            brace_number = []
-            for element in self.brace_number_dict.values():
-                brace_number.append(element.value())
-        else:
-            storey_masses = input_handler.generate_storey_data(
-                self.storey_mass_textBox.toPlainText()
-            )
-            eigenvalues = input_handler.generate_storey_data(
-                self.storey_eigenvalues_textBox.toPlainText()
-            )
-            brace_number = input_handler.generate_storey_data(
-                self.storey_upwinds_textBox.toPlainText()
-            )
+        storey_masses = input_handler.generate_storey_data(
+            self.storey_mass_textBox.toPlainText()
+        )
+        eigenvalues = input_handler.generate_storey_data(
+            self.storey_eigenvalues_textBox.toPlainText()
+        )
+        brace_number = input_handler.generate_storey_data(
+            self.storey_upwinds_textBox.toPlainText()
+        )
 
         # Feed the values to the main program
         output = aidapp.main(
@@ -645,7 +601,7 @@ class Ui_MainWindow:
             storey_masses,
             eigenvalues,
             brace_number,
-            self.zonation_data,
+            zonation_data,
             self.pushover_x,
             self.pushover_y,
             self.span_length_SpinBox.value(),
@@ -659,45 +615,6 @@ class Ui_MainWindow:
         )
 
         self.output_field(output)
-
-    def count_storey_boxes(self):
-        """Count the number of storey boxes to be created."""
-        self.send_button.setDisabled(True)
-        self.storey_number_SpinBox.setDisabled(True)
-        self.show_storey_boxes(self.storey_number_SpinBox.value())
-
-    def show_storey_boxes(self, i):
-        """Create the storey boxes."""
-        k = 1
-        while k < (i + 1):
-            # dynamically create key
-            mass_key = k
-            eigenvalue_key = k
-            brace_number_key = k
-            mass_value = HumbleSpinBox()
-            mass_value.setMaximum(10000)
-            mass_value.setDecimals(0)
-            self.mass_dict[mass_key] = mass_value
-            eigenvalue_value = HumbleSpinBox()
-            eigenvalue_value.setDecimals(10)
-            eigenvalue_value.setSingleStep(0.0000000001)
-            self.eigenvalue_dict[eigenvalue_key] = eigenvalue_value
-            brace_number_value = HumbleSpinBox()
-            brace_number_value.setDecimals(0)
-            self.brace_number_dict[brace_number_key] = brace_number_value
-
-            self.storey_layout.addRow(
-                QtWidgets.QLabel(f"Storey #{k} mass [ton]"), self.mass_dict[mass_key]
-            )
-            self.storey_layout.addRow(
-                QtWidgets.QLabel(f"Storey #{k} eigenvalue"),
-                self.eigenvalue_dict[eigenvalue_key],
-            )
-            self.storey_layout.addRow(
-                QtWidgets.QLabel(f"Storey #{k} brace #"),
-                self.brace_number_dict[brace_number_key],
-            )
-            k += 1
 
     def output_field(self, output_values):
         """Create and populate the output field."""
@@ -770,8 +687,6 @@ class Ui_MainWindow:
         self.kf_SpinBox.setEnabled(False)
         self.span_length_SpinBox.setEnabled(False)
         self.interfloor_height_SpinBox.setEnabled(False)
-        self.storey_data_button.setEnabled(False)
-        self.manual_input_checkBox.setEnabled(False)
 
         # File Export button
         self.file_export_button = QtWidgets.QPushButton(self.output_box)
