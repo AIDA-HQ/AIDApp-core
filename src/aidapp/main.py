@@ -2,10 +2,10 @@
 
 from numpy import array
 
-from calcs import Area, Values
-from coordinates import Coords
-from file_handler import InputHandler
-from ntc import Ntc
+from aidapp.calcs import Area, Values
+from aidapp.coordinates import Coords
+from aidapp.file_handler import InputHandler
+from aidapp.ntc import Ntc
 
 area = Area()
 coord = Coords()
@@ -285,16 +285,9 @@ class AIDApp:
                     self.brace_number, self.span_length, self.interfloor_height
                 )
                 return [
+                    i,
                     kc_n_s_array,
                     Fc_n_s_array,
-                    i,
-                    x_bilinear,
-                    y_bilinear_ms2,
-                    sd_meters,
-                    sa_ms2,
-                    kn_eff_list,
-                    y_bilinear_ms2_0,
-                    kn_eff_list_0,
                     de_0,
                     self.de_n,
                     self.dp,

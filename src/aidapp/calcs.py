@@ -13,7 +13,7 @@ from numpy import (
     trapz,
 )
 
-from coordinates import Coords
+from aidapp.coordinates import Coords
 
 coord = Coords()
 

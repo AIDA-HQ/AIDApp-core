@@ -1,9 +1,5 @@
 """Test the core functionality of AIDApp."""
-from unittest.mock import MagicMock, Mock
-
 from aidapp.main import AIDApp
-
-mocked_input = MagicMock()
 
 aidapp = AIDApp()
 
@@ -415,12 +411,13 @@ PUSHOVER_Y = """
 3452,943191
 """
 
+
 def test_main():
     """Test the main function."""
-    arg_dp = 0.058661392,
-    arg_mu_DB = 6,
-    arg_k_DB = 1,
-    arg_Kf = 0.66,
+    arg_dp = 0.058661392
+    arg_mu_DB = 6
+    arg_k_DB = 1
+    arg_Kf = 0.66
     arg_storey_masses = [
         239.6789,
         231.4220183,
@@ -428,7 +425,7 @@ def test_main():
         223.1651,
         223.1651,
         124.3884,
-    ],
+    ]
     arg_eigenvalues = [
         0.113530691,
         0.326058618,
@@ -436,7 +433,7 @@ def test_main():
         0.79237523,
         0.932777869,
         1,
-    ],
+    ]
     arg_brace_number = [
         4,
         4,
@@ -444,10 +441,9 @@ def test_main():
         4,
         4,
         4,
-    ],
-    arg_path_zonation =[
-        """
-        0.067
+    ]
+    arg_path_zonation = [
+        """0.067
         0.091
         0.109
         0.130
@@ -455,11 +451,8 @@ def test_main():
         0.182
         0.265
         0.354
-        0.501
-        """,
-
-        """
-        2.308
+        0.501""",
+        """2.308
         2.276
         2.282
         2.298
@@ -467,11 +460,8 @@ def test_main():
         2.354
         2.423
         2.470
-        2.510
-        """,
-
-        """
-        0.279
+        2.510""",
+        """0.279
         0.295
         0.314
         0.321
@@ -479,19 +469,18 @@ def test_main():
         0.339
         0.366
         0.390
-        0.439
-        """
-    ],
-    arg_pushover_x = PUSHOVER_X,
-    arg_pushover_y = PUSHOVER_Y,
-    arg_span_length = 5,
-    arg_interfloor_height = 3,
-    arg_nominal_age = 50,
-    arg_functional_class = "II",
-    arg_topographic_factor = "T2",
-    arg_soil_class = "C",
-    arg_limit_state = "SLV",
-    arg_damping_coeff = 5,
+        0.439""",
+    ]
+    arg_pushover_x = PUSHOVER_X
+    arg_pushover_y = PUSHOVER_Y
+    arg_span_length = 5
+    arg_interfloor_height = 3
+    arg_nominal_age = 50
+    arg_functional_class = "II"
+    arg_topographic_factor = "T2"
+    arg_soil_class = "C"
+    arg_limit_state = "SLV"
+    arg_damping_coeff = 5
 
     assert aidapp.main(
         arg_dp,
@@ -512,5 +501,25 @@ def test_main():
         arg_soil_class,
         arg_limit_state,
         arg_damping_coeff,
-        
-    )
+    ) == [
+        5,
+        [
+            895574.3437764264,
+            460861.30745175463,
+            342599.8902732954,
+            331468.772179148,
+            324612.72155078413,
+            253599.8677441263,
+        ],
+        [
+            852.406169634424,
+            821.1413332118067,
+            734.4424632058627,
+            585.2709673472033,
+            382.0959781102212,
+            142.91998380942755,
+        ],
+        (0.14846576225268612, 4.8387110362276164),
+        (0.09236627671648401, 7.806246624613571),
+        0.04442995986755819,
+    ]
