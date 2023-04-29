@@ -3,7 +3,7 @@ name: Run pytest on the code
 on:
   push:
     paths:
-      - "src/**"
+      - "**"
       - "!src/translations"
   pull_request:
     branches:
