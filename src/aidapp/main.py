@@ -6,11 +6,14 @@ from aidapp.calcs import Area, Values
 from aidapp.coordinates import Coords
 from aidapp.file_handler import InputHandler
 from aidapp.ntc import Ntc
+from aidapp.utils import rd
 
 area = Area()
 coord = Coords()
 values = Values()
 handlr = InputHandler()
+
+import logging
 
 
 class AIDApp:
@@ -74,8 +77,8 @@ class AIDApp:
         self.mu_DB = arg_mu_DB
         self.k_DB = arg_k_DB
         self.Kf = arg_Kf
-        self.storey_masses = arg_storey_masses
-        self.eigenvalues = arg_eigenvalues
+        self.storey_masses = rd(arg_storey_masses)
+        self.eigenvalues = rd(arg_eigenvalues)
         self.pushover_x = handlr.generate_array(arg_pushover_x)
         self.pushover_y = handlr.generate_array(arg_pushover_y)
         self.ag_input = handlr.generate_array(arg_path_zonation[0])
@@ -92,17 +95,21 @@ class AIDApp:
         self.damping_coeff = arg_damping_coeff
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
-        self.dp = arg_dp / self.gamma  # [m]
+        self.dp = rd(arg_dp / self.gamma)  # [m]
+        logging.debug(f"dp: {self.dp}")  # OK
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
+        # logging.debug(f"y_p_sdof: {self.y_p_sdof}")
         self.x_p_sdof = coord.x_p_sdof(self.gamma, self.pushover_x)
+        # logging.debug(f"x_p_sdof: {self.x_p_sdof}")
         self.Vp_kN = self.y_p_sdof[
             coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)
         ]
-        self.Vp_ms2 = self.Vp_kN / self.me  # m/s^2
+        self.Vp_ms2 = rd(self.Vp_kN / self.me)  # m/s^2
 
         # Slope of first n values of SDOF Pushover Curve
         self.K1 = values.get_K1(self.x_p_sdof, self.y_p_sdof)  # [kN/m]
+        logging.debug(f"K1: {self.K1}")  # OK
         return self.find_dy(0.0100)
 
     def find_dy(self, dy):
@@ -111,6 +118,7 @@ class AIDApp:
         the difference between the areas is less than 0.0004.
         """
         Vy_kN = values.get_Vy_kN(self.K1, dy)
+        # logging.debug(f"Vy_kN: {Vy_kN}")
 
         # X coordinates of the bilinear curve
         x_bilinear = array([0, dy, self.dp])
@@ -144,10 +152,12 @@ class AIDApp:
             y_bilinear_kN[1],
             y_bilinear_kN[2],
         )
+
         # Intersections of bilinear #2
         intersection_bilinear2_psdof_coords = coord.find_intersections(
             p_sdof, bilinear_line_kN_2
         )
+        # logging.debug(f"intersection_bilinear2_psdof_coords: {intersection_bilinear2_psdof_coords}")
 
         (
             fitting_list_1_x_pushover,
@@ -173,9 +183,22 @@ class AIDApp:
             fitting_list_2_x_pushover,
         )
 
-        _a1, _a2, area_diff = areas_kN
+        a1, a2, area_diff = areas_kN
+        logging.debug(f"a1: {a1}")
+        logging.debug(f"a2: {a2}")
+        logging.debug(f"area_diff: {area_diff}")
 
-        if area_diff <= 0.01:
+        if rd(area_diff, 2) <= rd(0.01):
+            # logging.debug(f"intersection_bilinear1_psdof_coords: {intersection_bilinear1_psdof_coords}"),
+            # logging.debug(f"intersection_bilinear2_psdof_coords: {intersection_bilinear2_psdof_coords}"),
+            # logging.debug(f"dy: {dy}"),
+            # logging.debug(f"Vy_kN: {Vy_kN}"),
+            # logging.debug(f"fitting_list_1_y_pushover: {fitting_list_1_y_pushover}"),
+            # logging.debug(f"fitting_list_2_y_pushover: {fitting_list_2_y_pushover}"),
+            # logging.debug(f"fitting_list_1_x_pushover: {fitting_list_1_x_pushover}"),
+            # logging.debug(f"fitting_list_2_x_pushover: {fitting_list_2_x_pushover}"),
+
+            logging.debug(f"area_diff: {area_diff}")
             ntc = Ntc(
                 self.limit_state,
                 self.nominal_age,
@@ -190,7 +213,7 @@ class AIDApp:
             sd_meters = ntc.get_movement_curve_SDe()
             sa_ms2_0 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
             adrs_spectrum = coord.interpolate_curve(sd_meters, sa_ms2_0)
-            k_eff = self.Vp_ms2 / self.dp
+            k_eff = rd(self.Vp_ms2 / self.dp)
 
             k1_eff_curve = coord.interpolate_curve(
                 sd_meters,
@@ -210,10 +233,13 @@ class AIDApp:
             Vp_DB = Vp_DB_prev_iteration
 
             Vy_F_DB_0 = values.get_Vy_F_ms2(Vy_kN)
-            Vp_F = self.Vp_kN / self.me
+            # logging.debug(f"Vy_F_DB_0: {Vy_F_DB_0}") # TO CHECK
+            Vp_F = rd(self.Vp_kN / self.me)
+            logging.debug(f"Vp_F: {Vp_F}")  # OK
             kn_eff_list_0 = coord.y_kn_eff(sd_meters, k_eff)
             y_bilinear_ms2_0 = array([0, Vy_F_DB_0, Vp_F])
             de_0 = values.get_de(adrs_spectrum, k1_eff_curve)
+            logging.debug(f"de_0: {de_0}")  # OK
 
             def get_calcs_recursive(
                 Vp_DB,
@@ -285,17 +311,18 @@ class AIDApp:
                     self.brace_number, self.span_length, self.interfloor_height
                 )
                 return [
-                    i,
+                    i,  # ok
                     kc_n_s_array,
                     Fc_n_s_array,
                     de_0,
                     self.de_n,
-                    self.dp,
+                    self.dp,  # ok
                 ]
 
             return get_calcs_recursive(
                 Vp_DB, check, 1, None, None, None, None, None, None, None
             )
-        dy = dy + 0.00001
+        dy = rd(dy + 0.00001)
+        logging.debug(f"dy: {dy}")
 
         return self.find_dy(dy)

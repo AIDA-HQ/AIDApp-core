@@ -28,11 +28,8 @@ jobs:
         sudo apt update
         sudo apt install -y libgl1-mesa-dev
         python -m pip install --upgrade pip
-        pip install pytest-cov black
+        pip install pytest-cov
         pip install .
-    - name: Format code with black
-      run: |
-        black .
     - name: Test with pytest
       run: |
         pytest

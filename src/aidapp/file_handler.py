@@ -2,6 +2,7 @@
 
 from numpy import array, reshape, transpose
 from qtpy import QtWidgets
+from aidapp.utils import rd
 
 
 class InputHandler:
@@ -16,7 +17,7 @@ class InputHandler:
         # Strip \n and \t from text
         data = filter(None, coordinate_file.splitlines())
         data_array = [float(element.replace(",", ".")) for element in data]
-        return data_array
+        return rd(data_array)
 
     @staticmethod
     def generate_zonation_array(zonation_data):

@@ -1,6 +1,7 @@
 """NTC spectrum"""
 
 from numpy import arange, around, array, log, log10, pi
+from aidapp.utils import rd
 
 
 class Ntc:
@@ -155,7 +156,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 50
         while t_R < 72:
             v = 10 ** (
@@ -164,7 +165,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 72
         while t_R < 101:
             v = 10 ** (
@@ -175,7 +176,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 101
         while t_R < 140:
             v = 10 ** (
@@ -186,7 +187,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 140
         while t_R < 201:
             v = 10 ** (
@@ -197,7 +198,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 201
         while t_R < 475:
             v = 10 ** (
@@ -208,7 +209,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 475
         while t_R < 975:
             v = 10 ** (
@@ -219,7 +220,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
         t_R = 975
         while t_R < 2475:
             v = 10 ** (
@@ -230,7 +231,7 @@ class Ntc:
             )
             t_R = t_R + 1
             key = t_R
-            zonation_value_dict[key] = round(v, 15)
+            zonation_value_dict[key] = rd(v)
 
         return zonation_value_dict
 
@@ -354,12 +355,12 @@ class Ntc:
 
         self.get_ss()
         self.get_st()
-        self.s = self.ss * self.st
+        self.s = rd(self.ss * self.st)
         return self.s
 
     def get_eta(self):
         """Returns the eta value."""
-        self.eta = max([(10 / (5 + self.xi)) ** 0.5, 0.55])
+        self.eta = max([rd(10 / (5 + self.xi)) ** 0.5, 0.55])
         return self.eta
 
     def get_c_c(self):
@@ -369,28 +370,28 @@ class Ntc:
                 self.c_c = 1
                 return self.c_c
             case "B":
-                self.c_c = 1.1 * ((self.tc_value ** (-0.2)))
+                self.c_c = rd(1.1 * ((self.tc_value ** (-0.2))))
                 return self.c_c
             case "C":
-                self.c_c = 1.05 * ((self.tc_value ** (-0.33)))
+                self.c_c = rd(1.05 * ((self.tc_value ** (-0.33))))
                 return self.c_c
             case "D":
-                self.c_c = 1.25 * ((self.tc_value ** (-0.5)))
+                self.c_c = rd(1.25 * ((self.tc_value ** (-0.5))))
                 return self.c_c
             case "E":
-                self.c_c = 1.15 * ((self.tc_value ** (-0.4)))
+                self.c_c = rd(1.15 * ((self.tc_value ** (-0.4))))
                 return self.c_c
 
     def get_t_c(self):
         """t_C is T_C* from the basic seismic danger table."""
         self.get_c_c()
-        self.t_c = self.tc_value * self.c_c
+        self.t_c = rd(self.tc_value * self.c_c)
         return self.t_c
 
     def get_t_b(self):
         """Return the T_B value."""
         self.get_t_c()
-        self.t_b = self.t_c / 3
+        self.t_b = rd(self.t_c / 3)
         return self.t_b
 
     def get_t_d(self):
@@ -408,12 +409,12 @@ class Ntc:
         arange_array = arange(0.00, 1, 0.05)
         # Calculate the ones until T_B line
         for value in arange_array:
-            coord = value * self.t_b
+            coord = rd(value * self.t_b)
             self.t_acceleration_coords.append(coord)
 
         # Calculate the ones until T_C line
         for value in arange_array:
-            coord = self.t_b + (self.t_c - self.t_b) * value
+            coord = rd(self.t_b + (self.t_c - self.t_b) * value)
             self.t_acceleration_coords.append(coord)
 
         # Calculate the ones until T_D line
@@ -437,7 +438,7 @@ class Ntc:
 
         # Calculate the ones until T_B line
         for element in t_acceleration_coords[:21]:
-            coord = (
+            coord = rd(
                 self.ag_value
                 * self.s
                 * self.eta
@@ -456,14 +457,14 @@ class Ntc:
 
         # Calculate the ones until T_D line
         for element in t_acceleration_coords[41:62]:
-            coord = (
+            coord = rd(
                 self.ag_value * self.s * self.eta * self.fo_value * (self.t_c / element)
             )
             self.Se_coords.append(coord)
 
         # Calculate the ones until the end line
         for element in t_acceleration_coords[62:]:
-            coord = (
+            coord = rd(
                 self.ag_value
                 * self.s
                 * self.eta
@@ -481,6 +482,6 @@ class Ntc:
         self.SDe_coords_movement = []
 
         for s, g in zip(self.t_acceleration_coords, self.Se_coords):
-            coord = g * 9.806 * (s / (2 * pi)) ** 2
+            coord = rd(g * 9.806 * (s / (2 * pi)) ** 2)
             self.SDe_coords_movement.append(coord)
         return array(self.SDe_coords_movement)
