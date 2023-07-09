@@ -2,7 +2,6 @@
 from numpy import absolute, array, linspace, polyfit, column_stack
 from shapely.geometry.linestring import LineString
 from aidapp.utils import rd
-import logging
 
 
 class Coords:

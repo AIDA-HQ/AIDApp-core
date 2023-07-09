@@ -189,15 +189,6 @@ class AIDApp:
         logging.debug(f"area_diff: {area_diff}")
 
         if rd(area_diff, 2) <= rd(0.01):
-            # logging.debug(f"intersection_bilinear1_psdof_coords: {intersection_bilinear1_psdof_coords}"),
-            # logging.debug(f"intersection_bilinear2_psdof_coords: {intersection_bilinear2_psdof_coords}"),
-            # logging.debug(f"dy: {dy}"),
-            # logging.debug(f"Vy_kN: {Vy_kN}"),
-            # logging.debug(f"fitting_list_1_y_pushover: {fitting_list_1_y_pushover}"),
-            # logging.debug(f"fitting_list_2_y_pushover: {fitting_list_2_y_pushover}"),
-            # logging.debug(f"fitting_list_1_x_pushover: {fitting_list_1_x_pushover}"),
-            # logging.debug(f"fitting_list_2_x_pushover: {fitting_list_2_x_pushover}"),
-
             logging.debug(f"area_diff: {area_diff}")
             ntc = Ntc(
                 self.limit_state,
@@ -311,12 +302,12 @@ class AIDApp:
                     self.brace_number, self.span_length, self.interfloor_height
                 )
                 return [
-                    i,  # ok
+                    i,
                     kc_n_s_array,
                     Fc_n_s_array,
                     de_0,
                     self.de_n,
-                    self.dp,  # ok
+                    self.dp,
                 ]
 
             return get_calcs_recursive(
