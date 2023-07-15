@@ -80,9 +80,6 @@ class Coords:
         q = rd(self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[1])
         x = rd(self.x_bilinear_line(x_p_sdof[0], x_p_sdof[-1]))
         y = rd(m * x + q)
-        # logging.debug("x: %s", x)
-        # logging.debug("q: %s", q)
-        # logging.debug("m: %s", m)
         return x, y
 
     @staticmethod

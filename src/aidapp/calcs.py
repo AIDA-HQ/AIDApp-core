@@ -66,7 +66,6 @@ class Values:
         self.PhiTMTau = rd(matmul(self.Phi, storey_masses))
         self.PhiTMPhi = rd(matmul(self.Phi, self.MPhi))
         self.gamma = rd(self.PhiTMTau / self.PhiTMPhi)
-        # logging.debug("gamma = %s", self.gamma)
         return self.gamma
 
     def get_m_matrix(self):
@@ -260,7 +259,6 @@ class Values:
     def get_Vy_DB_final(self, Vp_DB):
         """Calculate the value of Vy(DB)."""
         self.Vy_DB_final = rd(Vp_DB * self.gamma)
-        # logging.debug("Vy_DB_final: %s", self.Vy_DB_final)
         return self.Vy_DB_final
 
     def get_Fy_n_DB_array(self):
@@ -269,20 +267,17 @@ class Values:
         for element in self.MPhi:
             Fy_n_DB = rd((self.Vy_DB_final * element) / self.get_sum_MPhi())
             self.Fy_n_DB_array.append(Fy_n_DB)
-        # logging.debug("Fy_n_DB_array: %s", self.Fy_n_DB_array)
         return self.Fy_n_DB_array
 
     def get_dy_DB_final(self, mu_DB, dp_DB):
         """Calculate the value of dy(DB)."""
         dy_db = self.get_dy_DB(mu_DB, dp_DB)
         self.dy_DB_final = rd(dy_db * self.gamma)
-        # logging.debug("dy_DB_final: %s", self.dy_DB_final)
         return self.dy_DB_final
 
     def get_Vy_n_DB_array(self):
         """Calculate the values of Vy(DB)."""
         self.Vy_DB_array = rd((cumsum(self.Fy_n_DB_array[::-1]))[::-1])
-        # logging.debug("Vy_DB_array: %s", self.Vy_DB_array)
         return self.Vy_DB_array
 
     def get_dy_n_array(self, eigenvalues):
@@ -291,13 +286,11 @@ class Values:
         self.dy_n_array = [eigenvalues[0] * self.dy_DB_final] + (
             [(y - x) * self.dy_DB_final for x, y in zip(eigenvalues, eigenvalues[1:])]
         )
-        # logging.debug("dy_n_array: %s", self.dy_n_array)
         return self.dy_n_array
 
     def get_K_storey_n_array(self):
         """Calculate the values of K_storey,n."""
         K_storey_n_array = rd(self.Vy_DB_array / self.dy_n_array)
-        # logging.debug("K_storey_n_array: %s", K_storey_n_array)
         return K_storey_n_array
 
     # Frame data
@@ -323,7 +316,6 @@ class Values:
             self.Vy_DB_array
             / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght) ** 2))
         )
-        # logging.debug("K_n_DB_array: %s", self.K_n_DB_array)
         return self.K_n_DB_array
 
     def get_Ny_n_DB_array(self, span_length, interfloor_height):
@@ -333,7 +325,6 @@ class Values:
         for element in self.Vy_DB_array:
             Ny_n_DB = rd((element) / self.cos_alpha(span_length, upwind_lenght))
             Ny_n_DB_array.append(Ny_n_DB)
-        # logging.debug("Ny_n_DB_array: %s", Ny_n_DB_array)
         return Ny_n_DB_array
 
     def get_kc_n_s_array(self, brace_number):
@@ -344,7 +335,6 @@ class Values:
             kc_n_s = rd((element) / brace_number[0 + k])
             k = k + 1
             kc_n_s_array.append(kc_n_s)
-        # logging.debug("kc_n_s_array: %s", kc_n_s_array)
         return kc_n_s_array
 
     def get_Fc_n_s_array(self, brace_number, span_length, interfloor_height):
@@ -355,7 +345,6 @@ class Values:
             Fc_n_s = rd(element / brace_number[0 + k])
             k = k + 1
             Fc_n_s_array.append(Fc_n_s)
-        # logging.debug("Fc_n_s_array: %s", Fc_n_s_array)
         return Fc_n_s_array
 
 

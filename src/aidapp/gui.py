@@ -3,8 +3,7 @@
 from qtpy import QtCore, QtWidgets
 
 from aidapp.main import AIDApp
-
-import aidapp.linguist_rc
+from aidapp.file_handler import InputHandler, ExportHandler
 
 import aidapp.strings as strings
 
@@ -12,7 +11,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from matplotlib.figure import Figure
-from aidapp.file_handler import InputHandler, ExportHandler
 
 aidapp = AIDApp()
 input_handler = InputHandler()

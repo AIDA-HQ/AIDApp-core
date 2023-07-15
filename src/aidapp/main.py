@@ -99,9 +99,7 @@ class AIDApp:
         logging.debug(f"dp: {self.dp}")  # OK
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
-        # logging.debug(f"y_p_sdof: {self.y_p_sdof}")
         self.x_p_sdof = coord.x_p_sdof(self.gamma, self.pushover_x)
-        # logging.debug(f"x_p_sdof: {self.x_p_sdof}")
         self.Vp_kN = self.y_p_sdof[
             coord.find_nearest_coordinate_index(self.x_p_sdof, self.dp)
         ]
@@ -118,7 +116,6 @@ class AIDApp:
         the difference between the areas is less than 0.0004.
         """
         Vy_kN = values.get_Vy_kN(self.K1, dy)
-        # logging.debug(f"Vy_kN: {Vy_kN}")
 
         # X coordinates of the bilinear curve
         x_bilinear = array([0, dy, self.dp])
@@ -157,7 +154,6 @@ class AIDApp:
         intersection_bilinear2_psdof_coords = coord.find_intersections(
             p_sdof, bilinear_line_kN_2
         )
-        # logging.debug(f"intersection_bilinear2_psdof_coords: {intersection_bilinear2_psdof_coords}")
 
         (
             fitting_list_1_x_pushover,
@@ -224,7 +220,6 @@ class AIDApp:
             Vp_DB = Vp_DB_prev_iteration
 
             Vy_F_DB_0 = values.get_Vy_F_ms2(Vy_kN)
-            # logging.debug(f"Vy_F_DB_0: {Vy_F_DB_0}") # TO CHECK
             Vp_F = rd(self.Vp_kN / self.me)
             logging.debug(f"Vp_F: {Vp_F}")  # OK
             kn_eff_list_0 = coord.y_kn_eff(sd_meters, k_eff)
