@@ -239,7 +239,7 @@ class Ntc:
     def get_zonation_value_array(zonation_value_dict):
         """Returns an array with the seismic zonation parameters as values."""
         zonation_array = []
-        for key in zonation_value_dict:
+        for key, _ in zonation_value_dict.items():
             zonation_array.append(zonation_value_dict[key])
         return array(zonation_array)
 
