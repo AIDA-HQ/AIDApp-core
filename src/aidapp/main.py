@@ -96,7 +96,7 @@ class AIDApp:
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
         self.dp = rd(arg_dp / self.gamma)  # [m]
-        logging.debug(f"dp: {self.dp}")  # OK
+        logging.debug("dp: %s", self.dp)
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
         self.x_p_sdof = coord.x_p_sdof(self.gamma, self.pushover_x)
@@ -107,7 +107,7 @@ class AIDApp:
 
         # Slope of first n values of SDOF Pushover Curve
         self.K1 = values.get_K1(self.x_p_sdof, self.y_p_sdof)  # [kN/m]
-        logging.debug(f"K1: {self.K1}")  # OK
+        logging.debug("K1: %s", self.K1)
         return self.find_dy(0.0100)
 
     def find_dy(self, dy):
@@ -180,12 +180,12 @@ class AIDApp:
         )
 
         a1, a2, area_diff = areas_kN
-        logging.debug(f"a1: {a1}")
-        logging.debug(f"a2: {a2}")
-        logging.debug(f"area_diff: {area_diff}")
+        logging.debug("a1: %s", a1)
+        logging.debug("a2: %s", a2)
+        logging.debug("area_diff: %s", area_diff)
 
         if rd(area_diff, 2) <= rd(0.01):
-            logging.debug(f"area_diff: {area_diff}")
+            logging.debug("area_diff: %s", area_diff)
             ntc = Ntc(
                 self.limit_state,
                 self.nominal_age,
@@ -221,11 +221,9 @@ class AIDApp:
 
             Vy_F_DB_0 = values.get_Vy_F_ms2(Vy_kN)
             Vp_F = rd(self.Vp_kN / self.me)
-            logging.debug(f"Vp_F: {Vp_F}")  # OK
-            kn_eff_list_0 = coord.y_kn_eff(sd_meters, k_eff)
-            y_bilinear_ms2_0 = array([0, Vy_F_DB_0, Vp_F])
+            logging.debug("Vp_F: %s", Vp_F)
             de_0 = values.get_de(adrs_spectrum, k1_eff_curve)
-            logging.debug(f"de_0: {de_0}")  # OK
+            logging.debug("de_0: %s", de_0)
 
             def get_calcs_recursive(
                 Vp_DB,
@@ -309,6 +307,6 @@ class AIDApp:
                 Vp_DB, check, 1, None, None, None, None, None, None, None
             )
         dy = rd(dy + 0.00001)
-        logging.debug(f"dy: {dy}")
+        logging.debug("dy: %s", dy)
 
         return self.find_dy(dy)
