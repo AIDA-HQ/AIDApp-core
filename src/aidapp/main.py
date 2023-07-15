@@ -15,7 +15,6 @@ values = Values()
 handlr = InputHandler()
 
 
-
 class AIDApp:
     """Class to run the app backend."""
 
