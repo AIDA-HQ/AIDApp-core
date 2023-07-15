@@ -12,12 +12,12 @@ from numpy import (
     hypot,
     trapz,
 )
+import logging
 from aidapp.utils import rd
 
 from aidapp.coordinates import Coords
 
 coord = Coords()
-import logging
 
 
 class Values:
