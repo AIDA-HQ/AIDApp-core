@@ -1,5 +1,5 @@
-from numpy import round
+from numpy import around as np_round
 
 
 def rd(value, decs=12):
-    return round(value, decs)
+    return np_round(value, decs)

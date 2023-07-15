@@ -1,6 +1,6 @@
 """NTC spectrum"""
 
-from numpy import arange, around, array, log, log10, pi
+from numpy import arange, array, log, log10, pi
 from aidapp.utils import rd
 
 
@@ -72,7 +72,7 @@ class Ntc:
             t_R_SLO = 30
         else:
             if (-self.V_R) / log(1 - 0.81) <= 2475:
-                t_R_SLO = around((-self.V_R) / log(1 - 0.81), 0)
+                t_R_SLO = rd((-self.V_R) / log(1 - 0.81), 0)
             else:
                 t_R_SLO = 2475
         return t_R_SLO
@@ -83,7 +83,7 @@ class Ntc:
             t_R_SLD = 30
         else:
             if (-self.V_R) / log(1 - 0.63) <= 2475:
-                t_R_SLD = around((-self.V_R) / log(1 - 0.63), 0)
+                t_R_SLD = rd((-self.V_R) / log(1 - 0.63), 0)
             else:
                 t_R_SLD = 2475
         return t_R_SLD
@@ -94,7 +94,7 @@ class Ntc:
             t_R_SLV = 30
         else:
             if (-self.V_R) / log(1 - 0.10) <= 2475:
-                t_R_SLV = around((-self.V_R) / log(1 - 0.10), 0)
+                t_R_SLV = rd((-self.V_R) / log(1 - 0.10), 0)
             else:
                 t_R_SLV = 2475
         return t_R_SLV
@@ -105,7 +105,7 @@ class Ntc:
             t_R_SLC = 30
         else:
             if (-self.V_R) / log(1 - 0.05) <= 2475:
-                t_R_SLC = around((-self.V_R) / log(1 - 0.05), 0)
+                t_R_SLC = rd((-self.V_R) / log(1 - 0.05), 0)
             else:
                 t_R_SLC = 2475
         return t_R_SLC
