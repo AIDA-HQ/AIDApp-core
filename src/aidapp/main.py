@@ -218,7 +218,10 @@ class AIDApp:
             check = values.get_check(xiFrame, xi_n_eff)
             Vp_DB = Vp_DB_prev_iteration
 
+            Vy_F_DB_0 = values.get_Vy_F_ms2(Vy_kN)
             Vp_F = rd(self.Vp_kN / self.me)
+            kn_eff_list_0 = coord.y_kn_eff(sd_meters, k_eff)
+            y_bilinear_ms2_0 = array([0, Vy_F_DB_0, Vp_F])
             logging.debug("Vp_F: %s", Vp_F)
             de_0 = values.get_de(adrs_spectrum, k1_eff_curve)
             logging.debug("de_0: %s", de_0)
@@ -279,6 +282,8 @@ class AIDApp:
 
                 # If the difference between ViP(DB) and V(i-1)P(DB) is less
                 # than 5% return the values
+                kn_eff_list = coord.y_kn_eff(sd_meters, kn_eff)
+                y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
                 values.get_Vy_DB_final(Vp_DB)
                 values.get_Fy_n_DB_array()
                 values.get_dy_DB_final(self.mu_DB, self.dp)
@@ -291,9 +296,16 @@ class AIDApp:
                     self.brace_number, self.span_length, self.interfloor_height
                 )
                 return [
-                    i,
                     kc_n_s_array,
                     Fc_n_s_array,
+                    i,
+                    x_bilinear,
+                    y_bilinear_ms2,
+                    sd_meters,
+                    sa_ms2,
+                    kn_eff_list,
+                    y_bilinear_ms2_0,
+                    kn_eff_list_0,
                     de_0,
                     self.de_n,
                     self.dp,
