@@ -1,6 +1,7 @@
 """Coordinates module."""
 from numpy import absolute, array, linspace, polyfit, column_stack
 from shapely.geometry.linestring import LineString
+from aidapp.utils import rd
 
 
 class Coords:
@@ -12,18 +13,18 @@ class Coords:
         Calculate the y coordinates of kn_eff curve (line),
         by taking the sd_m value list and kn_eff as input values.
         """
-        return array([element * kn_eff for element in sd_m])
+        return array([(element) * (kn_eff) for element in sd_m])
 
     # Generate SDOF pushover curve
     @staticmethod
     def x_p_sdof(gamma, x_p_mdof):
         """Return the x coordinates of the SDOF pushover curve."""
-        return array([element / gamma for element in x_p_mdof])
+        return array([rd((element) / (gamma)) for element in x_p_mdof])
 
     @staticmethod
     def y_p_sdof(gamma, y_p_mdof):
         """Return the y coordinates of the SDOF pushover curve."""
-        return array([element / gamma for element in y_p_mdof])
+        return array([rd((element) / (gamma)) for element in y_p_mdof])
 
     ##
 
@@ -38,17 +39,17 @@ class Coords:
         intersection = curve_1.intersection(curve_2)
         intersection_coords = []
         if intersection.geom_type == "Point":
-            intersection_coords.append((intersection.x, intersection.y))
+            intersection_coords.append((rd(intersection.x), rd(intersection.y)))
         if intersection.geom_type == "MultiPoint":
             individual_points = [(pt.x, pt.y) for pt in intersection.geoms]
             for element in individual_points:
-                intersection_coords.append(element)
+                intersection_coords.append(rd(element))
         return intersection_coords
 
     @staticmethod
     def find_nearest_coordinate_index(curve_coordinates, coord):
         """Find the index of the minimum/lowest element from the array."""
-        difference_array_x = absolute(curve_coordinates - coord)
+        difference_array_x = rd(absolute(curve_coordinates - coord))
         index = difference_array_x.argmin()
         return index
 
@@ -68,17 +69,17 @@ class Coords:
         straight line which composes the bilinear line.
         """
         m, q = polyfit(x=[x_1, x_2], y=[y_1, y_2], deg=1)
-        return m, q
+        return rd(m), rd(q)
 
     def generate_line(self, x_p_sdof, x_1_array, x_2_array, y_1_array, y_2_array):
         """
         Generate part of the bilinear curve: 1st or 2nd line that compose it.
         Returns a tuple with X and Y coordinates.
         """
-        m = self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[0]
-        q = self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[1]
-        x = self.x_bilinear_line(x_p_sdof[0], x_p_sdof[-1])
-        y = m * x + q
+        m = rd(self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[0])
+        q = rd(self.bilinear_m_q(x_1_array, x_2_array, y_1_array, y_2_array)[1])
+        x = rd(self.x_bilinear_line(x_p_sdof[0], x_p_sdof[-1]))
+        y = rd(m * x + q)
         return x, y
 
     @staticmethod
