@@ -4,7 +4,7 @@ from numpy import array
 
 from aidapp.calcs import Area, Values
 from aidapp.coordinates import Coords
-from aidapp.file_handler import InputHandler
+import aidapp.file_handler as fh
 from aidapp.ntc import Ntc
 from aidapp.utils import rd
 import logging
@@ -12,7 +12,6 @@ import logging
 area = Area()
 coord = Coords()
 values = Values()
-handlr = InputHandler()
 
 
 class AIDApp:
@@ -78,11 +77,11 @@ class AIDApp:
         self.Kf = arg_Kf
         self.storey_masses = rd(arg_storey_masses)
         self.eigenvalues = rd(arg_eigenvalues)
-        self.pushover_x = handlr.generate_array(arg_pushover_x)
-        self.pushover_y = handlr.generate_array(arg_pushover_y)
-        self.ag_input = handlr.generate_array(arg_path_zonation[0])
-        self.fo_input = handlr.generate_array(arg_path_zonation[1])
-        self.tc_input = handlr.generate_array(arg_path_zonation[2])
+        self.pushover_x = fh.generate_array(arg_pushover_x)
+        self.pushover_y = fh.generate_array(arg_pushover_y)
+        self.ag_input = fh.generate_array(arg_path_zonation[0])
+        self.fo_input = fh.generate_array(arg_path_zonation[1])
+        self.tc_input = fh.generate_array(arg_path_zonation[2])
         self.span_length = arg_span_length
         self.interfloor_height = arg_interfloor_height
         self.brace_number = arg_brace_number

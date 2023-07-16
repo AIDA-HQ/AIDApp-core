@@ -3,7 +3,7 @@
 from qtpy import QtCore, QtWidgets
 
 from aidapp.main import AIDApp
-from aidapp.file_handler import InputHandler, ExportHandler
+import aidapp.file_handler as fh
 
 import aidapp.strings as strings
 
@@ -13,8 +13,6 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 
 aidapp = AIDApp()
-input_handler = InputHandler()
-export_handler = ExportHandler()
 
 
 class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
@@ -580,13 +578,13 @@ class Ui_MainWindow:
         zonation_tc = self.zonation_tc_textBox.toPlainText()
         zonation_data = [zonation_ag, zonation_fo, zonation_tc]
 
-        storey_masses = input_handler.generate_storey_data(
+        storey_masses = fh.generate_storey_data(
             self.storey_mass_textBox.toPlainText()
         )
-        eigenvalues = input_handler.generate_storey_data(
+        eigenvalues = fh.generate_storey_data(
             self.storey_eigenvalues_textBox.toPlainText()
         )
-        brace_number = input_handler.generate_storey_data(
+        brace_number = fh.generate_storey_data(
             self.storey_upwinds_textBox.toPlainText()
         )
 
@@ -759,7 +757,7 @@ class Ui_MainWindow:
 
     def trigger_generate_output_file(self):
         """Trigger the generate_output_file function"""
-        export_handler.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
+        fh.generate_output_file(self.kc_n_s_array, self.Fc_n_s_array)
 
 
 if __name__ == "__main__":
