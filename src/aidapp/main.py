@@ -50,50 +50,30 @@ class AIDApp:
         self.K1 = None
         self.de_n = None
 
-    def main(
-        self,
-        arg_dp,
-        arg_mu_DB,
-        arg_k_DB,
-        arg_Kf,
-        arg_storey_masses,
-        arg_eigenvalues,
-        arg_brace_number,
-        arg_path_zonation,
-        arg_pushover_x,
-        arg_pushover_y,
-        arg_span_length,
-        arg_interfloor_height,
-        arg_nominal_age,
-        arg_functional_class,
-        arg_topographic_factor,
-        arg_soil_class,
-        arg_limit_state,
-        arg_damping_coeff,
-    ):
+    def main(self, input_values):
         """Main function of the app."""
-        self.mu_DB = arg_mu_DB
-        self.k_DB = arg_k_DB
-        self.Kf = arg_Kf
-        self.storey_masses = rd(arg_storey_masses)
-        self.eigenvalues = rd(arg_eigenvalues)
-        self.pushover_x = fh.generate_array(arg_pushover_x)
-        self.pushover_y = fh.generate_array(arg_pushover_y)
-        self.ag_input = fh.generate_array(arg_path_zonation[0])
-        self.fo_input = fh.generate_array(arg_path_zonation[1])
-        self.tc_input = fh.generate_array(arg_path_zonation[2])
-        self.span_length = arg_span_length
-        self.interfloor_height = arg_interfloor_height
-        self.brace_number = arg_brace_number
-        self.nominal_age = arg_nominal_age
-        self.functional_class = arg_functional_class
-        self.topographic_factor = arg_topographic_factor
-        self.soil_class = arg_soil_class
-        self.limit_state = arg_limit_state
-        self.damping_coeff = arg_damping_coeff
+        self.mu_DB = input_values.mu_DB
+        self.k_DB = input_values.k_DB
+        self.Kf = input_values.kf
+        self.storey_masses = rd(input_values.storey_masses)
+        self.eigenvalues = rd(input_values.eigenvalues)
+        self.pushover_x = fh.generate_array(input_values.pushover_x)
+        self.pushover_y = fh.generate_array(input_values.pushover_y)
+        self.ag_input = fh.generate_array(input_values.zonation_data[0])
+        self.fo_input = fh.generate_array(input_values.zonation_data[1])
+        self.tc_input = fh.generate_array(input_values.zonation_data[2])
+        self.span_length = input_values.span_length
+        self.interfloor_height = input_values.interfloor_height
+        self.brace_number = input_values.brace_number
+        self.nominal_age = input_values.nominal_age
+        self.functional_class = input_values.functional_class
+        self.topographic_factor = input_values.topographic_factor
+        self.soil_class = input_values.soil_class
+        self.limit_state = input_values.limit_state
+        self.damping_coeff = input_values.damping_coeff
 
         self.gamma = values.get_gamma(self.storey_masses, self.eigenvalues)
-        self.dp = rd(arg_dp / self.gamma)  # [m]
+        self.dp = rd(input_values.dp / self.gamma)  # [m]
         logging.debug("dp: %s", self.dp)
         self.me = values.get_me()  # [ton]
         self.y_p_sdof = coord.y_p_sdof(self.gamma, self.pushover_y)
@@ -239,8 +219,7 @@ class AIDApp:
             ):
                 """Recursive function to calculate what's needed.
                 If the difference is more than 0.5 keep iterating,
-                otherwise return the values.
-                """
+                otherwise return the values."""
                 if check > 0.5:
                     i = i + 1
                     xi_eff_F_DB = values.get_xi_eff_F_DB(

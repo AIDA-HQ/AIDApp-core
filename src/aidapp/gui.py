@@ -11,6 +11,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from matplotlib.figure import Figure
+from collections import namedtuple
 
 aidapp = AIDApp()
 
@@ -578,9 +579,7 @@ class Ui_MainWindow:
         zonation_tc = self.zonation_tc_textBox.toPlainText()
         zonation_data = [zonation_ag, zonation_fo, zonation_tc]
 
-        storey_masses = fh.generate_storey_data(
-            self.storey_mass_textBox.toPlainText()
-        )
+        storey_masses = fh.generate_storey_data(self.storey_mass_textBox.toPlainText())
         eigenvalues = fh.generate_storey_data(
             self.storey_eigenvalues_textBox.toPlainText()
         )
@@ -588,8 +587,32 @@ class Ui_MainWindow:
             self.storey_upwinds_textBox.toPlainText()
         )
 
-        # Feed the values to the main program
-        output = aidapp.main(
+        InputValues = namedtuple(
+            "input_values",
+            [
+                "dp",
+                "mu_DB",
+                "k_DB",
+                "kf",
+                "storey_masses",
+                "eigenvalues",
+                "brace_number",
+                "zonation_data",
+                "pushover_x",
+                "pushover_y",
+                "span_length",
+                "interfloor_height",
+                "nominal_age",
+                "functional_class",
+                "topographic_factor",
+                "soil_class",
+                "limit_state",
+                "damping_coeff",
+            ],
+        )
+
+        input_values = InputValues
+        (
             self.dp_SpinBox.value(),
             self.u_DB_SpinBox.value(),
             self.k_DB_SpinBox.value(),
@@ -609,7 +632,10 @@ class Ui_MainWindow:
             self.limit_state_comboBox.currentText(),
             self.damping_coeff_SpinBox.value(),
         )
+        # Feed the values to the main program
+        output = aidapp.main(input_values)
 
+        # Display the output
         self.output_field(output)
 
     def output_field(self, output_values):
@@ -695,7 +721,7 @@ class Ui_MainWindow:
         # Graph
         def plot_graph():
             """Plot the graph of the response spectrum"""
-            from graph import Graph
+            from aidapp.graph import Graph
 
             gr = Graph()
             gr.plot_final(

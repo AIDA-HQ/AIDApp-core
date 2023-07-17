@@ -1,6 +1,7 @@
 """Test the core functionality of AIDApp."""
 from aidapp.main import AIDApp
 import sys
+from collections import namedtuple
 
 aidapp = AIDApp()
 
@@ -485,7 +486,31 @@ def test_main():
     arg_limit_state = "SLV"
     arg_damping_coeff = 5
 
-    kc_n_s_array, Fc_n_s_array, i, _, _, _, _, _, _, _, de_0, de_n, dp = aidapp.main(
+    InputValues = namedtuple(
+        "input_values",
+        [
+            "dp",
+            "mu_DB",
+            "k_DB",
+            "kf",
+            "storey_masses",
+            "eigenvalues",
+            "brace_number",
+            "zonation_data",
+            "pushover_x",
+            "pushover_y",
+            "span_length",
+            "interfloor_height",
+            "nominal_age",
+            "functional_class",
+            "topographic_factor",
+            "soil_class",
+            "limit_state",
+            "damping_coeff",
+        ],
+    )
+
+    input_values = InputValues(
         arg_dp,
         arg_mu_DB,
         arg_k_DB,
@@ -504,6 +529,10 @@ def test_main():
         arg_soil_class,
         arg_limit_state,
         arg_damping_coeff,
+    )
+
+    kc_n_s_array, Fc_n_s_array, i, _, _, _, _, _, _, _, de_0, de_n, dp = aidapp.main(
+        input_values
     )
     assert kc_n_s_array == [
         896060.0409196536,
