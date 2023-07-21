@@ -13,18 +13,9 @@ area = Area()
 coord = Coords()
 values = Values()
 
-# Vy_F_DB = None
-# Vp_F_DB = None
-# kn_eff = None
-# de_n = None
-# sa_ms2 = None
-
 
 def main(input_values):
     """Main function of the app."""
-    mu_DB = input_values.mu_DB
-    k_DB = input_values.k_DB
-    Kf = input_values.kf
     storey_masses = rd(input_values.storey_masses)
     eigenvalues = rd(input_values.eigenvalues)
     pushover_x = fh.generate_array(input_values.pushover_x)
@@ -32,15 +23,6 @@ def main(input_values):
     ag_input = fh.generate_array(input_values.zonation_data[0])
     fo_input = fh.generate_array(input_values.zonation_data[1])
     tc_input = fh.generate_array(input_values.zonation_data[2])
-    span_length = input_values.span_length
-    interfloor_height = input_values.interfloor_height
-    brace_number = input_values.brace_number
-    nominal_age = input_values.nominal_age
-    functional_class = input_values.functional_class
-    topographic_factor = input_values.topographic_factor
-    soil_class = input_values.soil_class
-    limit_state = input_values.limit_state
-    damping_coeff = input_values.damping_coeff
 
     gamma = values.get_gamma(storey_masses, eigenvalues)
     dp = rd(input_values.dp / gamma)  # [m]
@@ -52,15 +34,15 @@ def main(input_values):
     Vp_ms2 = rd(Vp_kN / me)  # m/s^2
 
     # Slope of first n values of SDOF Pushover Curve
-    K1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
-    logging.debug("K1: %s", K1)
+    k1 = values.get_K1(x_p_sdof, y_p_sdof)  # [kN/m]
+    logging.debug("K1: %s", k1)
 
     def find_dy(dy):
         """
         Find the dy value, by iterating over the function 'get_calcs_recursive' until
         the difference between the areas is less than 0.0004.
         """
-        Vy_kN = values.get_Vy_kN(K1, dy)
+        Vy_kN = values.get_Vy_kN(k1, dy)
 
         # X coordinates of the bilinear curve
         x_bilinear = array([0, dy, dp])
@@ -132,15 +114,15 @@ def main(input_values):
         if rd(area_diff, 2) <= rd(0.01):
             logging.debug("area_diff: %s", area_diff)
             ntc = Ntc(
-                limit_state,
-                nominal_age,
-                functional_class,
-                soil_class,
-                topographic_factor,
+                input_values.limit_state,
+                input_values.nominal_age,
+                input_values.functional_class,
+                input_values.soil_class,
+                input_values.topographic_factor,
                 ag_input,
                 fo_input,
                 tc_input,
-                damping_coeff,
+                input_values.damping_coeff,
             )
             sd_meters = ntc.get_movement_curve_SDe()
             sa_ms2_0 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
@@ -153,10 +135,10 @@ def main(input_values):
             )
 
             # Sui generis first iteration
-            xiFrame = values.get_xiFrame(Kf, dp, dy, Vy_kN, Vp_ms2)
+            xiFrame = values.get_xiFrame(input_values.kf, dp, dy, Vy_kN, Vp_ms2)
 
             xi_n_eff = values.get_xi_n_eff_0(dp, adrs_spectrum, k1_eff_curve)
-            xi_DB = values.get_xi_DB(mu_DB, k_DB)
+            xi_DB = values.get_xi_DB(input_values.mu_DB, input_values.k_DB)
             Vp_DB_prev_iteration = values.get_Vp_DB_0(xi_n_eff, Vp_kN, xi_DB, xiFrame)
 
             check = values.get_check(xiFrame, xi_n_eff)
@@ -171,12 +153,7 @@ def main(input_values):
             logging.debug("de_0: %s", de_0)
             sa_ms2 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
 
-            def get_calcs_recursive(
-                Vp_DB,
-                check,
-                i,
-            ):
-                global Vy_F_DB, Vp_F_DB, kn_eff, de_n
+            def get_calcs_recursive(Vp_DB, check, i, Vy_F_DB, Vp_F_DB, kn_eff, de_n):
                 """Recursive function to calculate what's needed.
                 If the difference is more than 0.5 keep iterating,
                 otherwise return the values."""
@@ -199,9 +176,7 @@ def main(input_values):
                     check = values.get_check(xi_eff_F_DB, xi_n_eff)
 
                     return get_calcs_recursive(
-                        Vp_DB,
-                        check,
-                        i,
+                        Vp_DB, check, i, Vy_F_DB, Vp_F_DB, kn_eff, de_n
                     )
 
                 # If the difference between ViP(DB) and V(i-1)P(DB) is less
@@ -210,14 +185,18 @@ def main(input_values):
                 y_bilinear_ms2 = array([0, Vy_F_DB, Vp_F_DB])
                 values.get_Vy_DB_final(Vp_DB)
                 values.get_Fy_n_DB_array()
-                values.get_dy_DB_final(mu_DB, dp)
+                values.get_dy_DB_final(input_values.mu_DB, dp)
                 values.get_Vy_n_DB_array().tolist()
                 values.get_dy_n_array(eigenvalues)
                 values.get_K_storey_n_array().tolist()
-                values.get_K_n_DB_array(span_length, interfloor_height)
-                kc_n_s_array = values.get_kc_n_s_array(brace_number)
+                values.get_K_n_DB_array(
+                    input_values.span_length, input_values.interfloor_height
+                )
+                kc_n_s_array = values.get_kc_n_s_array(input_values.brace_number)
                 Fc_n_s_array = values.get_Fc_n_s_array(
-                    brace_number, span_length, interfloor_height
+                    input_values.brace_number,
+                    input_values.span_length,
+                    input_values.interfloor_height,
                 )
 
                 return [
@@ -236,8 +215,7 @@ def main(input_values):
                     dp,
                 ]
 
-            return get_calcs_recursive(Vp_DB, check, 1)
-
+            return get_calcs_recursive(Vp_DB, check, 1, None, None, None, None)
         dy = rd(dy + 0.00001)
         logging.debug("dy: %s", dy)
         return find_dy(dy)
