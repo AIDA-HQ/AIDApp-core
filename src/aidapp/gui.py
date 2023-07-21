@@ -2,7 +2,7 @@
 
 from qtpy import QtCore, QtWidgets
 
-from aidapp.main import AIDApp
+from aidapp.main import main as aidapp
 import aidapp.file_handler as fh
 
 import aidapp.strings as strings
@@ -12,8 +12,6 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 
 from matplotlib.figure import Figure
 from collections import namedtuple
-
-aidapp = AIDApp()
 
 
 class HumbleSpinBox(QtWidgets.QDoubleSpinBox):
@@ -633,7 +631,7 @@ class Ui_MainWindow:
             self.damping_coeff_SpinBox.value(),
         )
         # Feed the values to the main program
-        output = aidapp.main(input_values)
+        output = aidapp(input_values)
 
         # Display the output
         self.output_field(output)
