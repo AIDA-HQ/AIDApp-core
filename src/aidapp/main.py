@@ -154,9 +154,11 @@ def main(input_values):
             sa_ms2 = values.convert_to_ms2(ntc.get_acceleration_curve_Se())
 
             def get_calcs_recursive(Vp_DB, check, i, Vy_F_DB, Vp_F_DB, kn_eff, de_n):
-                """Recursive function to calculate what's needed.
+                """
+                Recursive function to calculate what's needed.
                 If the difference is more than 0.5 keep iterating,
-                otherwise return the values."""
+                otherwise return the values.
+                """
                 if check > 0.5:
                     i = i + 1
                     xi_eff_F_DB = values.get_xi_eff_F_DB(Vp_kN, xi_DB, Vp_DB, xiFrame)
