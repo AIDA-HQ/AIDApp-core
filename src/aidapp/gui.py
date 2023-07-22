@@ -609,8 +609,7 @@ class Ui_MainWindow:
             ],
         )
 
-        input_values = InputValues
-        (
+        input_values = InputValues(
             self.dp_SpinBox.value(),
             self.u_DB_SpinBox.value(),
             self.k_DB_SpinBox.value(),
