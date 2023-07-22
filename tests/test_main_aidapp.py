@@ -1,8 +1,8 @@
 """Test the core functionality of AIDApp."""
-from aidapp.main import AIDApp
+from aidapp.main import main as aidapp
 import sys
+from collections import namedtuple
 
-aidapp = AIDApp()
 
 PUSHOVER_X = """
 0
@@ -485,7 +485,31 @@ def test_main():
     arg_limit_state = "SLV"
     arg_damping_coeff = 5
 
-    kc_n_s_array, Fc_n_s_array, i, _, _, _, _, _, _, _, de_0, de_n, dp = aidapp.main(
+    InputValues = namedtuple(
+        "input_values",
+        [
+            "dp",
+            "mu_DB",
+            "k_DB",
+            "kf",
+            "storey_masses",
+            "eigenvalues",
+            "brace_number",
+            "zonation_data",
+            "pushover_x",
+            "pushover_y",
+            "span_length",
+            "interfloor_height",
+            "nominal_age",
+            "functional_class",
+            "topographic_factor",
+            "soil_class",
+            "limit_state",
+            "damping_coeff",
+        ],
+    )
+
+    input_values = InputValues(
         arg_dp,
         arg_mu_DB,
         arg_k_DB,
@@ -505,6 +529,12 @@ def test_main():
         arg_limit_state,
         arg_damping_coeff,
     )
+
+    kc_n_s_array, Fc_n_s_array, i, _, _, _, _, _, _, _, de_0, de_n, dp = aidapp(
+        input_values
+    )
+    assert i == 5
+
     assert kc_n_s_array == [
         896060.0409196536,
         461111.24652382464,
@@ -521,7 +551,6 @@ def test_main():
         382.303200328156,
         142.997493643942,
     ]
-    assert i == 5
     assert de_0 == (0.148465762254, 4.838711036209)
     assert de_n == (0.092350797764, 7.807520454074)
     assert dp == 0.044429959868
