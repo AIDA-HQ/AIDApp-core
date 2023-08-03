@@ -1,6 +1,8 @@
 """Main module of the AIDApp."""
 
 import logging
+from collections import namedtuple
+
 from numpy import array
 
 from aidapp.calcs import Area, Values
@@ -201,21 +203,40 @@ def main(input_values):
                     input_values.interfloor_height,
                 )
 
-                return [
+                OutputValues = namedtuple(
+                    "OutputValues",
+                    [
+                        "kc_n_s_array",
+                        "Fc_n_s_array",
+                        "i",
+                        "x_bilinear",
+                        "y_bilinear_ms2",
+                        "sd_meters",
+                        "sa_ms2",
+                        "kn_eff_list",
+                        "y_bilinear_ms2_0",
+                        "kn_eff_list_0",
+                        "de_0",
+                        "de_n",
+                        "dp",
+                    ],
+                )
+
+                return OutputValues(
                     kc_n_s_array,
                     Fc_n_s_array,
                     i,
-                    x_bilinear,
-                    y_bilinear_ms2,
-                    sd_meters,
-                    sa_ms2,
-                    kn_eff_list,
-                    y_bilinear_ms2_0,
-                    kn_eff_list_0,
+                    x_bilinear.tolist(),
+                    y_bilinear_ms2.tolist(),
+                    sd_meters.tolist(),
+                    sa_ms2.tolist(),
+                    kn_eff_list.tolist(),
+                    y_bilinear_ms2_0.tolist(),
+                    kn_eff_list_0.tolist(),
                     de_0,
                     de_n,
                     dp,
-                ]
+                )
 
             return get_calcs_recursive(Vp_DB, check, 1, None, None, None, None)
         dy = rd(dy + 0.00001)

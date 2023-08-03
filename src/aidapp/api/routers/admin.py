@@ -8,9 +8,7 @@ router = APIRouter()
 @router.post("/calculate/")
 async def calculate(input_values: InputValues):
     try:
-        kc_n_s_array, Fc_n_s_array, i, _, _, _, _, _, _, _, de_0, de_n, dp = main(
-            input_values
-        )
+        aidapp_output = main(input_values)
     except Exception as e:
         return {"message": f"{e}"}
-    return {"message": f"{input_values}"}
+    return aidapp_output._asdict()

@@ -538,12 +538,11 @@ def test_main():
         arg_damping_coeff,
     )
 
-    kc_n_s_array, Fc_n_s_array, i, _, _, _, _, _, _, _, de_0, de_n, dp = aidapp(
-        input_values
-    )
-    assert i == 5
+    aidapp_output = aidapp(input_values)
 
-    assert kc_n_s_array == [
+    assert aidapp_output.i == 5
+
+    assert aidapp_output.kc_n_s_array == [
         896060.0409196536,
         461111.24652382464,
         342785.6925901348,
@@ -551,7 +550,7 @@ def test_main():
         324788.7688801968,
         253737.4026480032,
     ]
-    assert Fc_n_s_array == [
+    assert aidapp_output.Fc_n_s_array == [
         852.868455309155,
         821.586663019117,
         734.840773590922,
@@ -559,6 +558,6 @@ def test_main():
         382.303200328156,
         142.997493643942,
     ]
-    assert de_0 == (0.148465762254, 4.838711036209)
-    assert de_n == (0.092350797764, 7.807520454074)
-    assert dp == 0.044429959868
+    assert aidapp_output.de_0 == (0.148465762254, 4.838711036209)
+    assert aidapp_output.de_n == (0.092350797764, 7.807520454074)
+    assert aidapp_output.dp == 0.044429959868

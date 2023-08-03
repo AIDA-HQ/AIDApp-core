@@ -3,7 +3,7 @@ from aidapp.api.routers import admin
 
 app = FastAPI()
 
-app.include_router(admin.router, prefix="/admin", tags=["admin"])
+app.include_router(admin.router, prefix="", tags=["admin"])
 
 if __name__ == "__main__":
     import uvicorn
