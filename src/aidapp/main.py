@@ -18,11 +18,11 @@ def main(input_values):
     """Main function of the app."""
     storey_masses = rd(input_values.storey_masses)
     eigenvalues = rd(input_values.eigenvalues)
-    pushover_x = fh.generate_array(input_values.pushover_x)
-    pushover_y = fh.generate_array(input_values.pushover_y)
-    ag_input = fh.generate_array(input_values.zonation_data[0])
-    fo_input = fh.generate_array(input_values.zonation_data[1])
-    tc_input = fh.generate_array(input_values.zonation_data[2])
+    pushover_x = rd(input_values.pushover_x)
+    pushover_y = rd(input_values.pushover_y)
+    ag_input = rd(input_values.zonation_0)
+    fo_input = rd(input_values.zonation_1)
+    tc_input = rd(input_values.zonation_2)
 
     gamma = values.get_gamma(storey_masses, eigenvalues)
     dp = rd(input_values.dp / gamma)  # [m]
