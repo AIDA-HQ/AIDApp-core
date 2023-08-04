@@ -5,7 +5,6 @@ from collections import namedtuple
 
 from numpy import array
 
-import aidapp.file_handler as fh
 from aidapp.calcs import Area, Values
 from aidapp.coordinates import Coords
 from aidapp.ntc import Ntc

@@ -1,6 +1,5 @@
 import json
 
-from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from aidapp.api import main
@@ -9,6 +8,7 @@ client = TestClient(main.app)
 
 
 def test_calculate():
+    """Test the /calculate/ endpoint."""
     with open("tests/test_payload.json") as f:
         payload = json.load(f)
     response = client.post("/calculate/", json=payload)

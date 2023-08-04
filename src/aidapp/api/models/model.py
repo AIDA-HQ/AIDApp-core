@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class InputValues(BaseModel):
+    """Input value model for the AIDAPP calculate endpoint."""
     dp: float
     mu_DB: float
     k_DB: float
@@ -27,6 +28,7 @@ class InputValues(BaseModel):
 
 
 class OutputValues(BaseModel):
+    """Output value model for the AIDAPP calculate endpoint."""
     kc_n_s_array : List[float]
     Fc_n_s_array : List[float]
     i : int
