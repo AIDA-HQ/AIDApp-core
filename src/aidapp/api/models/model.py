@@ -26,11 +26,17 @@ class InputValues(BaseModel):
     damping_coeff: float
 
 
-# class OutputValues(BaseModel):
-#     TODO
-#     kc_n_s_array : List[float]
-#     Fc_n_s_array : List[float]
-#     i : int
-#     de_0 : float
-#     de_n : float
-#     dp : float
+class OutputValues(BaseModel):
+    kc_n_s_array : List[float]
+    Fc_n_s_array : List[float]
+    i : int
+    x_bilinear: List[float]
+    y_bilinear_ms2: List[float]
+    sd_meters: List[float]
+    sa_ms2: List[float]
+    kn_eff_list: List[float]
+    y_bilinear_ms2_0: List[float]
+    kn_eff_list_0: List[float]
+    de_0: List[float]
+    de_n: List[float]
+    dp: float

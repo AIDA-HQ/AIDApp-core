@@ -2,12 +2,12 @@ from fastapi import APIRouter
 
 from aidapp.main import main
 
-from ..models.model import InputValues
+from aidapp.api.models.model import InputValues, OutputValues
 
 router = APIRouter()
 
 
-@router.post("/calculate/")
+@router.post("/calculate/", response_model=OutputValues)
 async def calculate(input_values: InputValues):
     try:
         aidapp_output = main(input_values)
