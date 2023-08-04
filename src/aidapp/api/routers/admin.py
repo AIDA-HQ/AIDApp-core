@@ -17,5 +17,5 @@ async def calculate(input_values: InputValues):
         aidapp_output = main(input_values)
     except Exception:
         logging.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error")
     return JSONResponse(content=aidapp_output._asdict(), status_code=200)
