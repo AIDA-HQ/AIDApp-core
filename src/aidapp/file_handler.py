@@ -1,6 +1,7 @@
 """This module contains the functions that handle the input and output data."""
 
 from numpy import array, reshape, transpose
+
 from aidapp.utils import rd
 
 

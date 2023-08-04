@@ -1,8 +1,8 @@
 """Test the core functionality of AIDApp."""
-from aidapp.main import main as aidapp
 import sys
 from collections import namedtuple
 
+from aidapp.main import main as aidapp
 
 PUSHOVER_X = [
     0,

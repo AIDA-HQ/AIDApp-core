@@ -1,6 +1,7 @@
 """Coordinates module."""
-from numpy import absolute, array, linspace, polyfit, column_stack
+from numpy import absolute, array, column_stack, linspace, polyfit
 from shapely.geometry.linestring import LineString
+
 from aidapp.utils import rd
 
 

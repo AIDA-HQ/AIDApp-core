@@ -1,6 +1,8 @@
 from fastapi import APIRouter
-from ..models.model import InputValues
+
 from aidapp.main import main
+
+from ..models.model import InputValues
 
 router = APIRouter()
 

@@ -1,5 +1,7 @@
 """Main calculations for the program."""
 
+import logging
+
 from numpy import (
     absolute,
     arctan,
@@ -7,15 +9,14 @@ from numpy import (
     cov,
     cumsum,
     diagflat,
+    hypot,
     matmul,
     pi,
-    hypot,
     trapz,
 )
-import logging
-from aidapp.utils import rd
 
 from aidapp.coordinates import Coords
+from aidapp.utils import rd
 
 coord = Coords()
 
