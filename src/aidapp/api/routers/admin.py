@@ -1,3 +1,6 @@
+import logging
+import traceback
+
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
@@ -12,6 +15,7 @@ async def calculate(input_values: InputValues):
     """Endpoint to feed the inputs to the algorithm and return the output values."""
     try:
         aidapp_output = main(input_values)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error: {e}")
+    except Exception:
+        logging.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Internal server error")
     return JSONResponse(content=aidapp_output._asdict(), status_code=200)
