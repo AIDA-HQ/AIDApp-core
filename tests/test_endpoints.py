@@ -9,8 +9,8 @@ from aidapp.api.models.model import InputValues
 client = TestClient(main.app)
 
 
-def test_calculate_endpoint_with_valid_input():
-    """Test the /calculate/ endpoint."""
+def test_calculate_endpoint_valid_input():
+    """Test the /calculate/ endpoint with valid input."""
     with open("tests/test_payload.json") as f:
         payload = json.load(f)
     response = client.post("/calculate/", json=payload)
@@ -38,7 +38,8 @@ def test_calculate_endpoint_with_valid_input():
     assert response.json()["dp"] == 0.044429959868
 
 
-def test_calculate_endpoint_with_invalid_input():
+def test_calculate_endpoint_invalid_input():
+    """Test the /calculate/ endpoint with invalid input."""
     with pytest.raises(ValueError):
         input_values = InputValues(
             dp=0.1,
