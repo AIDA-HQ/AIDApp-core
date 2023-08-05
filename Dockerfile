@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./src .
 
 # Expose the port that the backend server listens on
-EXPOSE 8000
+EXPOSE 80
 
 # Start the backend server
 CMD ["uvicorn", "aidapp.api.main:app", "--host", "0.0.0.0", "--port", "80"]
