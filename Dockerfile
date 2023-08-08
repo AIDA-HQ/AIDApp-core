@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Export environment variables
 ENV APP_MODULE="aidapp.api.main:app" 
+ENV PORT="8080"
 
 # Copy the rest of the application code into the container
 COPY ./src .
