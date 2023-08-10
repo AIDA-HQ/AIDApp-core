@@ -4,7 +4,7 @@ import traceback
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
-from aidapp.api.models.model import InputValues, OutputValues
+from aidapp.api.schemas.schema import InputValues, OutputValues
 from aidapp.main import main
 
 router = APIRouter()

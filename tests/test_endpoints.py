@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from aidapp.api import main
-from aidapp.api.models.model import InputValues
+from aidapp.api.schemas.schema import InputValues
 
 client = TestClient(main.app)
 
