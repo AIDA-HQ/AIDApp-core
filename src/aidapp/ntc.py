@@ -1,6 +1,7 @@
 """NTC spectrum"""
 
 from numpy import arange, array, log, log10, pi
+
 from aidapp.utils import rd
 
 

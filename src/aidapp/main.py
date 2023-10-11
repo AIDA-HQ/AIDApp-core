@@ -1,11 +1,12 @@
 """Main module of the AIDApp."""
 
 import logging
+from collections import namedtuple
+
 from numpy import array
 
 from aidapp.calcs import Area, Values
 from aidapp.coordinates import Coords
-import aidapp.file_handler as fh
 from aidapp.ntc import Ntc
 from aidapp.utils import rd
 
@@ -18,11 +19,11 @@ def main(input_values):
     """Main function of the app."""
     storey_masses = rd(input_values.storey_masses)
     eigenvalues = rd(input_values.eigenvalues)
-    pushover_x = fh.generate_array(input_values.pushover_x)
-    pushover_y = fh.generate_array(input_values.pushover_y)
-    ag_input = fh.generate_array(input_values.zonation_data[0])
-    fo_input = fh.generate_array(input_values.zonation_data[1])
-    tc_input = fh.generate_array(input_values.zonation_data[2])
+    pushover_x = rd(input_values.pushover_x)
+    pushover_y = rd(input_values.pushover_y)
+    ag_input = rd(input_values.zonation_0)
+    fo_input = rd(input_values.zonation_1)
+    tc_input = rd(input_values.zonation_2)
 
     gamma = values.get_gamma(storey_masses, eigenvalues)
     dp = rd(input_values.dp / gamma)  # [m]
@@ -201,21 +202,40 @@ def main(input_values):
                     input_values.interfloor_height,
                 )
 
-                return [
+                OutputValues = namedtuple(
+                    "OutputValues",
+                    [
+                        "kc_n_s_array",
+                        "Fc_n_s_array",
+                        "i",
+                        "x_bilinear",
+                        "y_bilinear_ms2",
+                        "sd_meters",
+                        "sa_ms2",
+                        "kn_eff_list",
+                        "y_bilinear_ms2_0",
+                        "kn_eff_list_0",
+                        "de_0",
+                        "de_n",
+                        "dp",
+                    ],
+                )
+
+                return OutputValues(
                     kc_n_s_array,
                     Fc_n_s_array,
                     i,
-                    x_bilinear,
-                    y_bilinear_ms2,
-                    sd_meters,
-                    sa_ms2,
-                    kn_eff_list,
-                    y_bilinear_ms2_0,
-                    kn_eff_list_0,
+                    x_bilinear.tolist(),
+                    y_bilinear_ms2.tolist(),
+                    sd_meters.tolist(),
+                    sa_ms2.tolist(),
+                    kn_eff_list.tolist(),
+                    y_bilinear_ms2_0.tolist(),
+                    kn_eff_list_0.tolist(),
                     de_0,
                     de_n,
                     dp,
-                ]
+                )
 
             return get_calcs_recursive(Vp_DB, check, 1, None, None, None, None)
         dy = rd(dy + 0.00001)
