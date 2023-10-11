@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for aidapp-core-beta on 2023-08-09T01:18:42+02:00
+# fly.toml app configuration file generated for aidapp-core on 2023-10-11T19:19:17+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "aidapp-core-beta"
+app = "aidapp-core"
 primary_region = "cdg"
 
 [build]
