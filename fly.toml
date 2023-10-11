@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for aidapp-core on 2023-10-11T19:19:17+02:00
+# fly.toml app configuration file generated for aidapp-core on 2023-10-11T19:55:47+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,7 +7,6 @@ app = "aidapp-core"
 primary_region = "cdg"
 
 [build]
-  image = "ghcr.io/aida-hq/aidapp:core"
 
 [http_service]
   internal_port = 8080
