@@ -2,16 +2,7 @@
 
 import logging
 
-from numpy import (
-    absolute,
-    array,
-    cov,
-    cumsum,
-    diagflat,
-    matmul,
-    pi,
-    trapz,
-)
+from numpy import absolute, array, cov, cumsum, diagflat, matmul, pi, trapz
 
 from aidapp.coordinates import Coords
 from aidapp.utils import rd
