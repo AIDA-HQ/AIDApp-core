@@ -4,12 +4,10 @@ import logging
 
 from numpy import (
     absolute,
-    arctan,
     array,
     cov,
     cumsum,
     diagflat,
-    hypot,
     matmul,
     pi,
     trapz,
