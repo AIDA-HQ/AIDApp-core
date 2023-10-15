@@ -437,7 +437,7 @@ def test_main():
         0.932777869,
         1,
     ]
-    zonation_0 = [
+    zonation_ag = [
         0.067,
         0.091,
         0.109,
@@ -448,7 +448,7 @@ def test_main():
         0.354,
         0.501,
     ]
-    zonation_1 = [
+    zonation_fo = [
         2.308,
         2.276,
         2.282,
@@ -459,7 +459,7 @@ def test_main():
         2.470,
         2.510,
     ]
-    zonation_2 = [
+    zonation_tc = [
         0.279,
         0.295,
         0.314,
@@ -488,9 +488,9 @@ def test_main():
             "kf",
             "storey_masses",
             "eigenvalues",
-            "zonation_0",
-            "zonation_1",
-            "zonation_2",
+            "zonation_ag",
+            "zonation_fo",
+            "zonation_tc",
             "pushover_x",
             "pushover_y",
             "nominal_age",
@@ -509,9 +509,9 @@ def test_main():
         arg_Kf,
         arg_storey_masses,
         arg_eigenvalues,
-        zonation_0,
-        zonation_1,
-        zonation_2,
+        zonation_ag,
+        zonation_fo,
+        zonation_tc,
         arg_pushover_x,
         arg_pushover_y,
         arg_nominal_age,

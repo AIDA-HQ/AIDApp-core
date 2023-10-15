@@ -21,9 +21,9 @@ def main(input_values):
     eigenvalues = rd(input_values.eigenvalues)
     pushover_x = rd(input_values.pushover_x)
     pushover_y = rd(input_values.pushover_y)
-    ag_input = rd(input_values.zonation_0)
-    fo_input = rd(input_values.zonation_1)
-    tc_input = rd(input_values.zonation_2)
+    ag_input = rd(input_values.zonation_ag)
+    fo_input = rd(input_values.zonation_fo)
+    tc_input = rd(input_values.zonation_tc)
 
     gamma = values.get_gamma(storey_masses, eigenvalues)
     dp = rd(input_values.dp / gamma)  # [m]

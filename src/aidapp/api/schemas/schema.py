@@ -12,9 +12,9 @@ class InputValues(BaseModel):
     kf: float
     storey_masses: List[float]
     eigenvalues: List[float]
-    zonation_0: List[float]
-    zonation_1: List[float]
-    zonation_2: List[float]
+    zonation_ag: List[float]
+    zonation_fo: List[float]
+    zonation_tc: List[float]
     pushover_x: List[float]
     pushover_y: List[float]
     nominal_age: int
