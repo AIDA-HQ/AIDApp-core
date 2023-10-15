@@ -12,14 +12,11 @@ class InputValues(BaseModel):
     kf: float
     storey_masses: List[float]
     eigenvalues: List[float]
-    brace_number: List[int]
-    zonation_0: List[float]
-    zonation_1: List[float]
-    zonation_2: List[float]
+    zonation_ag: List[float]
+    zonation_fo: List[float]
+    zonation_tc: List[float]
     pushover_x: List[float]
     pushover_y: List[float]
-    span_length: float
-    interfloor_height: float
     nominal_age: int
     functional_class: str
     topographic_factor: str
@@ -31,8 +28,6 @@ class InputValues(BaseModel):
 class OutputValues(BaseModel):
     """Output value model for the AIDAPP calculate endpoint."""
 
-    kc_n_s_array: List[float]
-    Fc_n_s_array: List[float]
     i: int
     x_bilinear: List[float]
     y_bilinear_ms2: List[float]

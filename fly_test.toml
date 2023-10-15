@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "aidapp-core"
+app = "aidapp-core-test"
 primary_region = "cdg"
 
 [http_service]
