@@ -189,24 +189,16 @@ def main(input_values):
                 values.get_Vy_DB_final(Vp_DB)
                 values.get_Fy_n_DB_array()
                 values.get_dy_DB_final(input_values.mu_DB, dp)
-                values.get_Vy_n_DB_array().tolist()
+                Vy_n_DB_array = values.get_Vy_n_DB_array()
                 values.get_dy_n_array(eigenvalues)
                 values.get_K_storey_n_array().tolist()
-                values.get_K_n_DB_array(
-                    input_values.span_length, input_values.interfloor_height
-                )
-                kc_n_s_array = values.get_kc_n_s_array(input_values.brace_number)
-                Fc_n_s_array = values.get_Fc_n_s_array(
-                    input_values.brace_number,
-                    input_values.span_length,
-                    input_values.interfloor_height,
-                )
+                K_n_DB_array = values.get_K_n_DB_array()
 
                 OutputValues = namedtuple(
                     "OutputValues",
                     [
-                        "kc_n_s_array",
-                        "Fc_n_s_array",
+                        "Vy_n_DB_array",
+                        "K_n_DB_array",
                         "i",
                         "x_bilinear",
                         "y_bilinear_ms2",
@@ -222,8 +214,8 @@ def main(input_values):
                 )
 
                 return OutputValues(
-                    kc_n_s_array,
-                    Fc_n_s_array,
+                    Vy_n_DB_array.tolist(),
+                    K_n_DB_array.tolist(),
                     i,
                     x_bilinear.tolist(),
                     y_bilinear_ms2.tolist(),

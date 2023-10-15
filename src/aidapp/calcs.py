@@ -42,7 +42,6 @@ class Values:
         self.Vy_DB_array = None
         self.dy_n_array = None
         self.dy_n_array = None
-        self.K_n_DB_array = None
 
     @staticmethod
     def convert_to_meters(coord_mm):
@@ -310,43 +309,14 @@ class Values:
         """Calculate the cos(alpha) of the upwind."""
         return rd(span_length / upwind_lenght)
 
-    def get_K_n_DB_array(self, span_length, interfloor_height):
+    def get_K_n_DB_array(self):
         """Calculate the values of K_n(DB)."""
-        upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
-        self.K_n_DB_array = rd(
-            self.Vy_DB_array
-            / (self.dy_n_array * array(self.cos_alpha(span_length, upwind_lenght) ** 2))
-        )
-        return self.K_n_DB_array
+        K_n_DB_array = rd(self.Vy_DB_array / self.dy_n_array)
+        return K_n_DB_array
 
-    def get_Ny_n_DB_array(self, span_length, interfloor_height):
+    def get_Ny_n_DB_array(self):
         """Calculate the values of Ny(DB)."""
-        Ny_n_DB_array = []
-        upwind_lenght = self.get_upwind_lenght(span_length, interfloor_height)
-        for element in self.Vy_DB_array:
-            Ny_n_DB = rd((element) / self.cos_alpha(span_length, upwind_lenght))
-            Ny_n_DB_array.append(Ny_n_DB)
-        return Ny_n_DB_array
-
-    def get_kc_n_s_array(self, brace_number):
-        """Calculate the values of the brace rigidity for each floor (kc_n_s)."""
-        kc_n_s_array = []
-        k = 0
-        for element in self.K_n_DB_array:
-            kc_n_s = rd((element) / brace_number[0 + k])
-            k = k + 1
-            kc_n_s_array.append(kc_n_s)
-        return kc_n_s_array
-
-    def get_Fc_n_s_array(self, brace_number, span_length, interfloor_height):
-        """Calculate the values of the brace force for each floor (Fc_n_s)."""
-        Fc_n_s_array = []
-        k = 0
-        for element in self.get_Ny_n_DB_array(span_length, interfloor_height):
-            Fc_n_s = rd(element / brace_number[0 + k])
-            k = k + 1
-            Fc_n_s_array.append(Fc_n_s)
-        return Fc_n_s_array
+        return self.Vy_DB_array
 
 
 class Area:

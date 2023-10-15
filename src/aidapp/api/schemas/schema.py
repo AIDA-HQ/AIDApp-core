@@ -31,8 +31,6 @@ class InputValues(BaseModel):
 class OutputValues(BaseModel):
     """Output value model for the AIDAPP calculate endpoint."""
 
-    kc_n_s_array: List[float]
-    Fc_n_s_array: List[float]
     i: int
     x_bilinear: List[float]
     y_bilinear_ms2: List[float]
