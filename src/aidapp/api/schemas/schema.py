@@ -12,14 +12,11 @@ class InputValues(BaseModel):
     kf: float
     storey_masses: List[float]
     eigenvalues: List[float]
-    brace_number: List[int]
     zonation_0: List[float]
     zonation_1: List[float]
     zonation_2: List[float]
     pushover_x: List[float]
     pushover_y: List[float]
-    span_length: float
-    interfloor_height: float
     nominal_age: int
     functional_class: str
     topographic_factor: str

@@ -294,21 +294,6 @@ class Values:
         return K_storey_n_array
 
     # Frame data
-    @staticmethod
-    def get_upwind_lenght(span_length, interfloor_height):
-        """Calculate the lenght of the upwind."""
-        return rd(hypot((span_length), (interfloor_height)))
-
-    @staticmethod
-    def get_slope(span_length, interfloor_height):
-        """Calculate the slope of the upwind."""
-        return rd(arctan(interfloor_height / span_length))
-
-    @staticmethod
-    def cos_alpha(span_length, upwind_lenght):
-        """Calculate the cos(alpha) of the upwind."""
-        return rd(span_length / upwind_lenght)
-
     def get_K_n_DB_array(self):
         """Calculate the values of K_n(DB)."""
         K_n_DB_array = rd(self.Vy_DB_array / self.dy_n_array)

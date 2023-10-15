@@ -12,7 +12,6 @@
         124.3884
     ],
     "eigenvalues": [0.113530691, 0.326058618, 0.581763429, 0.79237523, 0.932777869, 1],
-    "brace_number" : [4, 4, 4, 4, 4, 4],
     "zonation_0": [
         0.067,
         0.091,
@@ -46,8 +45,6 @@
         0.390,
         0.439
     ],
-    "span_length": 5,
-    "interfloor_height": 3,
     "nominal_age": 50,
     "functional_class": "II",
     "topographic_factor": "T2",

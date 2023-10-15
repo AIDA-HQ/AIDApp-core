@@ -437,14 +437,6 @@ def test_main():
         0.932777869,
         1,
     ]
-    arg_brace_number = [
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-    ]
     zonation_0 = [
         0.067,
         0.091,
@@ -480,8 +472,6 @@ def test_main():
     ]
     arg_pushover_x = PUSHOVER_X
     arg_pushover_y = PUSHOVER_Y
-    arg_span_length = 5
-    arg_interfloor_height = 3
     arg_nominal_age = 50
     arg_functional_class = "II"
     arg_topographic_factor = "T2"
@@ -498,14 +488,11 @@ def test_main():
             "kf",
             "storey_masses",
             "eigenvalues",
-            "brace_number",
             "zonation_0",
             "zonation_1",
             "zonation_2",
             "pushover_x",
             "pushover_y",
-            "span_length",
-            "interfloor_height",
             "nominal_age",
             "functional_class",
             "topographic_factor",
@@ -522,14 +509,11 @@ def test_main():
         arg_Kf,
         arg_storey_masses,
         arg_eigenvalues,
-        arg_brace_number,
         zonation_0,
         zonation_1,
         zonation_2,
         arg_pushover_x,
         arg_pushover_y,
-        arg_span_length,
-        arg_interfloor_height,
         arg_nominal_age,
         arg_functional_class,
         arg_topographic_factor,
