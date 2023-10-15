@@ -437,15 +437,7 @@ def test_main():
         0.932777869,
         1,
     ]
-    arg_brace_number = [
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-    ]
-    zonation_0 = [
+    zonation_ag = [
         0.067,
         0.091,
         0.109,
@@ -456,7 +448,7 @@ def test_main():
         0.354,
         0.501,
     ]
-    zonation_1 = [
+    zonation_fo = [
         2.308,
         2.276,
         2.282,
@@ -467,7 +459,7 @@ def test_main():
         2.470,
         2.510,
     ]
-    zonation_2 = [
+    zonation_tc = [
         0.279,
         0.295,
         0.314,
@@ -480,8 +472,6 @@ def test_main():
     ]
     arg_pushover_x = PUSHOVER_X
     arg_pushover_y = PUSHOVER_Y
-    arg_span_length = 5
-    arg_interfloor_height = 3
     arg_nominal_age = 50
     arg_functional_class = "II"
     arg_topographic_factor = "T2"
@@ -498,14 +488,11 @@ def test_main():
             "kf",
             "storey_masses",
             "eigenvalues",
-            "brace_number",
-            "zonation_0",
-            "zonation_1",
-            "zonation_2",
+            "zonation_ag",
+            "zonation_fo",
+            "zonation_tc",
             "pushover_x",
             "pushover_y",
-            "span_length",
-            "interfloor_height",
             "nominal_age",
             "functional_class",
             "topographic_factor",
@@ -522,14 +509,11 @@ def test_main():
         arg_Kf,
         arg_storey_masses,
         arg_eigenvalues,
-        arg_brace_number,
-        zonation_0,
-        zonation_1,
-        zonation_2,
+        zonation_ag,
+        zonation_fo,
+        zonation_tc,
         arg_pushover_x,
         arg_pushover_y,
-        arg_span_length,
-        arg_interfloor_height,
         arg_nominal_age,
         arg_functional_class,
         arg_topographic_factor,
@@ -542,22 +526,6 @@ def test_main():
 
     assert aidapp_output.i == 5
 
-    assert aidapp_output.kc_n_s_array == [
-        896060.0409196536,
-        461111.24652382464,
-        342785.6925901348,
-        331648.53775286616,
-        324788.7688801968,
-        253737.4026480032,
-    ]
-    assert aidapp_output.Fc_n_s_array == [
-        852.868455309155,
-        821.586663019117,
-        734.840773590922,
-        585.588377513482,
-        382.303200328156,
-        142.997493643942,
-    ]
     assert aidapp_output.de_0 == (0.148465762254, 4.838711036209)
     assert aidapp_output.de_n == (0.092350797764, 7.807520454074)
     assert aidapp_output.dp == 0.044429959868
