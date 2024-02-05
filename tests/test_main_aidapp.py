@@ -1,4 +1,5 @@
 """Test the core functionality of AIDApp."""
+
 import sys
 from collections import namedtuple
 
