@@ -1,6 +1,6 @@
+import sentry_sdk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import sentry_sdk
 
 from aidapp.api.routers import admin
 
@@ -11,7 +11,11 @@ sentry_sdk.init(
 
 app = FastAPI()
 
-origins = ["http://localhost:5173", "https://aidapp-fe.vercel.app/", "https://app.aidapp.it/"]
+origins = [
+    "http://localhost:5173",
+    "https://aidapp-fe.vercel.app/",
+    "https://app.aidapp.it/",
+]
 
 app.add_middleware(
     CORSMiddleware,
