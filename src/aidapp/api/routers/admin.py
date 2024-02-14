@@ -19,3 +19,9 @@ async def calculate(input_values: InputValues):
         logging.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail="Internal server error")
     return JSONResponse(content=aidapp_output._asdict(), status_code=200)
+
+
+@router.get("/wake-up/")
+async def wake_up():
+    """Endpoint to check if the server is running."""
+    return JSONResponse(content={"message": "Server is running"}, status_code=200)
