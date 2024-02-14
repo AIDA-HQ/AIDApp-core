@@ -186,9 +186,11 @@ class Values:
         )  # [s]
 
     def get_Sd(self, sa_ms2_0, sd_meters_0, sa_ms2):
-        """Calculate the value of Sd after the iteration 0."""
-        # sa_ms2_0 is the initial array of Sa, the one input by the user
-        # sa_ms2 is the array calculated by the program
+        """
+        Calculate the value of Sd after the iteration 0.
+            sa_ms2_0 is the initial array of Sa, the one input by the user
+            sa_ms2 is the array calculated by the program
+        """
         t_array = self.get_T(sa_ms2_0, sd_meters_0)
         return array(
             [sa * ((t / 2 / pi) ** 2) for sa, t in zip(sa_ms2, t_array)]
