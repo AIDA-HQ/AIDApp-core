@@ -11,11 +11,7 @@ sentry_sdk.init(
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",
-    "https://aidapp-fe.vercel.app/",
-    "https://app.aidapp.it/",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
