@@ -1,4 +1,4 @@
-"""Main module of the AIDApp."""
+"""Main module of AIDApp-core."""
 
 import logging
 from collections import namedtuple
@@ -26,7 +26,7 @@ def main(input_values):
     tc_input = rd(input_values.zonation_tc)
 
     gamma = values.get_gamma(storey_masses, eigenvalues)
-    dp = rd(input_values.dp / gamma)  # [m]
+    dp = rd(input_values.dp / gamma, 4)  # [m]
     logging.debug("dp: %s", dp)
     me = values.get_me()  # [ton]
     y_p_sdof = coord.y_p_sdof(gamma, pushover_y)
@@ -112,7 +112,7 @@ def main(input_values):
         logging.debug("a2: %s", a2)
         logging.debug("area_diff: %s", area_diff)
 
-        if rd(area_diff, 2) <= rd(0.01):
+        if rd(area_diff, 2) <= rd(0.01, 2):
             logging.debug("area_diff: %s", area_diff)
             ntc = Ntc(
                 input_values.limit_state,
@@ -160,7 +160,7 @@ def main(input_values):
                 If the difference is more than 0.5 keep iterating,
                 otherwise return the values.
                 """
-                if check > 0.5:
+                if rd(check, 1) > rd(0.5, 1):
                     i = i + 1
                     xi_eff_F_DB = values.get_xi_eff_F_DB(Vp_kN, xi_DB, Vp_DB, xiFrame)
                     Vp_DB_prev_iteration = Vp_DB
@@ -230,8 +230,8 @@ def main(input_values):
                 )
 
             return get_calcs_recursive(Vp_DB, check, 1, None, None, None, None)
-        dy = rd(dy + 0.00001)
+        dy = rd(dy + 0.00001, 5)
         logging.debug("dy: %s", dy)
         return find_dy(dy)
 
-    return find_dy(0.0100)
+    return find_dy(rd(0.0100, 5))
